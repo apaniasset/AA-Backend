@@ -1,0 +1,437 @@
+{
+    "info": {
+        "_postman_id": "d9909d94-dd30-49c9-aba6-d5117d9ee9e6",
+        "name": "ApniAsset API Collection",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Admin",
+            "item": [
+                {
+                    "name": "Auth",
+                    "item": [
+                        {
+                            "name": "Admin Login",
+                            "request": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"identifier\": \"admin@example.com\",\n  \"password\": \"password123\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/admin/auth/login"
+                                }
+                            }
+                        },
+                        {
+                            "name": "Admin Logout",
+                            "request": {
+                                "method": "POST",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/admin/auth/logout"
+                                }
+                            }
+                        },
+                        {
+                            "name": "Admin Forgot Password",
+                            "request": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"identifier\": \"admin@example.com\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/admin/auth/forgot-password"
+                                }
+                            }
+                        },
+                        {
+                            "name": "Admin Reset Password",
+                            "request": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"identifier\": \"admin@example.com\",\n  \"otp\": \"123456\",\n  \"newPassword\": \"newpassword123\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/admin/auth/reset-password"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Staff Management",
+                    "item": [
+                        {
+                            "name": "Add Admin",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"Admin User\",\n  \"email\": \"newadmin@example.com\",\n  \"password\": \"password123\",\n  \"phone\": \"1234567890\",\n  \"role\": \"staff\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/admin"
+                                }
+                            }
+                        },
+                        {
+                            "name": "List Admins",
+                            "request": {
+                                "method": "GET",
+                                "url": {
+                                    "raw": "{{base_url}}/admin"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Location Management",
+                    "item": [
+                        {
+                            "name": "Countries",
+                            "item": [
+                                {
+                                    "name": "List Countries",
+                                    "request": {
+                                        "method": "GET",
+                                        "url": {
+                                            "raw": "{{base_url}}/admin/location/countries"
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "Add Country",
+                                    "request": {
+                                        "method": "POST",
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\n  \"name\": \"India\",\n  \"short_name\": \"IN\",\n  \"country_code\": \"+91\"\n}",
+                                            "options": {
+                                                "raw": {
+                                                    "language": "json"
+                                                }
+                                            }
+                                        },
+                                        "url": {
+                                            "raw": "{{base_url}}/admin/location/countries"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "States",
+                            "item": [
+                                {
+                                    "name": "List States",
+                                    "request": {
+                                        "method": "GET",
+                                        "url": {
+                                            "raw": "{{base_url}}/admin/location/states"
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "Add State",
+                                    "request": {
+                                        "method": "POST",
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\n  \"state_name\": \"Maharashtra\",\n  \"country_id\": 1,\n  \"state_type\": \"State\"\n}",
+                                            "options": {
+                                                "raw": {
+                                                    "language": "json"
+                                                }
+                                            }
+                                        },
+                                        "url": {
+                                            "raw": "{{base_url}}/admin/location/states"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Cities",
+                            "item": [
+                                {
+                                    "name": "List Cities",
+                                    "request": {
+                                        "method": "GET",
+                                        "url": {
+                                            "raw": "{{base_url}}/admin/location/cities"
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "Add City",
+                                    "request": {
+                                        "method": "POST",
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\n  \"city_name\": \"Mumbai\",\n  \"state_id\": 1\n}",
+                                            "options": {
+                                                "raw": {
+                                                    "language": "json"
+                                                }
+                                            }
+                                        },
+                                        "url": {
+                                            "raw": "{{base_url}}/admin/location/cities"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Areas",
+                            "item": [
+                                {
+                                    "name": "List Areas",
+                                    "request": {
+                                        "method": "GET",
+                                        "url": {
+                                            "raw": "{{base_url}}/admin/location/areas"
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "Add Area",
+                                    "request": {
+                                        "method": "POST",
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\n  \"area_name\": \"Andheri\",\n  \"city_id\": 1,\n  \"pincode\": \"400053\"\n}",
+                                            "options": {
+                                                "raw": {
+                                                    "language": "json"
+                                                }
+                                            }
+                                        },
+                                        "url": {
+                                            "raw": "{{base_url}}/admin/location/areas"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Merchant",
+            "item": [
+                {
+                    "name": "Auth",
+                    "item": [
+                        {
+                            "name": "Merchant Login",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"identifier\": \"merchant@example.com\",\n  \"password\": \"password123\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/merchant/auth/login"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Management",
+                    "item": [
+                        {
+                            "name": "Add Merchant",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@merchant.com\",\n  \"password\": \"password123\",\n  \"phone\": \"9876543210\",\n  \"merchant_type\": \"broker\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/merchant"
+                                }
+                            }
+                        },
+                        {
+                            "name": "List Merchants",
+                            "request": {
+                                "method": "GET",
+                                "url": {
+                                    "raw": "{{base_url}}/merchant"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Affiliate",
+            "item": [
+                {
+                    "name": "Auth",
+                    "item": [
+                        {
+                            "name": "Affiliate Login",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"identifier\": \"affiliate@example.com\",\n  \"password\": \"password123\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/affiliate/auth/login"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Management",
+                    "item": [
+                        {
+                            "name": "Add Affiliate",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"Jane Smith\",\n  \"email\": \"jane@aff.com\",\n  \"password\": \"password123\",\n  \"phone\": \"1122334455\",\n  \"referral_code\": \"JANE001\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/affiliate"
+                                }
+                            }
+                        },
+                        {
+                            "name": "List Affiliates",
+                            "request": {
+                                "method": "GET",
+                                "url": {
+                                    "raw": "{{base_url}}/affiliate"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "User",
+            "item": [
+                {
+                    "name": "Auth",
+                    "item": [
+                        {
+                            "name": "User Login",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"identifier\": \"user@example.com\",\n  \"password\": \"password123\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/user/auth/login"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Management",
+                    "item": [
+                        {
+                            "name": "Add User",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"Reg User\",\n  \"email\": \"reg@user.com\",\n  \"password\": \"password123\",\n  \"mobile\": \"9988776655\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/user"
+                                }
+                            }
+                        },
+                        {
+                            "name": "List Users",
+                            "request": {
+                                "method": "GET",
+                                "url": {
+                                    "raw": "{{base_url}}/user"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:3000/api"
+        }
+    ]
+}

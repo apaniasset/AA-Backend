@@ -1,0 +1,370 @@
+{
+    "project": "ApniAsset Backend API",
+    "base_url": "http://localhost:3000/api",
+    "endpoints": {
+        "admin": {
+            "auth": {
+                "login": {
+                    "method": "POST",
+                    "url": "/admin/auth/login",
+                    "body": {
+                        "identifier": "admin@example.com",
+                        "password": "password123"
+                    }
+                },
+                "logout": {
+                    "method": "POST",
+                    "url": "/admin/auth/logout",
+                    "body": {}
+                },
+                "forgot_password": {
+                    "method": "POST",
+                    "url": "/admin/auth/forgot-password",
+                    "body": {
+                        "identifier": "admin@example.com"
+                    }
+                },
+                "reset_password": {
+                    "method": "POST",
+                    "url": "/admin/auth/reset-password",
+                    "body": {
+                        "identifier": "admin@example.com",
+                        "otp": "123456",
+                        "newPassword": "newpassword123"
+                    }
+                }
+            },
+            "management": {
+                "add": {
+                    "method": "POST",
+                    "url": "/admin",
+                    "body": {
+                        "name": "Admin User",
+                        "email": "newadmin@example.com",
+                        "password": "password123",
+                        "phone": "1234567890",
+                        "role": "staff"
+                    }
+                },
+                "list": {
+                    "method": "GET",
+                    "url": "/admin"
+                },
+                "show": {
+                    "method": "GET",
+                    "url": "/admin/:id"
+                },
+                "update": {
+                    "method": "PUT",
+                    "url": "/admin/:id",
+                    "body": {
+                        "name": "Updated Name"
+                    }
+                },
+                "delete": {
+                    "method": "DELETE",
+                    "url": "/admin/:id"
+                }
+            },
+            "location": {
+                "countries": {
+                    "list": {
+                        "method": "GET",
+                        "url": "/admin/location/countries"
+                    },
+                    "add": {
+                        "method": "POST",
+                        "url": "/admin/location/countries",
+                        "body": {
+                            "name": "India",
+                            "short_name": "IN",
+                            "country_code": "+91"
+                        }
+                    },
+                    "update": {
+                        "method": "PUT",
+                        "url": "/admin/location/countries/:id",
+                        "body": {
+                            "name": "Updated Country"
+                        }
+                    },
+                    "delete": {
+                        "method": "DELETE",
+                        "url": "/admin/location/countries/:id"
+                    }
+                },
+                "states": {
+                    "list": {
+                        "method": "GET",
+                        "url": "/admin/location/states"
+                    },
+                    "add": {
+                        "method": "POST",
+                        "url": "/admin/location/states",
+                        "body": {
+                            "state_name": "Maharashtra",
+                            "country_id": 1,
+                            "state_type": "State"
+                        }
+                    },
+                    "update": {
+                        "method": "PUT",
+                        "url": "/admin/location/states/:id",
+                        "body": {
+                            "state_name": "Updated State"
+                        }
+                    },
+                    "delete": {
+                        "method": "DELETE",
+                        "url": "/admin/location/states/:id"
+                    }
+                },
+                "cities": {
+                    "list": {
+                        "method": "GET",
+                        "url": "/admin/location/cities"
+                    },
+                    "add": {
+                        "method": "POST",
+                        "url": "/admin/location/cities",
+                        "body": {
+                            "city_name": "Mumbai",
+                            "state_id": 1
+                        }
+                    },
+                    "update": {
+                        "method": "PUT",
+                        "url": "/admin/location/cities/:id",
+                        "body": {
+                            "city_name": "Updated City"
+                        }
+                    },
+                    "delete": {
+                        "method": "DELETE",
+                        "url": "/admin/location/cities/:id"
+                    }
+                },
+                "areas": {
+                    "list": {
+                        "method": "GET",
+                        "url": "/admin/location/areas"
+                    },
+                    "add": {
+                        "method": "POST",
+                        "url": "/admin/location/areas",
+                        "body": {
+                            "area_name": "Andheri",
+                            "city_id": 1,
+                            "pincode": "400053"
+                        }
+                    },
+                    "update": {
+                        "method": "PUT",
+                        "url": "/admin/location/areas/:id",
+                        "body": {
+                            "area_name": "Updated Area"
+                        }
+                    },
+                    "delete": {
+                        "method": "DELETE",
+                        "url": "/admin/location/areas/:id"
+                    }
+                }
+            }
+        },
+        "merchant": {
+            "auth": {
+                "login": {
+                    "method": "POST",
+                    "url": "/merchant/auth/login",
+                    "body": {
+                        "identifier": "merchant@example.com",
+                        "password": "password123"
+                    }
+                },
+                "logout": {
+                    "method": "POST",
+                    "url": "/merchant/auth/logout",
+                    "body": {}
+                },
+                "forgot_password": {
+                    "method": "POST",
+                    "url": "/merchant/auth/forgot-password",
+                    "body": {
+                        "identifier": "merchant@example.com"
+                    }
+                },
+                "reset_password": {
+                    "method": "POST",
+                    "url": "/merchant/auth/reset-password",
+                    "body": {
+                        "identifier": "merchant@example.com",
+                        "otp": "123456",
+                        "newPassword": "newpassword123"
+                    }
+                }
+            },
+            "management": {
+                "add": {
+                    "method": "POST",
+                    "url": "/merchant",
+                    "body": {
+                        "name": "John Doe",
+                        "email": "john@merchant.com",
+                        "password": "password123",
+                        "phone": "9876543210",
+                        "merchant_type": "broker"
+                    }
+                },
+                "list": {
+                    "method": "GET",
+                    "url": "/merchant"
+                },
+                "show": {
+                    "method": "GET",
+                    "url": "/merchant/:id"
+                },
+                "update": {
+                    "method": "PUT",
+                    "url": "/merchant/:id",
+                    "body": {
+                        "name": "Updated Merchant Name"
+                    }
+                },
+                "delete": {
+                    "method": "DELETE",
+                    "url": "/merchant/:id"
+                }
+            }
+        },
+        "affiliate": {
+            "auth": {
+                "login": {
+                    "method": "POST",
+                    "url": "/affiliate/auth/login",
+                    "body": {
+                        "identifier": "affiliate@example.com",
+                        "password": "password123"
+                    }
+                },
+                "logout": {
+                    "method": "POST",
+                    "url": "/affiliate/auth/logout",
+                    "body": {}
+                },
+                "forgot_password": {
+                    "method": "POST",
+                    "url": "/affiliate/auth/forgot-password",
+                    "body": {
+                        "identifier": "affiliate@example.com"
+                    }
+                },
+                "reset_password": {
+                    "method": "POST",
+                    "url": "/affiliate/auth/reset-password",
+                    "body": {
+                        "identifier": "affiliate@example.com",
+                        "otp": "123456",
+                        "newPassword": "newpassword123"
+                    }
+                }
+            },
+            "management": {
+                "add": {
+                    "method": "POST",
+                    "url": "/affiliate",
+                    "body": {
+                        "name": "Jane Smith",
+                        "email": "jane@aff.com",
+                        "password": "password123",
+                        "phone": "1122334455",
+                        "referral_code": "JANE001"
+                    }
+                },
+                "list": {
+                    "method": "GET",
+                    "url": "/affiliate"
+                },
+                "show": {
+                    "method": "GET",
+                    "url": "/affiliate/:id"
+                },
+                "update": {
+                    "method": "PUT",
+                    "url": "/affiliate/:id",
+                    "body": {
+                        "name": "Updated Jane Smith"
+                    }
+                },
+                "delete": {
+                    "method": "DELETE",
+                    "url": "/affiliate/:id"
+                }
+            }
+        },
+        "user": {
+            "auth": {
+                "login": {
+                    "method": "POST",
+                    "url": "/user/auth/login",
+                    "body": {
+                        "identifier": "user@example.com",
+                        "password": "password123"
+                    }
+                },
+                "logout": {
+                    "method": "POST",
+                    "url": "/user/auth/logout",
+                    "body": {}
+                },
+                "forgot_password": {
+                    "method": "POST",
+                    "url": "/user/auth/forgot-password",
+                    "body": {
+                        "identifier": "user@example.com"
+                    }
+                },
+                "reset_password": {
+                    "method": "POST",
+                    "url": "/user/auth/reset-password",
+                    "body": {
+                        "identifier": "user@example.com",
+                        "otp": "123456",
+                        "newPassword": "newpassword123"
+                    }
+                }
+            },
+            "management": {
+                "add": {
+                    "method": "POST",
+                    "url": "/user",
+                    "body": {
+                        "name": "Regular User",
+                        "email": "user@example.com",
+                        "password": "password123",
+                        "mobile": "9988776655"
+                    }
+                },
+                "list": {
+                    "method": "GET",
+                    "url": "/user"
+                },
+                "show": {
+                    "method": "GET",
+                    "url": "/user/:id"
+                },
+                "update": {
+                    "method": "PUT",
+                    "url": "/user/:id",
+                    "body": {
+                        "name": "Updated Regular User"
+                    }
+                },
+                "delete": {
+                    "method": "DELETE",
+                    "url": "/user/:id"
+                }
+            }
+        }
+    }
+}
