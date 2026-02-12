@@ -144,3 +144,5 @@ vite.config.ts.timestamp-*
 .DS_Store
 src/config/config.json
 firebase-service-account.json
+full_schema.json
+api_test_guide.json

@@ -104,4 +104,26 @@ export class MerchantModel {
             [hashedPassword, id]
         );
     }
+
+    /**
+     * Store Login OTP
+     */
+    static async storeLoginOTP(id: number, otp: string): Promise<void> {
+        const expires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes from now
+        await pool.query(
+            'UPDATE merchant SET login_otp = ?, login_otp_expires = ? WHERE id = ?',
+            [otp, expires, id]
+        );
+    }
+
+    /**
+     * Verify Login OTP
+     */
+    static async verifyLoginOTP(identifier: string, otp: string): Promise<Merchant | null> {
+        const [rows]: any = await pool.query(
+            'SELECT * FROM merchant WHERE (email = ? OR phone = ?) AND login_otp = ? AND login_otp_expires > NOW() LIMIT 1',
+            [identifier, identifier, otp]
+        );
+        return rows.length > 0 ? rows[0] : null;
+    }
 }

@@ -104,4 +104,67 @@ export class AuthController {
             return ApiResponse.error(res, 'Failed to reset password', 500);
         }
     }
+
+    /**
+     * Send Login OTP
+     */
+    static async sendLoginOTP(req: Request, res: Response) {
+        try {
+            const { identifier } = req.body;
+
+            if (!identifier) {
+                return ApiResponse.error(res, 'Mobile number or email is required', 400);
+            }
+
+            const merchant = await MerchantModel.findByEmailOrPhone(identifier);
+            if (!merchant) {
+                return ApiResponse.error(res, 'Merchant not found', 404);
+            }
+
+            // Generate 6-digit OTP
+            const otp = Math.floor(100000 + Math.random() * 900000).toString();
+            await MerchantModel.storeLoginOTP(merchant.id, otp);
+
+            // In a real app, send OTP via SMS here
+            return ApiResponse.success(res, 'Login OTP sent successfully (for demo, check data field)', { otp });
+
+        } catch (error: any) {
+            return ApiResponse.error(res, 'Failed to send login OTP', 500);
+        }
+    }
+
+    /**
+     * Login with OTP
+     */
+    static async loginWithOTP(req: Request, res: Response) {
+        try {
+            const { identifier, otp } = req.body;
+
+            if (!identifier || !otp) {
+                return ApiResponse.error(res, 'Identifier and OTP are required', 400);
+            }
+
+            const merchant = await MerchantModel.verifyLoginOTP(identifier, otp);
+            if (!merchant) {
+                return ApiResponse.error(res, 'Invalid or expired OTP', 401);
+            }
+
+            const token = jwt.sign(
+                { id: merchant.id, role: 'merchant' },
+                process.env.JWT_SECRET as string,
+                { expiresIn: (process.env.JWT_EXPIRES_IN as any) || '7d' }
+            );
+
+            await MerchantModel.updateLastLogin(merchant.id);
+
+            const { password: _, ...merchantData } = merchant;
+            return ApiResponse.success(res, 'Merchant login successful', {
+                merchant: merchantData,
+                token,
+            });
+
+        } catch (error: any) {
+            return ApiResponse.error(res, 'Merchant login with OTP failed', 500);
+        }
+    }
 }
