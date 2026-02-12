@@ -7,10 +7,11 @@ import { ApiResponse } from '../../utils/ApiResponse.js';
 export class AuthController {
     static async login(req: Request, res: Response) {
         try {
-            const { identifier, password } = req.body;
+            let { identifier, password, mobile, phone } = req.body;
+            identifier = identifier || mobile || phone;
 
             if (!identifier || !password) {
-                return ApiResponse.error(res, 'Identifier (email/phone) and password are required', 400);
+                return ApiResponse.error(res, 'Identifier (email/phone), mobile or phone, and password are required', 400);
             }
 
             const merchant = await MerchantModel.findByEmailOrPhone(identifier);
@@ -110,7 +111,8 @@ export class AuthController {
      */
     static async sendLoginOTP(req: Request, res: Response) {
         try {
-            const { identifier } = req.body;
+            let { identifier, mobile, phone } = req.body;
+            identifier = identifier || mobile || phone;
 
             if (!identifier) {
                 return ApiResponse.error(res, 'Mobile number or email is required', 400);
@@ -138,7 +140,8 @@ export class AuthController {
      */
     static async loginWithOTP(req: Request, res: Response) {
         try {
-            const { identifier, otp } = req.body;
+            let { identifier, otp, mobile, phone } = req.body;
+            identifier = identifier || mobile || phone;
 
             if (!identifier || !otp) {
                 return ApiResponse.error(res, 'Identifier and OTP are required', 400);

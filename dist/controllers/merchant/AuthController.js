@@ -5,9 +5,10 @@ import { ApiResponse } from '../../utils/ApiResponse.js';
 export class AuthController {
     static async login(req, res) {
         try {
-            const { identifier, password } = req.body;
+            let { identifier, password, mobile, phone } = req.body;
+            identifier = identifier || mobile || phone;
             if (!identifier || !password) {
-                return ApiResponse.error(res, 'Identifier (email/phone) and password are required', 400);
+                return ApiResponse.error(res, 'Identifier (email/phone), mobile or phone, and password are required', 400);
             }
             const merchant = await MerchantModel.findByEmailOrPhone(identifier);
             if (!merchant) {
@@ -77,6 +78,56 @@ export class AuthController {
         }
         catch (error) {
             return ApiResponse.error(res, 'Failed to reset password', 500);
+        }
+    }
+    /**
+     * Send Login OTP
+     */
+    static async sendLoginOTP(req, res) {
+        try {
+            let { identifier, mobile, phone } = req.body;
+            identifier = identifier || mobile || phone;
+            if (!identifier) {
+                return ApiResponse.error(res, 'Mobile number or email is required', 400);
+            }
+            const merchant = await MerchantModel.findByEmailOrPhone(identifier);
+            if (!merchant) {
+                return ApiResponse.error(res, 'Merchant not found', 404);
+            }
+            // Generate 6-digit OTP
+            const otp = Math.floor(100000 + Math.random() * 900000).toString();
+            await MerchantModel.storeLoginOTP(merchant.id, otp);
+            // In a real app, send OTP via SMS here
+            return ApiResponse.success(res, 'Login OTP sent successfully (for demo, check data field)', { otp });
+        }
+        catch (error) {
+            return ApiResponse.error(res, 'Failed to send login OTP', 500);
+        }
+    }
+    /**
+     * Login with OTP
+     */
+    static async loginWithOTP(req, res) {
+        try {
+            let { identifier, otp, mobile, phone } = req.body;
+            identifier = identifier || mobile || phone;
+            if (!identifier || !otp) {
+                return ApiResponse.error(res, 'Identifier and OTP are required', 400);
+            }
+            const merchant = await MerchantModel.verifyLoginOTP(identifier, otp);
+            if (!merchant) {
+                return ApiResponse.error(res, 'Invalid or expired OTP', 401);
+            }
+            const token = jwt.sign({ id: merchant.id, role: 'merchant' }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN || '7d' });
+            await MerchantModel.updateLastLogin(merchant.id);
+            const { password: _, ...merchantData } = merchant;
+            return ApiResponse.success(res, 'Merchant login successful', {
+                merchant: merchantData,
+                token,
+            });
+        }
+        catch (error) {
+            return ApiResponse.error(res, 'Merchant login with OTP failed', 500);
         }
     }
 }
