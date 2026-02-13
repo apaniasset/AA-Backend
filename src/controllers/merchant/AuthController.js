@@ -53,7 +53,7 @@ export class AuthController {
 
             return res.json({ success: true, message: 'OTP sent (static 123456)', data: { otp } });
         } catch (error) {
-            return res.status(500).json({ success: false, message: 'Failed to send OTP' });
+            return res.status(500).json({ success: false, message: error.message });
         }
     }
 
