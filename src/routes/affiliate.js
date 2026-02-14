@@ -1,6 +1,5 @@
-import { Router } from 'express';
-import { AuthController as Auth } from '../controllers/affiliate/AuthController.js';
-import { AffiliateController as Affiliate } from '../controllers/affiliate/AffiliateController.js';
+import { UserController as Affiliate } from '../controllers/UserController.js';
+import { validate, userSchema } from '../validators/userValidator.js';
 
 const router = Router();
 
@@ -15,17 +14,11 @@ const addGroupHelper = (r) => {
 };
 addGroupHelper(router);
 
-// Auth
-router.post('/login', Auth.login);
-router.post('/logout', Auth.logout);
-router.post('/forgot-password', Auth.forgotPassword);
-router.post('/reset-password', Auth.resetPassword);
-
 // Management
 router.post('/list', Affiliate.index);
-router.post('/create', Affiliate.store);
+router.post('/create', validate(userSchema), Affiliate.store);
 router.post('/show', Affiliate.show);
-router.post('/update', Affiliate.update);
+router.post('/update', validate(userSchema), Affiliate.update);
 router.post('/delete', Affiliate.destroy);
 
 export default router;

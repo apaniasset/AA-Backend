@@ -1,6 +1,5 @@
-import { Router } from 'express';
-import { AuthController as Auth } from '../controllers/user/AuthController.js';
-import { UserController as User } from '../controllers/user/UserController.js';
+import { UserController as User } from '../controllers/UserController.js';
+import { validate, userSchema } from '../validators/userValidator.js';
 
 const router = Router();
 
@@ -15,21 +14,12 @@ const addGroupHelper = (r) => {
 };
 addGroupHelper(router);
 
-// Auth
-router.post('/login', Auth.login);
-router.post('/logout', Auth.logout);
-router.post('/forgot-password', Auth.forgotPassword);
-router.post('/reset-password', Auth.resetPassword);
-router.post('/send-otp', Auth.sendLoginOTP);
-router.post('/login-otp', Auth.loginWithOTP);
-
 // Management
 router.post('/list', User.index);
-router.post('/create', User.store);
+router.post('/create', validate(userSchema), User.store);
 router.post('/show', User.show);
-router.post('/update', User.update);
+router.post('/update', validate(userSchema), User.update);
 router.post('/delete', User.destroy);
-router.post('/reset-password', User.resetPassword);
 router.post('/update-status', User.updateStatus);
 router.post('/change-password', User.changePassword);
 

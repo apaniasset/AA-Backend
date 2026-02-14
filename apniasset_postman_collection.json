@@ -1,106 +1,59 @@
 {
     "info": {
         "_postman_id": "d9909d94-dd30-49c9-aba6-d5117d9ee9e6",
-        "name": "ApniAsset API Collection - Simplified",
+        "name": "ApniAsset Master API Collection",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
     "item": [
         {
-            "name": "Admin",
+            "name": "Auth",
             "item": [
                 {
-                    "name": "Auth",
-                    "item": [
-                        {
-                            "name": "Login",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n  \"identifier\": \"admin@example.com\",\n  \"password\": \"password123\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/admin/login"
+                    "name": "Login",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"identifier\": \"admin@example.com\",\n  \"password\": \"password123\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
                             }
                         },
-                        {
-                            "name": "Logout",
-                            "request": {
-                                "method": "POST",
-                                "url": "{{base_url}}/admin/logout"
-                            }
-                        },
-                        {
-                            "name": "Forgot Password",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n  \"identifier\": \"admin@example.com\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/admin/forgot-password"
-                            }
-                        },
-                        {
-                            "name": "Reset Password",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n  \"identifier\": \"admin@example.com\",\n  \"otp\": \"123456\",\n  \"newPassword\": \"newpassword123\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/admin/reset-password"
-                            }
-                        }
-                    ]
-                },
+                        "url": "{{base_url}}/auth/login"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Master Data",
+            "item": [
                 {
-                    "name": "Users",
+                    "name": "Statuses",
                     "item": [
                         {
                             "name": "List",
                             "request": {
                                 "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/admin/users/list"
+                                "url": "{{base_url}}/master/statuses/list"
                             }
                         },
                         {
-                            "name": "Create",
+                            "name": "Store",
                             "request": {
                                 "method": "POST",
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n  \"name\": \"Staff User\",\n  \"email\": \"staff@example.com\",\n  \"password\": \"password123\",\n  \"role\": \"staff\"\n}",
+                                    "raw": "{\"name\": \"Active\"}",
                                     "options": {
                                         "raw": {
                                             "language": "json"
                                         }
                                     }
                                 },
-                                "url": "{{base_url}}/admin/users/create"
+                                "url": "{{base_url}}/master/statuses/store"
                             }
                         },
                         {
@@ -109,14 +62,14 @@
                                 "method": "POST",
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n  \"id\": 1\n}",
+                                    "raw": "{\"id\": 1}",
                                     "options": {
                                         "raw": {
                                             "language": "json"
                                         }
                                     }
                                 },
-                                "url": "{{base_url}}/admin/users/show"
+                                "url": "{{base_url}}/master/statuses/show"
                             }
                         },
                         {
@@ -125,14 +78,14 @@
                                 "method": "POST",
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n  \"id\": 1,\n  \"name\": \"Updated Name\"\n}",
+                                    "raw": "{\"id\": 1, \"name\": \"Inactive\"}",
                                     "options": {
                                         "raw": {
                                             "language": "json"
                                         }
                                     }
                                 },
-                                "url": "{{base_url}}/admin/users/update"
+                                "url": "{{base_url}}/master/statuses/update"
                             }
                         },
                         {
@@ -141,20 +94,324 @@
                                 "method": "POST",
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n  \"id\": 1\n}",
+                                    "raw": "{\"id\": 1}",
                                     "options": {
                                         "raw": {
                                             "language": "json"
                                         }
                                     }
                                 },
-                                "url": "{{base_url}}/admin/users/delete"
+                                "url": "{{base_url}}/master/statuses/delete"
                             }
                         }
                     ]
                 },
                 {
-                    "name": "Location",
+                    "name": "Roles",
+                    "item": [
+                        {
+                            "name": "List",
+                            "request": {
+                                "method": "POST",
+                                "url": "{{base_url}}/master/roles/list"
+                            }
+                        },
+                        {
+                            "name": "Store",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"name\": \"Admin\"}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/roles/store"
+                            }
+                        },
+                        {
+                            "name": "Show",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"id\": 1}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/roles/show"
+                            }
+                        },
+                        {
+                            "name": "Update",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"id\": 1, \"name\": \"Super Admin\"}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/roles/update"
+                            }
+                        },
+                        {
+                            "name": "Delete",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"id\": 1}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/roles/delete"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Permissions",
+                    "item": [
+                        {
+                            "name": "List",
+                            "request": {
+                                "method": "POST",
+                                "url": "{{base_url}}/master/permissions/list"
+                            }
+                        },
+                        {
+                            "name": "Store",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"name\": \"view_users\"}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/permissions/store"
+                            }
+                        },
+                        {
+                            "name": "Show",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"id\": 1}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/permissions/show"
+                            }
+                        },
+                        {
+                            "name": "Update",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"id\": 1, \"name\": \"edit_users\"}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/permissions/update"
+                            }
+                        },
+                        {
+                            "name": "Delete",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"id\": 1}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/permissions/delete"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Listing Types",
+                    "item": [
+                        {
+                            "name": "List",
+                            "request": {
+                                "method": "POST",
+                                "url": "{{base_url}}/master/listing-types/list"
+                            }
+                        },
+                        {
+                            "name": "Store",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"name\": \"Sell\"}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/listing-types/store"
+                            }
+                        },
+                        {
+                            "name": "Show",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"id\": 1}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/listing-types/show"
+                            }
+                        },
+                        {
+                            "name": "Update",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"id\": 1, \"name\": \"Rent\"}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/listing-types/update"
+                            }
+                        },
+                        {
+                            "name": "Delete",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"id\": 1}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/listing-types/delete"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Property Types",
+                    "item": [
+                        {
+                            "name": "List",
+                            "request": {
+                                "method": "POST",
+                                "url": "{{base_url}}/master/property-types/list"
+                            }
+                        },
+                        {
+                            "name": "Store",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"name\": \"Apartment\"}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/property-types/store"
+                            }
+                        },
+                        {
+                            "name": "Show",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"id\": 1}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/property-types/show"
+                            }
+                        },
+                        {
+                            "name": "Update",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"id\": 1, \"name\": \"Villa\"}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/property-types/update"
+                            }
+                        },
+                        {
+                            "name": "Delete",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"id\": 1}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/property-types/delete"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Geography",
                     "item": [
                         {
                             "name": "Countries",
@@ -163,23 +420,39 @@
                                     "name": "List",
                                     "request": {
                                         "method": "POST",
-                                        "url": "{{base_url}}/admin/countries/list"
+                                        "url": "{{base_url}}/master/countries/list"
                                     }
                                 },
                                 {
-                                    "name": "Create",
+                                    "name": "Store",
                                     "request": {
                                         "method": "POST",
                                         "body": {
                                             "mode": "raw",
-                                            "raw": "{\n  \"name\": \"India\",\n  \"short_name\": \"IN\"\n}",
+                                            "raw": "{\"name\": \"India\", \"short_name\": \"IN\"}",
                                             "options": {
                                                 "raw": {
                                                     "language": "json"
                                                 }
                                             }
                                         },
-                                        "url": "{{base_url}}/admin/countries/create"
+                                        "url": "{{base_url}}/master/countries/store"
+                                    }
+                                },
+                                {
+                                    "name": "Show",
+                                    "request": {
+                                        "method": "POST",
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\"id\": 1}",
+                                            "options": {
+                                                "raw": {
+                                                    "language": "json"
+                                                }
+                                            }
+                                        },
+                                        "url": "{{base_url}}/master/countries/show"
                                     }
                                 },
                                 {
@@ -188,14 +461,14 @@
                                         "method": "POST",
                                         "body": {
                                             "mode": "raw",
-                                            "raw": "{\n  \"id\": 1,\n  \"name\": \"Updated India\"\n}",
+                                            "raw": "{\"id\": 1, \"name\": \"New India\"}",
                                             "options": {
                                                 "raw": {
                                                     "language": "json"
                                                 }
                                             }
                                         },
-                                        "url": "{{base_url}}/admin/countries/update"
+                                        "url": "{{base_url}}/master/countries/update"
                                     }
                                 },
                                 {
@@ -204,169 +477,171 @@
                                         "method": "POST",
                                         "body": {
                                             "mode": "raw",
-                                            "raw": "{\n  \"id\": 1\n}",
+                                            "raw": "{\"id\": 1}",
                                             "options": {
                                                 "raw": {
                                                     "language": "json"
                                                 }
                                             }
                                         },
-                                        "url": "{{base_url}}/admin/countries/delete"
+                                        "url": "{{base_url}}/master/countries/delete"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "States",
+                            "item": [
+                                {
+                                    "name": "List",
+                                    "request": {
+                                        "method": "POST",
+                                        "url": "{{base_url}}/master/states/list"
+                                    }
+                                },
+                                {
+                                    "name": "Store",
+                                    "request": {
+                                        "method": "POST",
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\"name\": \"Maharashtra\", \"country_id\": 1}",
+                                            "options": {
+                                                "raw": {
+                                                    "language": "json"
+                                                }
+                                            }
+                                        },
+                                        "url": "{{base_url}}/master/states/store"
+                                    }
+                                },
+                                {
+                                    "name": "Show",
+                                    "request": {
+                                        "method": "POST",
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\"id\": 1}",
+                                            "options": {
+                                                "raw": {
+                                                    "language": "json"
+                                                }
+                                            }
+                                        },
+                                        "url": "{{base_url}}/master/states/show"
+                                    }
+                                },
+                                {
+                                    "name": "Update",
+                                    "request": {
+                                        "method": "POST",
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\"id\": 1, \"name\": \"UP\"}",
+                                            "options": {
+                                                "raw": {
+                                                    "language": "json"
+                                                }
+                                            }
+                                        },
+                                        "url": "{{base_url}}/master/states/update"
+                                    }
+                                },
+                                {
+                                    "name": "Delete",
+                                    "request": {
+                                        "method": "POST",
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\"id\": 1}",
+                                            "options": {
+                                                "raw": {
+                                                    "language": "json"
+                                                }
+                                            }
+                                        },
+                                        "url": "{{base_url}}/master/states/delete"
                                     }
                                 }
                             ]
                         }
                     ]
-                }
-            ]
-        },
-        {
-            "name": "Merchant",
-            "item": [
+                },
                 {
-                    "name": "Login",
-                    "request": {
-                        "method": "POST",
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"identifier\": \"merchant@example.com\",\n  \"password\": \"password123\"\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
+                    "name": "Packages",
+                    "item": [
+                        {
+                            "name": "List",
+                            "request": {
+                                "method": "POST",
+                                "url": "{{base_url}}/master/packages/list"
                             }
                         },
-                        "url": "{{base_url}}/merchant/login"
-                    }
-                },
-                {
-                    "name": "Send OTP",
-                    "request": {
-                        "method": "POST",
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"identifier\": \"merchant@example.com\"\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
+                        {
+                            "name": "Store",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"Basic\",\n  \"price\": 999.00,\n  \"duration_days\": 30,\n  \"listing_limit\": 5,\n  \"featured_limit\": 1\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/packages/store"
                             }
                         },
-                        "url": "{{base_url}}/merchant/send-otp"
-                    }
-                },
-                {
-                    "name": "Login with OTP",
-                    "request": {
-                        "method": "POST",
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"identifier\": \"merchant@example.com\",\n  \"otp\": \"123456\"\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
+                        {
+                            "name": "Show",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"id\": 1}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/packages/show"
                             }
                         },
-                        "url": "{{base_url}}/merchant/login-otp"
-                    }
-                },
-                {
-                    "name": "List",
-                    "request": {
-                        "method": "POST",
-                        "url": "{{base_url}}/merchant/list"
-                    }
-                },
-                {
-                    "name": "Logout",
-                    "request": {
-                        "method": "POST",
-                        "url": "{{base_url}}/merchant/logout"
-                    }
-                }
-            ]
-        },
-        {
-            "name": "User",
-            "item": [
-                {
-                    "name": "Login",
-                    "request": {
-                        "method": "POST",
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"identifier\": \"user@example.com\",\n  \"password\": \"password123\"\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
+                        {
+                            "name": "Update",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"id\": 1, \"price\": 1099.00}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/packages/update"
                             }
                         },
-                        "url": "{{base_url}}/user/login"
-                    }
-                },
-                {
-                    "name": "Send OTP",
-                    "request": {
-                        "method": "POST",
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"identifier\": \"user@example.com\"\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
+                        {
+                            "name": "Delete",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"id\": 1}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/packages/delete"
                             }
-                        },
-                        "url": "{{base_url}}/user/send-otp"
-                    }
-                },
-                {
-                    "name": "Login with OTP",
-                    "request": {
-                        "method": "POST",
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"identifier\": \"user@example.com\",\n  \"otp\": \"123456\"\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": "{{base_url}}/user/login-otp"
-                    }
-                },
-                {
-                    "name": "List",
-                    "request": {
-                        "method": "POST",
-                        "url": "{{base_url}}/user/list"
-                    }
-                },
-                {
-                    "name": "Create",
-                    "request": {
-                        "method": "POST",
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"name\": \"New User\",\n  \"email\": \"new@example.com\",\n  \"password\": \"password123\"\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": "{{base_url}}/user/create"
-                    }
-                },
-                {
-                    "name": "Logout",
-                    "request": {
-                        "method": "POST",
-                        "url": "{{base_url}}/user/logout"
-                    }
+                        }
+                    ]
                 }
             ]
         }

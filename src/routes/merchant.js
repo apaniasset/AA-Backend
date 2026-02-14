@@ -1,6 +1,5 @@
-import { Router } from 'express';
-import { AuthController as Auth } from '../controllers/merchant/AuthController.js';
-import { MerchantController as Merchant } from '../controllers/merchant/MerchantController.js';
+import { UserController as Merchant } from '../controllers/UserController.js';
+import { validate, userSchema } from '../validators/userValidator.js';
 
 const router = Router();
 
@@ -15,19 +14,11 @@ const addGroupHelper = (r) => {
 };
 addGroupHelper(router);
 
-// Auth
-router.post('/login', Auth.login);
-router.post('/logout', Auth.logout);
-router.post('/forgot-password', Auth.forgotPassword);
-router.post('/reset-password', Auth.resetPassword);
-router.post('/send-otp', Auth.sendLoginOTP);
-router.post('/login-otp', Auth.loginWithOTP);
-
 // Management
 router.post('/list', Merchant.index);
-router.post('/create', Merchant.store);
+router.post('/create', validate(userSchema), Merchant.store);
 router.post('/show', Merchant.show);
-router.post('/update', Merchant.update);
+router.post('/update', validate(userSchema), Merchant.update);
 router.post('/delete', Merchant.destroy);
 
 export default router;
