@@ -13,7 +13,8 @@ export class PermissionController {
 
     static async store(req, res) {
         try {
-            const id = await PermissionModel.create(req.validatedBody);
+            const { name, is_active } = req.validatedBody;
+            const id = await PermissionModel.create({ name, is_active });
             return successResponse(res, 'Permission created', { id }, 201);
         } catch (e) {
             return errorResponse(res, e.message);
@@ -32,8 +33,8 @@ export class PermissionController {
 
     static async update(req, res) {
         try {
-            const { id, ...data } = req.validatedBody;
-            await PermissionModel.update(id, data);
+            const { id, name, is_active } = req.validatedBody;
+            await PermissionModel.update(id, { name, is_active });
             return successResponse(res, 'Permission updated');
         } catch (e) {
             return errorResponse(res, e.message);

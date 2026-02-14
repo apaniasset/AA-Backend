@@ -13,7 +13,8 @@ export class StateController {
 
     static async store(req, res) {
         try {
-            const id = await StateModel.create(req.body);
+            const { name, country_id, is_active } = req.body;
+            const id = await StateModel.create({ name, country_id, is_active });
             return successResponse(res, 'State created', { id }, 201);
         } catch (e) {
             return errorResponse(res, e.message);
@@ -32,8 +33,8 @@ export class StateController {
 
     static async update(req, res) {
         try {
-            const { id, ...data } = req.body;
-            await StateModel.update(id, data);
+            const { id, name, country_id, is_active } = req.body;
+            await StateModel.update(id, { name, country_id, is_active });
             return successResponse(res, 'State updated');
         } catch (e) {
             return errorResponse(res, e.message);

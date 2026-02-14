@@ -13,7 +13,8 @@ export class RoleController {
 
     static async store(req, res) {
         try {
-            const id = await RoleModel.create(req.validatedBody);
+            const { name, is_active } = req.validatedBody;
+            const id = await RoleModel.create({ name, is_active });
             return successResponse(res, 'Role created', { id }, 201);
         } catch (e) {
             return errorResponse(res, e.message);
@@ -32,8 +33,8 @@ export class RoleController {
 
     static async update(req, res) {
         try {
-            const { id, ...data } = req.validatedBody;
-            await RoleModel.update(id, data);
+            const { id, name, is_active } = req.validatedBody;
+            await RoleModel.update(id, { name, is_active });
             return successResponse(res, 'Role updated');
         } catch (e) {
             return errorResponse(res, e.message);

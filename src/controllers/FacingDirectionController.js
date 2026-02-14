@@ -13,7 +13,8 @@ export class FacingDirectionController {
 
     static async store(req, res) {
         try {
-            const id = await FacingDirectionModel.create(req.validatedBody);
+            const { name, is_active } = req.validatedBody;
+            const id = await FacingDirectionModel.create({ name, is_active });
             return successResponse(res, 'Facing direction created', { id }, 201);
         } catch (e) {
             return errorResponse(res, e.message);
@@ -32,8 +33,8 @@ export class FacingDirectionController {
 
     static async update(req, res) {
         try {
-            const { id, ...data } = req.validatedBody;
-            await FacingDirectionModel.update(id, data);
+            const { id, name, is_active } = req.validatedBody;
+            await FacingDirectionModel.update(id, { name, is_active });
             return successResponse(res, 'Facing direction updated');
         } catch (e) {
             return errorResponse(res, e.message);

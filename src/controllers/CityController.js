@@ -13,7 +13,8 @@ export class CityController {
 
     static async store(req, res) {
         try {
-            const id = await CityModel.create(req.body);
+            const { name, state_id, is_active } = req.body;
+            const id = await CityModel.create({ name, state_id, is_active });
             return successResponse(res, 'City created', { id }, 201);
         } catch (e) {
             return errorResponse(res, e.message);
@@ -32,8 +33,8 @@ export class CityController {
 
     static async update(req, res) {
         try {
-            const { id, ...data } = req.body;
-            await CityModel.update(id, data);
+            const { id, name, state_id, is_active } = req.body;
+            await CityModel.update(id, { name, state_id, is_active });
             return successResponse(res, 'City updated');
         } catch (e) {
             return errorResponse(res, e.message);

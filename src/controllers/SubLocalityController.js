@@ -13,7 +13,8 @@ export class SubLocalityController {
 
     static async store(req, res) {
         try {
-            const id = await SubLocalityModel.create(req.body);
+            const { name, locality_id, is_active } = req.body;
+            const id = await SubLocalityModel.create({ name, locality_id, is_active });
             return successResponse(res, 'Sub-locality created', { id }, 201);
         } catch (e) {
             return errorResponse(res, e.message);
@@ -32,8 +33,8 @@ export class SubLocalityController {
 
     static async update(req, res) {
         try {
-            const { id, ...data } = req.body;
-            await SubLocalityModel.update(id, data);
+            const { id, name, locality_id, is_active } = req.body;
+            await SubLocalityModel.update(id, { name, locality_id, is_active });
             return successResponse(res, 'Sub-locality updated');
         } catch (e) {
             return errorResponse(res, e.message);

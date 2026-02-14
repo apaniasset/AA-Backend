@@ -13,7 +13,8 @@ export class LocalityController {
 
     static async store(req, res) {
         try {
-            const id = await LocalityModel.create(req.body);
+            const { name, city_id, is_active } = req.body;
+            const id = await LocalityModel.create({ name, city_id, is_active });
             return successResponse(res, 'Locality created', { id }, 201);
         } catch (e) {
             return errorResponse(res, e.message);
@@ -32,8 +33,8 @@ export class LocalityController {
 
     static async update(req, res) {
         try {
-            const { id, ...data } = req.body;
-            await LocalityModel.update(id, data);
+            const { id, name, city_id, is_active } = req.body;
+            await LocalityModel.update(id, { name, city_id, is_active });
             return successResponse(res, 'Locality updated');
         } catch (e) {
             return errorResponse(res, e.message);

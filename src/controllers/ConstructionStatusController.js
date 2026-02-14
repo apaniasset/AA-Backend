@@ -13,7 +13,8 @@ export class ConstructionStatusController {
 
     static async store(req, res) {
         try {
-            const id = await ConstructionStatusModel.create(req.validatedBody);
+            const { name, is_active } = req.validatedBody;
+            const id = await ConstructionStatusModel.create({ name, is_active });
             return successResponse(res, 'Construction status created', { id }, 201);
         } catch (e) {
             return errorResponse(res, e.message);
@@ -32,8 +33,8 @@ export class ConstructionStatusController {
 
     static async update(req, res) {
         try {
-            const { id, ...data } = req.validatedBody;
-            await ConstructionStatusModel.update(id, data);
+            const { id, name, is_active } = req.validatedBody;
+            await ConstructionStatusModel.update(id, { name, is_active });
             return successResponse(res, 'Construction status updated');
         } catch (e) {
             return errorResponse(res, e.message);

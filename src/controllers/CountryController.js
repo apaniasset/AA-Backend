@@ -13,7 +13,8 @@ export class CountryController {
 
     static async store(req, res) {
         try {
-            const id = await CountryModel.create(req.body);
+            const { name, short_name, is_active } = req.body;
+            const id = await CountryModel.create({ name, short_name, is_active });
             return successResponse(res, 'Country created', { id }, 201);
         } catch (e) {
             return errorResponse(res, e.message);
@@ -32,8 +33,8 @@ export class CountryController {
 
     static async update(req, res) {
         try {
-            const { id, ...data } = req.body;
-            await CountryModel.update(id, data);
+            const { id, name, short_name, is_active } = req.body;
+            await CountryModel.update(id, { name, short_name, is_active });
             return successResponse(res, 'Country updated');
         } catch (e) {
             return errorResponse(res, e.message);

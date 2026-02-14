@@ -13,7 +13,8 @@ export class FurnishingStatusController {
 
     static async store(req, res) {
         try {
-            const id = await FurnishingStatusModel.create(req.validatedBody);
+            const { name, is_active } = req.validatedBody;
+            const id = await FurnishingStatusModel.create({ name, is_active });
             return successResponse(res, 'Furnishing status created', { id }, 201);
         } catch (e) {
             return errorResponse(res, e.message);
@@ -32,8 +33,8 @@ export class FurnishingStatusController {
 
     static async update(req, res) {
         try {
-            const { id, ...data } = req.validatedBody;
-            await FurnishingStatusModel.update(id, data);
+            const { id, name, is_active } = req.validatedBody;
+            await FurnishingStatusModel.update(id, { name, is_active });
             return successResponse(res, 'Furnishing status updated');
         } catch (e) {
             return errorResponse(res, e.message);

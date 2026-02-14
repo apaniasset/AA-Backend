@@ -13,7 +13,8 @@ export class PackageController {
 
     static async store(req, res) {
         try {
-            const id = await PackageModel.create(req.validatedBody);
+            const { name, price, duration_days, listing_limit, featured_limit, is_active } = req.validatedBody;
+            const id = await PackageModel.create({ name, price, duration_days, listing_limit, featured_limit, is_active });
             return successResponse(res, 'Package created', { id }, 201);
         } catch (e) {
             return errorResponse(res, e.message);
@@ -32,8 +33,8 @@ export class PackageController {
 
     static async update(req, res) {
         try {
-            const { id, ...data } = req.validatedBody;
-            await PackageModel.update(id, data);
+            const { id, name, price, duration_days, listing_limit, featured_limit, is_active } = req.validatedBody;
+            await PackageModel.update(id, { name, price, duration_days, listing_limit, featured_limit, is_active });
             return successResponse(res, 'Package updated');
         } catch (e) {
             return errorResponse(res, e.message);
