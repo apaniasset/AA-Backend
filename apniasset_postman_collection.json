@@ -411,6 +411,310 @@
                     ]
                 },
                 {
+                    "name": "BHK Types",
+                    "item": [
+                        {
+                            "name": "List",
+                            "request": {
+                                "method": "POST",
+                                "url": "{{base_url}}/master/bhk-types/list"
+                            }
+                        },
+                        {
+                            "name": "Store",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"name\": \"2 BHK\"}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/bhk-types/store"
+                            }
+                        },
+                        {
+                            "name": "Show",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"id\": 1}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/bhk-types/show"
+                            }
+                        },
+                        {
+                            "name": "Update",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"id\": 1, \"name\": \"3 BHK\"}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/bhk-types/update"
+                            }
+                        },
+                        {
+                            "name": "Delete",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"id\": 1}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/bhk-types/delete"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Furnishing Statuses",
+                    "item": [
+                        {
+                            "name": "List",
+                            "request": {
+                                "method": "POST",
+                                "url": "{{base_url}}/master/furnishing-statuses/list"
+                            }
+                        },
+                        {
+                            "name": "Store",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"name\": \"Furnished\"}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/furnishing-statuses/store"
+                            }
+                        },
+                        {
+                            "name": "Show",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"id\": 1}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/furnishing-statuses/show"
+                            }
+                        },
+                        {
+                            "name": "Update",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"id\": 1, \"name\": \"Unfurnished\"}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/furnishing-statuses/update"
+                            }
+                        },
+                        {
+                            "name": "Delete",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"id\": 1}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/furnishing-statuses/delete"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Facing Directions",
+                    "item": [
+                        {
+                            "name": "List",
+                            "request": {
+                                "method": "POST",
+                                "url": "{{base_url}}/master/facing-directions/list"
+                            }
+                        },
+                        {
+                            "name": "Store",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"name\": \"East\"}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/facing-directions/store"
+                            }
+                        },
+                        {
+                            "name": "Show",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"id\": 1}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/facing-directions/show"
+                            }
+                        },
+                        {
+                            "name": "Update",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"id\": 1, \"name\": \"North\"}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/facing-directions/update"
+                            }
+                        },
+                        {
+                            "name": "Delete",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"id\": 1}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/facing-directions/delete"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Construction Statuses",
+                    "item": [
+                        {
+                            "name": "List",
+                            "request": {
+                                "method": "POST",
+                                "url": "{{base_url}}/master/construction-statuses/list"
+                            }
+                        },
+                        {
+                            "name": "Store",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"name\": \"Under Construction\"}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/construction-statuses/store"
+                            }
+                        },
+                        {
+                            "name": "Show",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"id\": 1}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/construction-statuses/show"
+                            }
+                        },
+                        {
+                            "name": "Update",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"id\": 1, \"name\": \"Ready to Move\"}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/construction-statuses/update"
+                            }
+                        },
+                        {
+                            "name": "Delete",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"id\": 1}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/master/construction-statuses/delete"
+                            }
+                        }
+                    ]
+                },
+                {
                     "name": "Geography",
                     "item": [
                         {
@@ -561,6 +865,216 @@
                                             }
                                         },
                                         "url": "{{base_url}}/master/states/delete"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Cities",
+                            "item": [
+                                {
+                                    "name": "List",
+                                    "request": {
+                                        "method": "POST",
+                                        "url": "{{base_url}}/master/cities/list"
+                                    }
+                                },
+                                {
+                                    "name": "Store",
+                                    "request": {
+                                        "method": "POST",
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\"name\": \"Mumbai\", \"state_id\": 1}",
+                                            "options": {
+                                                "raw": {
+                                                    "language": "json"
+                                                }
+                                            }
+                                        },
+                                        "url": "{{base_url}}/master/cities/store"
+                                    }
+                                },
+                                {
+                                    "name": "Show",
+                                    "request": {
+                                        "method": "POST",
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\"id\": 1}",
+                                            "options": {
+                                                "raw": {
+                                                    "language": "json"
+                                                }
+                                            }
+                                        },
+                                        "url": "{{base_url}}/master/cities/show"
+                                    }
+                                },
+                                {
+                                    "name": "Update",
+                                    "request": {
+                                        "method": "POST",
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\"id\": 1, \"name\": \"Pune\"}",
+                                            "options": {
+                                                "raw": {
+                                                    "language": "json"
+                                                }
+                                            }
+                                        },
+                                        "url": "{{base_url}}/master/cities/update"
+                                    }
+                                },
+                                {
+                                    "name": "Delete",
+                                    "request": {
+                                        "method": "POST",
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\"id\": 1}",
+                                            "options": {
+                                                "raw": {
+                                                    "language": "json"
+                                                }
+                                            }
+                                        },
+                                        "url": "{{base_url}}/master/cities/delete"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Localities",
+                            "item": [
+                                {
+                                    "name": "List",
+                                    "request": {
+                                        "method": "POST",
+                                        "url": "{{base_url}}/master/localities/list"
+                                    }
+                                },
+                                {
+                                    "name": "Store",
+                                    "request": {
+                                        "method": "POST",
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\"name\": \"Andheri\", \"city_id\": 1}",
+                                            "options": {
+                                                "raw": {
+                                                    "language": "json"
+                                                }
+                                            }
+                                        },
+                                        "url": "{{base_url}}/master/localities/store"
+                                    }
+                                },
+                                {
+                                    "name": "Show",
+                                    "request": {
+                                        "method": "POST",
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\"id\": 1}",
+                                            "options": {
+                                                "raw": {
+                                                    "language": "json"
+                                                }
+                                            }
+                                        },
+                                        "url": "{{base_url}}/master/localities/show"
+                                    }
+                                },
+                                {
+                                    "name": "Update",
+                                    "request": {
+                                        "method": "POST",
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\"id\": 1, \"name\": \"Bandra\"}",
+                                            "options": {
+                                                "raw": {
+                                                    "language": "json"
+                                                }
+                                            }
+                                        },
+                                        "url": "{{base_url}}/master/localities/update"
+                                    }
+                                },
+                                {
+                                    "name": "Delete",
+                                    "request": {
+                                        "method": "POST",
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\"id\": 1}",
+                                            "options": {
+                                                "raw": {
+                                                    "language": "json"
+                                                }
+                                            }
+                                        },
+                                        "url": "{{base_url}}/master/localities/delete"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Sub Localities",
+                            "item": [
+                                {
+                                    "name": "List",
+                                    "request": {
+                                        "method": "POST",
+                                        "url": "{{base_url}}/master/sub-localities/list"
+                                    }
+                                },
+                                {
+                                    "name": "Store",
+                                    "request": {
+                                        "method": "POST",
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\"name\": \"Andheri West\", \"locality_id\": 1}",
+                                            "options": {
+                                                "raw": {
+                                                    "language": "json"
+                                                }
+                                            }
+                                        },
+                                        "url": "{{base_url}}/master/sub-localities/store"
+                                    }
+                                },
+                                {
+                                    "name": "Show",
+                                    "request": {
+                                        "method": "POST",
+                                        "body": {
+                                            "raw": "{\"id\": 1}"
+                                        },
+                                        "url": "{{base_url}}/master/sub-localities/show"
+                                    }
+                                },
+                                {
+                                    "name": "Update",
+                                    "request": {
+                                        "method": "POST",
+                                        "body": {
+                                            "raw": "{\"id\": 1, \"name\": \"Andheri East\"}"
+                                        },
+                                        "url": "{{base_url}}/master/sub-localities/update"
+                                    }
+                                },
+                                {
+                                    "name": "Delete",
+                                    "request": {
+                                        "method": "POST",
+                                        "body": {
+                                            "raw": "{\"id\": 1}"
+                                        },
+                                        "url": "{{base_url}}/master/sub-localities/delete"
                                     }
                                 }
                             ]
