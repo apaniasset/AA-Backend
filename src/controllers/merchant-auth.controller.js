@@ -32,7 +32,7 @@ export const register = async (req, res) => {
             return errorResponse(res, 'Mobile already registered', null, 400);
         }
 
-        let affiliateId = null;
+        let affiliateId = req.body.referred_by || null;
         if (referral_code) {
             const referrer = await AffiliateModel.findByReferralCode(referral_code);
             if (referrer) {
