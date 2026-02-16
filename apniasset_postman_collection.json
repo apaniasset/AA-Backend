@@ -1,7 +1,7 @@
 {
     "info": {
         "_postman_id": "d9909d94-dd30-49c9-aba6-d5117d9ee9e6",
-        "name": "ApniAsset API Collection",
+        "name": "ApniAsset API (Final with Properties)",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
     "item": [
@@ -12,236 +12,20 @@
                     "name": "Auth",
                     "item": [
                         {
-                            "name": "Admin Login",
+                            "name": "Login",
                             "request": {
                                 "method": "POST",
-                                "header": [],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n  \"identifier\": \"admin@example.com\",\n  \"password\": \"password123\"\n}",
+                                    "raw": "{\n    \"identifier\": \"admin@example.com\",\n    \"password\": \"password123\"\n}",
                                     "options": {
                                         "raw": {
                                             "language": "json"
                                         }
                                     }
                                 },
-                                "url": {
-                                    "raw": "{{base_url}}/admin/auth/login"
-                                }
+                                "url": "{{base_url}}/admin/login"
                             }
-                        },
-                        {
-                            "name": "Admin Logout",
-                            "request": {
-                                "method": "POST",
-                                "header": [],
-                                "url": {
-                                    "raw": "{{base_url}}/admin/auth/logout"
-                                }
-                            }
-                        },
-                        {
-                            "name": "Admin Forgot Password",
-                            "request": {
-                                "method": "POST",
-                                "header": [],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n  \"identifier\": \"admin@example.com\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": {
-                                    "raw": "{{base_url}}/admin/auth/forgot-password"
-                                }
-                            }
-                        },
-                        {
-                            "name": "Admin Reset Password",
-                            "request": {
-                                "method": "POST",
-                                "header": [],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n  \"identifier\": \"admin@example.com\",\n  \"otp\": \"123456\",\n  \"newPassword\": \"newpassword123\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": {
-                                    "raw": "{{base_url}}/admin/auth/reset-password"
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "Staff Management",
-                    "item": [
-                        {
-                            "name": "Add Admin",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n  \"name\": \"Admin User\",\n  \"email\": \"newadmin@example.com\",\n  \"password\": \"password123\",\n  \"phone\": \"1234567890\",\n  \"role\": \"staff\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": {
-                                    "raw": "{{base_url}}/admin"
-                                }
-                            }
-                        },
-                        {
-                            "name": "List Admins",
-                            "request": {
-                                "method": "GET",
-                                "url": {
-                                    "raw": "{{base_url}}/admin"
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "Location Management",
-                    "item": [
-                        {
-                            "name": "Countries",
-                            "item": [
-                                {
-                                    "name": "List Countries",
-                                    "request": {
-                                        "method": "GET",
-                                        "url": {
-                                            "raw": "{{base_url}}/admin/location/countries"
-                                        }
-                                    }
-                                },
-                                {
-                                    "name": "Add Country",
-                                    "request": {
-                                        "method": "POST",
-                                        "body": {
-                                            "mode": "raw",
-                                            "raw": "{\n  \"name\": \"India\",\n  \"short_name\": \"IN\",\n  \"country_code\": \"+91\"\n}",
-                                            "options": {
-                                                "raw": {
-                                                    "language": "json"
-                                                }
-                                            }
-                                        },
-                                        "url": {
-                                            "raw": "{{base_url}}/admin/location/countries"
-                                        }
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            "name": "States",
-                            "item": [
-                                {
-                                    "name": "List States",
-                                    "request": {
-                                        "method": "GET",
-                                        "url": {
-                                            "raw": "{{base_url}}/admin/location/states"
-                                        }
-                                    }
-                                },
-                                {
-                                    "name": "Add State",
-                                    "request": {
-                                        "method": "POST",
-                                        "body": {
-                                            "mode": "raw",
-                                            "raw": "{\n  \"state_name\": \"Maharashtra\",\n  \"country_id\": 1,\n  \"state_type\": \"State\"\n}",
-                                            "options": {
-                                                "raw": {
-                                                    "language": "json"
-                                                }
-                                            }
-                                        },
-                                        "url": {
-                                            "raw": "{{base_url}}/admin/location/states"
-                                        }
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            "name": "Cities",
-                            "item": [
-                                {
-                                    "name": "List Cities",
-                                    "request": {
-                                        "method": "GET",
-                                        "url": {
-                                            "raw": "{{base_url}}/admin/location/cities"
-                                        }
-                                    }
-                                },
-                                {
-                                    "name": "Add City",
-                                    "request": {
-                                        "method": "POST",
-                                        "body": {
-                                            "mode": "raw",
-                                            "raw": "{\n  \"city_name\": \"Mumbai\",\n  \"state_id\": 1\n}",
-                                            "options": {
-                                                "raw": {
-                                                    "language": "json"
-                                                }
-                                            }
-                                        },
-                                        "url": {
-                                            "raw": "{{base_url}}/admin/location/cities"
-                                        }
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            "name": "Areas",
-                            "item": [
-                                {
-                                    "name": "List Areas",
-                                    "request": {
-                                        "method": "GET",
-                                        "url": {
-                                            "raw": "{{base_url}}/admin/location/areas"
-                                        }
-                                    }
-                                },
-                                {
-                                    "name": "Add Area",
-                                    "request": {
-                                        "method": "POST",
-                                        "body": {
-                                            "mode": "raw",
-                                            "raw": "{\n  \"area_name\": \"Andheri\",\n  \"city_id\": 1,\n  \"pincode\": \"400053\"\n}",
-                                            "options": {
-                                                "raw": {
-                                                    "language": "json"
-                                                }
-                                            }
-                                        },
-                                        "url": {
-                                            "raw": "{{base_url}}/admin/location/areas"
-                                        }
-                                    }
-                                }
-                            ]
                         }
                     ]
                 }
@@ -254,53 +38,35 @@
                     "name": "Auth",
                     "item": [
                         {
-                            "name": "Merchant Login",
+                            "name": "Register",
                             "request": {
                                 "method": "POST",
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n  \"identifier\": \"merchant@example.com\",\n  \"password\": \"password123\"\n}",
+                                    "raw": "{\n    \"name\": \"Final Merchant\",\n    \"phone\": \"9000011111\",\n    \"email\": \"final@example.com\",\n    \"company_name\": \"Final Biz\",\n    \"password\": \"password123\",\n    \"confirm_password\": \"password123\",\n    \"referral_code\": \"OPTIONAL\"\n}",
                                     "options": {
                                         "raw": {
                                             "language": "json"
                                         }
                                     }
                                 },
-                                "url": {
-                                    "raw": "{{base_url}}/merchant/auth/login"
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "Management",
-                    "item": [
-                        {
-                            "name": "Add Merchant",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@merchant.com\",\n  \"password\": \"password123\",\n  \"phone\": \"9876543210\",\n  \"merchant_type\": \"broker\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": {
-                                    "raw": "{{base_url}}/merchant"
-                                }
+                                "url": "{{base_url}}/merchant/register"
                             }
                         },
                         {
-                            "name": "List Merchants",
+                            "name": "Login",
                             "request": {
-                                "method": "GET",
-                                "url": {
-                                    "raw": "{{base_url}}/merchant"
-                                }
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"identifier\": \"9000011111\",\n    \"password\": \"password123\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/merchant/login"
                             }
                         }
                     ]
@@ -314,53 +80,19 @@
                     "name": "Auth",
                     "item": [
                         {
-                            "name": "Affiliate Login",
+                            "name": "Register",
                             "request": {
                                 "method": "POST",
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n  \"identifier\": \"affiliate@example.com\",\n  \"password\": \"password123\"\n}",
+                                    "raw": "{\n    \"name\": \"Final Affiliate\",\n    \"phone\": \"8000011111\",\n    \"email\": \"aff@example.com\",\n    \"password\": \"password123\",\n    \"confirm_password\": \"password123\",\n    \"referral_code\": \"OPTIONAL\"\n}",
                                     "options": {
                                         "raw": {
                                             "language": "json"
                                         }
                                     }
                                 },
-                                "url": {
-                                    "raw": "{{base_url}}/affiliate/auth/login"
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "Management",
-                    "item": [
-                        {
-                            "name": "Add Affiliate",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n  \"name\": \"Jane Smith\",\n  \"email\": \"jane@aff.com\",\n  \"password\": \"password123\",\n  \"phone\": \"1122334455\",\n  \"referral_code\": \"JANE001\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": {
-                                    "raw": "{{base_url}}/affiliate"
-                                }
-                            }
-                        },
-                        {
-                            "name": "List Affiliates",
-                            "request": {
-                                "method": "GET",
-                                "url": {
-                                    "raw": "{{base_url}}/affiliate"
-                                }
+                                "url": "{{base_url}}/affiliate/register"
                             }
                         }
                     ]
@@ -368,62 +100,103 @@
             ]
         },
         {
-            "name": "User",
+            "name": "Properties",
             "item": [
                 {
-                    "name": "Auth",
-                    "item": [
-                        {
-                            "name": "User Login",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n  \"identifier\": \"user@example.com\",\n  \"password\": \"password123\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": {
-                                    "raw": "{{base_url}}/user/auth/login"
-                                }
-                            }
-                        }
-                    ]
+                    "name": "List",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{base_url}}/properties"
+                    }
                 },
                 {
-                    "name": "Management",
-                    "item": [
-                        {
-                            "name": "Add User",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n  \"name\": \"Reg User\",\n  \"email\": \"reg@user.com\",\n  \"password\": \"password123\",\n  \"mobile\": \"9988776655\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": {
-                                    "raw": "{{base_url}}/user"
+                    "name": "Show",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{base_url}}/properties/1"
+                    }
+                },
+                {
+                    "name": "Create",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"title\": \"Luxury Apartment\",\n    \"description\": \"Beautiful 3BHK in City Center\",\n    \"price\": 7500000,\n    \"address\": \"Main St, 123\",\n    \"city_id\": 1\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
                                 }
                             }
                         },
-                        {
-                            "name": "List Users",
-                            "request": {
-                                "method": "GET",
-                                "url": {
-                                    "raw": "{{base_url}}/user"
+                        "url": "{{base_url}}/properties"
+                    }
+                },
+                {
+                    "name": "Update",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"price\": 8000000\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
                                 }
                             }
-                        }
-                    ]
+                        },
+                        "url": "{{base_url}}/properties/1"
+                    }
+                },
+                {
+                    "name": "Delete",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/properties/1"
+                    }
+                },
+                {
+                    "name": "My Properties (Merchant)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/merchant/properties"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Inquiries",
+            "item": [
+                {
+                    "name": "List",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{base_url}}/inquiries"
+                    }
                 }
             ]
         }
@@ -431,7 +204,11 @@
     "variable": [
         {
             "key": "base_url",
-            "value": "http://localhost:3000/api"
+            "value": "https://nodeapi.apaniasset.in/api"
+        },
+        {
+            "key": "token",
+            "value": "YOUR_JWT_HERE"
         }
     ]
 }

@@ -2,35 +2,32 @@
   "name": "apniasset_backend",
   "version": "1.0.0",
   "description": "Professional Backend for ApniAsset",
-  "main": "dist/index.js",
+  "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
-    "build": "tsc",
-    "start": "node dist/index.js",
-    "lint": "eslint .",
-    "format": "prettier --write ."
+    "dev": "node --watch src/index.js",
+    "start": "node src/index.js",
+    "build": "echo 'No build step required for this project'"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/bcryptjs": "^2.4.6",
-    "@types/express": "^5.0.0",
-    "@types/jsonwebtoken": "^9.0.10",
-    "@types/node": "^20.10.0",
     "eslint": "^9.0.0",
-    "prettier": "^3.0.0",
-    "tsx": "^4.0.0",
-    "typescript": "^5.0.0"
+    "prettier": "^3.0.0"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
     "cross-env": "^10.1.0",
     "dotenv": "^16.0.0",
     "express": "^4.18.0",
+    "joi": "^18.0.2",
     "jsonwebtoken": "^9.0.3",
+    "knex": "^3.1.0",
     "libphonenumber-js": "^1.12.36",
-    "mysql2": "^3.6.0"
+    "lodash": "^4.17.23",
+    "mysql2": "^3.17.1",
+    "nodemailer": "^8.0.1"
   }
 }
