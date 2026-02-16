@@ -24,16 +24,20 @@ class Logger {
     static log(level, message) {
         const now = new Date();
         const timestamp = now.toISOString();
-        const date = now.toISOString().split('T')[0]; // YYYY-MM-DD
+        const date = now.toISOString().split('T')[0];
 
-        // Use a daily filename like in Laravel: app-2024-02-13.log
         const fileName = `app-${date}.log`;
-        const logMessage = `[${timestamp}] ${level}: ${message}\n`;
 
-        // Print to console (terminal)
+        // Handle object messages (like Errors)
+        let formattedMessage = message;
+        if (typeof message === 'object') {
+            formattedMessage = message.stack || JSON.stringify(message);
+        }
+
+        const logMessage = `[${timestamp}] ${level}: ${formattedMessage}\n`;
+
         console.log(logMessage.trim());
 
-        // Write to a daily file
         try {
             fs.appendFileSync(path.join(LOG_DIR, fileName), logMessage);
         } catch (err) {

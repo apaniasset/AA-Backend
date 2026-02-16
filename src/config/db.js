@@ -1,8 +1,10 @@
 import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
 
-// Load .env variables
-dotenv.config();
+import path from 'path';
+
+// Load .env variables from project root
+dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 
 /**
  * Database Connection Pool

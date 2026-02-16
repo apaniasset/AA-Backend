@@ -2,6 +2,7 @@
  * Standardized API Response Utility
  * Inspired by the reference project to ensure consistency across the API.
  */
+import Logger from './Logger.js';
 export const successResponse = (res, message, data = null, statusCode = 200) => {
     const result = {
         success: true,
@@ -21,8 +22,12 @@ export const successPaginatedResponse = (res, message, result, statusCode = 200)
 };
 
 export const errorResponse = (res, message, error = null, statusCode = 400) => {
-    // Log the error for internal tracking (optional but recommended)
-    if (error) console.error(`[API Error] ${message}:`, error);
+    // Log the error for internal tracking (using the custom Logger)
+    if (error) {
+        Logger.error(`${message}: ${error.stack || error.message || error}`);
+    } else {
+        Logger.error(`API Error: ${message}`);
+    }
 
     const result = {
         success: false,

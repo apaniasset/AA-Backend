@@ -6,8 +6,10 @@ import routes from './routes/index.routes.js';
 import Logger from './utils/Logger.js';
 import Mail from './utils/Mail.js';
 
-// Load environment variables
-dotenv.config();
+import path from 'path';
+
+// Load environment variables immediately
+dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 
 const app = express();
 const port = process.env.PORT || 1700;
