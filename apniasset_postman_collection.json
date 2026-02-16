@@ -1,59 +1,215 @@
 {
     "info": {
         "_postman_id": "d9909d94-dd30-49c9-aba6-d5117d9ee9e6",
-        "name": "ApniAsset Master API Collection",
+        "name": "ApniAsset API (Complete)",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
     "item": [
         {
-            "name": "Auth",
+            "name": "Admin",
             "item": [
                 {
-                    "name": "Login",
-                    "request": {
-                        "method": "POST",
-                        "header": [],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"identifier\": \"admin@example.com\",\n  \"password\": \"password123\"\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
+                    "name": "Auth",
+                    "item": [
+                        {
+                            "name": "Login",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"identifier\": \"admin@example.com\",\n    \"password\": \"password123\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/admin/login"
                             }
                         },
-                        "url": "{{base_url}}/auth/login"
-                    }
+                        {
+                            "name": "Logout",
+                            "request": {
+                                "method": "POST",
+                                "url": "{{base_url}}/admin/logout"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Users",
+                    "item": [
+                        {
+                            "name": "List",
+                            "request": {
+                                "method": "POST",
+                                "url": "{{base_url}}/admin/users/list"
+                            }
+                        },
+                        {
+                            "name": "Create",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"name\": \"Staff Name\",\n    \"email\": \"staff@example.com\",\n    \"phone\": \"9988776655\",\n    \"password\": \"password123\",\n    \"role\": \"staff\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/admin/users/create"
+                            }
+                        },
+                        {
+                            "name": "Show",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"id\": 1\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/admin/users/show"
+                            }
+                        },
+                        {
+                            "name": "Update",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"id\": 1,\n    \"name\": \"Updated Name\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/admin/users/update"
+                            }
+                        },
+                        {
+                            "name": "Delete",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"id\": 1\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/admin/users/delete"
+                            }
+                        }
+                    ]
                 }
             ]
         },
         {
-            "name": "Master Data",
+            "name": "Merchant",
             "item": [
                 {
-                    "name": "Statuses",
+                    "name": "Auth",
                     "item": [
                         {
-                            "name": "List",
-                            "request": {
-                                "method": "POST",
-                                "url": "{{base_url}}/master/statuses/list"
-                            }
-                        },
-                        {
-                            "name": "Store",
+                            "name": "1. Send Registration OTP",
                             "request": {
                                 "method": "POST",
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"name\": \"Active\"}",
+                                    "raw": "{\n    \"phone\": \"9999900000\"\n}",
                                     "options": {
                                         "raw": {
                                             "language": "json"
                                         }
                                     }
                                 },
-                                "url": "{{base_url}}/master/statuses/store"
+                                "url": "{{base_url}}/merchant/register"
+                            }
+                        },
+                        {
+                            "name": "2. Complete Profile",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"phone\": \"9999900000\",\n    \"otp\": \"123456\",\n    \"name\": \"New Merchant\",\n    \"email\": \"merchant@example.com\",\n    \"company_name\": \"My Business\",\n    \"password\": \"password123\",\n    \"confirm_password\": \"password123\",\n    \"referral_code\": \"OPTIONAL\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/merchant/register-complete"
+                            }
+                        },
+                        {
+                            "name": "Login",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"identifier\": \"merchant@example.com\",\n    \"password\": \"password123\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/merchant/login"
+                            }
+                        },
+                        {
+                            "name": "Forgot Password",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"identifier\": \"9999900000\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/merchant/forgot-password"
+                            }
+                        },
+                        {
+                            "name": "Reset Password",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"identifier\": \"9999900000\",\n    \"otp\": \"123456\",\n    \"newPassword\": \"newpass123\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/merchant/reset-password"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Management",
+                    "item": [
+                        {
+                            "name": "List",
+                            "request": {
+                                "method": "POST",
+                                "url": "{{base_url}}/merchant/list"
                             }
                         },
                         {
@@ -62,74 +218,112 @@
                                 "method": "POST",
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"id\": 1}",
+                                    "raw": "{\n    \"id\": 1\n}",
                                     "options": {
                                         "raw": {
                                             "language": "json"
                                         }
                                     }
                                 },
-                                "url": "{{base_url}}/master/statuses/show"
-                            }
-                        },
-                        {
-                            "name": "Update",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"id\": 1, \"name\": \"Inactive\"}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/statuses/update"
-                            }
-                        },
-                        {
-                            "name": "Delete",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"id\": 1}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/statuses/delete"
+                                "url": "{{base_url}}/merchant/show"
                             }
                         }
                     ]
                 },
                 {
-                    "name": "Roles",
+                    "name": "Properties",
                     "item": [
                         {
-                            "name": "List",
+                            "name": "My Properties",
                             "request": {
-                                "method": "POST",
-                                "url": "{{base_url}}/master/roles/list"
+                                "method": "GET",
+                                "url": "{{base_url}}/merchant/my-properties"
                             }
                         },
                         {
-                            "name": "Store",
+                            "name": "Add Property",
                             "request": {
                                 "method": "POST",
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"name\": \"Admin\"}",
+                                    "raw": "{\n    \"title\": \"Beautiful Flat\",\n    \"price\": 5000000\n}",
                                     "options": {
                                         "raw": {
                                             "language": "json"
                                         }
                                     }
                                 },
-                                "url": "{{base_url}}/master/roles/store"
+                                "url": "{{base_url}}/merchant/add-property"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Affiliate",
+            "item": [
+                {
+                    "name": "Auth",
+                    "item": [
+                        {
+                            "name": "1. Send Registration OTP",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"phone\": \"7777700000\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/affiliate/register"
+                            }
+                        },
+                        {
+                            "name": "2. Complete Profile",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"phone\": \"7777700000\",\n    \"otp\": \"123456\",\n    \"name\": \"New Affiliate\",\n    \"email\": \"affiliate@example.com\",\n    \"password\": \"password123\",\n    \"confirm_password\": \"password123\",\n    \"referral_code\": \"OPTIONAL\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/affiliate/register-complete"
+                            }
+                        },
+                        {
+                            "name": "Login",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"identifier\": \"affiliate@example.com\",\n    \"password\": \"password123\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/affiliate/login"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Management",
+                    "item": [
+                        {
+                            "name": "List",
+                            "request": {
+                                "method": "POST",
+                                "url": "{{base_url}}/affiliate/list"
                             }
                         },
                         {
@@ -138,1024 +332,78 @@
                                 "method": "POST",
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"id\": 1}",
+                                    "raw": "{\n    \"id\": 1\n}",
                                     "options": {
                                         "raw": {
                                             "language": "json"
                                         }
                                     }
                                 },
-                                "url": "{{base_url}}/master/roles/show"
-                            }
-                        },
-                        {
-                            "name": "Update",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"id\": 1, \"name\": \"Super Admin\"}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/roles/update"
-                            }
-                        },
-                        {
-                            "name": "Delete",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"id\": 1}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/roles/delete"
+                                "url": "{{base_url}}/affiliate/show"
                             }
                         }
                     ]
-                },
+                }
+            ]
+        },
+        {
+            "name": "User",
+            "item": [
                 {
-                    "name": "Permissions",
+                    "name": "Auth",
                     "item": [
                         {
-                            "name": "List",
-                            "request": {
-                                "method": "POST",
-                                "url": "{{base_url}}/master/permissions/list"
-                            }
-                        },
-                        {
-                            "name": "Store",
+                            "name": "1. Send Registration OTP",
                             "request": {
                                 "method": "POST",
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"name\": \"view_users\"}",
+                                    "raw": "{\n    \"phone\": \"9876543210\"\n}",
                                     "options": {
                                         "raw": {
                                             "language": "json"
                                         }
                                     }
                                 },
-                                "url": "{{base_url}}/master/permissions/store"
+                                "url": "{{base_url}}/user/register"
                             }
                         },
                         {
-                            "name": "Show",
+                            "name": "2. Complete Profile",
                             "request": {
                                 "method": "POST",
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"id\": 1}",
+                                    "raw": "{\n    \"phone\": \"9876543210\",\n    \"otp\": \"123456\",\n    \"name\": \"User Name\",\n    \"email\": \"user@example.com\",\n    \"password\": \"password123\"\n}",
                                     "options": {
                                         "raw": {
                                             "language": "json"
                                         }
                                     }
                                 },
-                                "url": "{{base_url}}/master/permissions/show"
-                            }
-                        },
-                        {
-                            "name": "Update",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"id\": 1, \"name\": \"edit_users\"}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/permissions/update"
-                            }
-                        },
-                        {
-                            "name": "Delete",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"id\": 1}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/permissions/delete"
+                                "url": "{{base_url}}/user/register-complete"
                             }
                         }
                     ]
+                }
+            ]
+        },
+        {
+            "name": "Properties",
+            "item": [
+                {
+                    "name": "List All",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{base_url}}/properties"
+                    }
                 },
                 {
-                    "name": "Listing Types",
-                    "item": [
-                        {
-                            "name": "List",
-                            "request": {
-                                "method": "POST",
-                                "url": "{{base_url}}/master/listing-types/list"
-                            }
-                        },
-                        {
-                            "name": "Store",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"name\": \"Sell\"}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/listing-types/store"
-                            }
-                        },
-                        {
-                            "name": "Show",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"id\": 1}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/listing-types/show"
-                            }
-                        },
-                        {
-                            "name": "Update",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"id\": 1, \"name\": \"Rent\"}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/listing-types/update"
-                            }
-                        },
-                        {
-                            "name": "Delete",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"id\": 1}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/listing-types/delete"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "Property Types",
-                    "item": [
-                        {
-                            "name": "List",
-                            "request": {
-                                "method": "POST",
-                                "url": "{{base_url}}/master/property-types/list"
-                            }
-                        },
-                        {
-                            "name": "Store",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"name\": \"Apartment\"}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/property-types/store"
-                            }
-                        },
-                        {
-                            "name": "Show",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"id\": 1}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/property-types/show"
-                            }
-                        },
-                        {
-                            "name": "Update",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"id\": 1, \"name\": \"Villa\"}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/property-types/update"
-                            }
-                        },
-                        {
-                            "name": "Delete",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"id\": 1}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/property-types/delete"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "BHK Types",
-                    "item": [
-                        {
-                            "name": "List",
-                            "request": {
-                                "method": "POST",
-                                "url": "{{base_url}}/master/bhk-types/list"
-                            }
-                        },
-                        {
-                            "name": "Store",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"name\": \"2 BHK\"}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/bhk-types/store"
-                            }
-                        },
-                        {
-                            "name": "Show",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"id\": 1}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/bhk-types/show"
-                            }
-                        },
-                        {
-                            "name": "Update",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"id\": 1, \"name\": \"3 BHK\"}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/bhk-types/update"
-                            }
-                        },
-                        {
-                            "name": "Delete",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"id\": 1}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/bhk-types/delete"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "Furnishing Statuses",
-                    "item": [
-                        {
-                            "name": "List",
-                            "request": {
-                                "method": "POST",
-                                "url": "{{base_url}}/master/furnishing-statuses/list"
-                            }
-                        },
-                        {
-                            "name": "Store",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"name\": \"Furnished\"}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/furnishing-statuses/store"
-                            }
-                        },
-                        {
-                            "name": "Show",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"id\": 1}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/furnishing-statuses/show"
-                            }
-                        },
-                        {
-                            "name": "Update",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"id\": 1, \"name\": \"Unfurnished\"}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/furnishing-statuses/update"
-                            }
-                        },
-                        {
-                            "name": "Delete",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"id\": 1}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/furnishing-statuses/delete"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "Facing Directions",
-                    "item": [
-                        {
-                            "name": "List",
-                            "request": {
-                                "method": "POST",
-                                "url": "{{base_url}}/master/facing-directions/list"
-                            }
-                        },
-                        {
-                            "name": "Store",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"name\": \"East\"}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/facing-directions/store"
-                            }
-                        },
-                        {
-                            "name": "Show",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"id\": 1}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/facing-directions/show"
-                            }
-                        },
-                        {
-                            "name": "Update",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"id\": 1, \"name\": \"North\"}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/facing-directions/update"
-                            }
-                        },
-                        {
-                            "name": "Delete",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"id\": 1}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/facing-directions/delete"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "Construction Statuses",
-                    "item": [
-                        {
-                            "name": "List",
-                            "request": {
-                                "method": "POST",
-                                "url": "{{base_url}}/master/construction-statuses/list"
-                            }
-                        },
-                        {
-                            "name": "Store",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"name\": \"Under Construction\"}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/construction-statuses/store"
-                            }
-                        },
-                        {
-                            "name": "Show",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"id\": 1}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/construction-statuses/show"
-                            }
-                        },
-                        {
-                            "name": "Update",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"id\": 1, \"name\": \"Ready to Move\"}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/construction-statuses/update"
-                            }
-                        },
-                        {
-                            "name": "Delete",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"id\": 1}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/construction-statuses/delete"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "Geography",
-                    "item": [
-                        {
-                            "name": "Countries",
-                            "item": [
-                                {
-                                    "name": "List",
-                                    "request": {
-                                        "method": "POST",
-                                        "url": "{{base_url}}/master/countries/list"
-                                    }
-                                },
-                                {
-                                    "name": "Store",
-                                    "request": {
-                                        "method": "POST",
-                                        "body": {
-                                            "mode": "raw",
-                                            "raw": "{\"name\": \"India\", \"short_name\": \"IN\"}",
-                                            "options": {
-                                                "raw": {
-                                                    "language": "json"
-                                                }
-                                            }
-                                        },
-                                        "url": "{{base_url}}/master/countries/store"
-                                    }
-                                },
-                                {
-                                    "name": "Show",
-                                    "request": {
-                                        "method": "POST",
-                                        "body": {
-                                            "mode": "raw",
-                                            "raw": "{\"id\": 1}",
-                                            "options": {
-                                                "raw": {
-                                                    "language": "json"
-                                                }
-                                            }
-                                        },
-                                        "url": "{{base_url}}/master/countries/show"
-                                    }
-                                },
-                                {
-                                    "name": "Update",
-                                    "request": {
-                                        "method": "POST",
-                                        "body": {
-                                            "mode": "raw",
-                                            "raw": "{\"id\": 1, \"name\": \"New India\"}",
-                                            "options": {
-                                                "raw": {
-                                                    "language": "json"
-                                                }
-                                            }
-                                        },
-                                        "url": "{{base_url}}/master/countries/update"
-                                    }
-                                },
-                                {
-                                    "name": "Delete",
-                                    "request": {
-                                        "method": "POST",
-                                        "body": {
-                                            "mode": "raw",
-                                            "raw": "{\"id\": 1}",
-                                            "options": {
-                                                "raw": {
-                                                    "language": "json"
-                                                }
-                                            }
-                                        },
-                                        "url": "{{base_url}}/master/countries/delete"
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            "name": "States",
-                            "item": [
-                                {
-                                    "name": "List",
-                                    "request": {
-                                        "method": "POST",
-                                        "url": "{{base_url}}/master/states/list"
-                                    }
-                                },
-                                {
-                                    "name": "Store",
-                                    "request": {
-                                        "method": "POST",
-                                        "body": {
-                                            "mode": "raw",
-                                            "raw": "{\"name\": \"Maharashtra\", \"country_id\": 1}",
-                                            "options": {
-                                                "raw": {
-                                                    "language": "json"
-                                                }
-                                            }
-                                        },
-                                        "url": "{{base_url}}/master/states/store"
-                                    }
-                                },
-                                {
-                                    "name": "Show",
-                                    "request": {
-                                        "method": "POST",
-                                        "body": {
-                                            "mode": "raw",
-                                            "raw": "{\"id\": 1}",
-                                            "options": {
-                                                "raw": {
-                                                    "language": "json"
-                                                }
-                                            }
-                                        },
-                                        "url": "{{base_url}}/master/states/show"
-                                    }
-                                },
-                                {
-                                    "name": "Update",
-                                    "request": {
-                                        "method": "POST",
-                                        "body": {
-                                            "mode": "raw",
-                                            "raw": "{\"id\": 1, \"name\": \"UP\"}",
-                                            "options": {
-                                                "raw": {
-                                                    "language": "json"
-                                                }
-                                            }
-                                        },
-                                        "url": "{{base_url}}/master/states/update"
-                                    }
-                                },
-                                {
-                                    "name": "Delete",
-                                    "request": {
-                                        "method": "POST",
-                                        "body": {
-                                            "mode": "raw",
-                                            "raw": "{\"id\": 1}",
-                                            "options": {
-                                                "raw": {
-                                                    "language": "json"
-                                                }
-                                            }
-                                        },
-                                        "url": "{{base_url}}/master/states/delete"
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            "name": "Cities",
-                            "item": [
-                                {
-                                    "name": "List",
-                                    "request": {
-                                        "method": "POST",
-                                        "url": "{{base_url}}/master/cities/list"
-                                    }
-                                },
-                                {
-                                    "name": "Store",
-                                    "request": {
-                                        "method": "POST",
-                                        "body": {
-                                            "mode": "raw",
-                                            "raw": "{\"name\": \"Mumbai\", \"state_id\": 1}",
-                                            "options": {
-                                                "raw": {
-                                                    "language": "json"
-                                                }
-                                            }
-                                        },
-                                        "url": "{{base_url}}/master/cities/store"
-                                    }
-                                },
-                                {
-                                    "name": "Show",
-                                    "request": {
-                                        "method": "POST",
-                                        "body": {
-                                            "mode": "raw",
-                                            "raw": "{\"id\": 1}",
-                                            "options": {
-                                                "raw": {
-                                                    "language": "json"
-                                                }
-                                            }
-                                        },
-                                        "url": "{{base_url}}/master/cities/show"
-                                    }
-                                },
-                                {
-                                    "name": "Update",
-                                    "request": {
-                                        "method": "POST",
-                                        "body": {
-                                            "mode": "raw",
-                                            "raw": "{\"id\": 1, \"name\": \"Pune\"}",
-                                            "options": {
-                                                "raw": {
-                                                    "language": "json"
-                                                }
-                                            }
-                                        },
-                                        "url": "{{base_url}}/master/cities/update"
-                                    }
-                                },
-                                {
-                                    "name": "Delete",
-                                    "request": {
-                                        "method": "POST",
-                                        "body": {
-                                            "mode": "raw",
-                                            "raw": "{\"id\": 1}",
-                                            "options": {
-                                                "raw": {
-                                                    "language": "json"
-                                                }
-                                            }
-                                        },
-                                        "url": "{{base_url}}/master/cities/delete"
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            "name": "Localities",
-                            "item": [
-                                {
-                                    "name": "List",
-                                    "request": {
-                                        "method": "POST",
-                                        "url": "{{base_url}}/master/localities/list"
-                                    }
-                                },
-                                {
-                                    "name": "Store",
-                                    "request": {
-                                        "method": "POST",
-                                        "body": {
-                                            "mode": "raw",
-                                            "raw": "{\"name\": \"Andheri\", \"city_id\": 1}",
-                                            "options": {
-                                                "raw": {
-                                                    "language": "json"
-                                                }
-                                            }
-                                        },
-                                        "url": "{{base_url}}/master/localities/store"
-                                    }
-                                },
-                                {
-                                    "name": "Show",
-                                    "request": {
-                                        "method": "POST",
-                                        "body": {
-                                            "mode": "raw",
-                                            "raw": "{\"id\": 1}",
-                                            "options": {
-                                                "raw": {
-                                                    "language": "json"
-                                                }
-                                            }
-                                        },
-                                        "url": "{{base_url}}/master/localities/show"
-                                    }
-                                },
-                                {
-                                    "name": "Update",
-                                    "request": {
-                                        "method": "POST",
-                                        "body": {
-                                            "mode": "raw",
-                                            "raw": "{\"id\": 1, \"name\": \"Bandra\"}",
-                                            "options": {
-                                                "raw": {
-                                                    "language": "json"
-                                                }
-                                            }
-                                        },
-                                        "url": "{{base_url}}/master/localities/update"
-                                    }
-                                },
-                                {
-                                    "name": "Delete",
-                                    "request": {
-                                        "method": "POST",
-                                        "body": {
-                                            "mode": "raw",
-                                            "raw": "{\"id\": 1}",
-                                            "options": {
-                                                "raw": {
-                                                    "language": "json"
-                                                }
-                                            }
-                                        },
-                                        "url": "{{base_url}}/master/localities/delete"
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            "name": "Sub Localities",
-                            "item": [
-                                {
-                                    "name": "List",
-                                    "request": {
-                                        "method": "POST",
-                                        "url": "{{base_url}}/master/sub-localities/list"
-                                    }
-                                },
-                                {
-                                    "name": "Store",
-                                    "request": {
-                                        "method": "POST",
-                                        "body": {
-                                            "mode": "raw",
-                                            "raw": "{\"name\": \"Andheri West\", \"locality_id\": 1}",
-                                            "options": {
-                                                "raw": {
-                                                    "language": "json"
-                                                }
-                                            }
-                                        },
-                                        "url": "{{base_url}}/master/sub-localities/store"
-                                    }
-                                },
-                                {
-                                    "name": "Show",
-                                    "request": {
-                                        "method": "POST",
-                                        "body": {
-                                            "raw": "{\"id\": 1}"
-                                        },
-                                        "url": "{{base_url}}/master/sub-localities/show"
-                                    }
-                                },
-                                {
-                                    "name": "Update",
-                                    "request": {
-                                        "method": "POST",
-                                        "body": {
-                                            "raw": "{\"id\": 1, \"name\": \"Andheri East\"}"
-                                        },
-                                        "url": "{{base_url}}/master/sub-localities/update"
-                                    }
-                                },
-                                {
-                                    "name": "Delete",
-                                    "request": {
-                                        "method": "POST",
-                                        "body": {
-                                            "raw": "{\"id\": 1}"
-                                        },
-                                        "url": "{{base_url}}/master/sub-localities/delete"
-                                    }
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "name": "Packages",
-                    "item": [
-                        {
-                            "name": "List",
-                            "request": {
-                                "method": "POST",
-                                "url": "{{base_url}}/master/packages/list"
-                            }
-                        },
-                        {
-                            "name": "Store",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n  \"name\": \"Basic\",\n  \"price\": 999.00,\n  \"duration_days\": 30,\n  \"listing_limit\": 5,\n  \"featured_limit\": 1\n}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/packages/store"
-                            }
-                        },
-                        {
-                            "name": "Show",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"id\": 1}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/packages/show"
-                            }
-                        },
-                        {
-                            "name": "Update",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"id\": 1, \"price\": 1099.00}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/packages/update"
-                            }
-                        },
-                        {
-                            "name": "Delete",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\"id\": 1}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/master/packages/delete"
-                            }
-                        }
-                    ]
+                    "name": "Show One",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{base_url}}/properties/1"
+                    }
                 }
             ]
         }

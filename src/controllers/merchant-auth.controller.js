@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import * as MerchantModel from '../models/merchant.model.js';
+import * as AffiliateModel from '../models/affiliate.model.js';
 import Sms from '../utils/Sms.js';
 import Mail from '../utils/Mail.js';
 import { successResponse, errorResponse } from '../utils/response.js';
@@ -35,19 +36,25 @@ export const sendRegistrationOTP = async (req, res) => {
 };
 
 /**
- * Step 2: Complete Profile (Matches Laravel logic + OTP)
+ * Step 2: Complete Profile
  */
 export const completeRegistration = async (req, res) => {
     try {
         const phone = req.body.phone;
         const otp = req.body.otp;
         const name = req.body.name;
-        const email = req.body.email;
-        const business = req.body.business_name;
+        const email = req.body.email; // Optional
+        const company_name = req.body.company_name; // Optional
         const password = req.body.password;
+        const confirm_password = req.body.confirm_password;
+        const referral_code = req.body.referral_code;
 
-        if (!phone || !otp || !name || !email || !password) {
-            return errorResponse(res, 'All fields required', null, 400);
+        if (!phone || !otp || !name || !password || !confirm_password) {
+            return errorResponse(res, 'Required fields missing: phone, otp, name, password, confirm_password', null, 400);
+        }
+
+        if (password !== confirm_password) {
+            return errorResponse(res, 'Passwords do not match', null, 400);
         }
 
         const merchant = await MerchantModel.verifyRegistrationOTP(phone, otp);
@@ -55,34 +62,41 @@ export const completeRegistration = async (req, res) => {
             return errorResponse(res, 'Invalid or expired OTP', null, 401);
         }
 
+        let affiliateId = null;
+        if (referral_code) {
+            const referrer = await AffiliateModel.findByReferralCode(referral_code);
+            if (referrer) {
+                affiliateId = referrer.id;
+            }
+        }
+
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const data = {
             name: name,
-            email: email,
-            company_name: business, // matching schema 'company_name'
+            email: email || null,
+            company_name: company_name || null,
             password: hashedPassword,
+            affiliate_id: affiliateId,
             status: 'active',
-            merchant_type: 'owner', // Defaulting to owner as in Laravel
+            merchant_type: 'owner', // Defaulting to owner
             registration_otp: null,
             registration_otp_expires: null
         };
 
-        // Model.update now handles credit awarding if status becomes 'active'
         await MerchantModel.update(merchant.id, data);
 
         const token = jwt.sign({ id: merchant.id, role: 'merchant' }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
-        const merchantData = {
-            id: merchant.id,
-            name,
-            email,
-            phone,
-            company_name: business
-        };
-
         const responseData = {
-            merchant: merchantData,
+            merchant: {
+                id: merchant.id,
+                name: name,
+                email: email,
+                phone: phone,
+                company_name: company_name,
+                affiliate_id: affiliateId
+            },
             token: token
         };
 
@@ -123,7 +137,8 @@ export const login = async (req, res) => {
                 name: merchant.name,
                 email: merchant.email,
                 phone: merchant.phone,
-                company_name: merchant.company_name
+                company_name: merchant.company_name,
+                affiliate_id: merchant.affiliate_id
             },
             token: token
         };

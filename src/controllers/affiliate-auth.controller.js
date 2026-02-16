@@ -35,19 +35,24 @@ export const sendRegistrationOTP = async (req, res) => {
 };
 
 /**
- * Step 2: Complete Profile (Matches Laravel logic + Referral)
+ * Step 2: Complete Profile
  */
 export const completeRegistration = async (req, res) => {
     try {
         const phone = req.body.phone;
         const otp = req.body.otp;
         const name = req.body.name;
-        const email = req.body.email;
+        const email = req.body.email; // Optional
         const password = req.body.password;
-        const referrerCode = req.body.referrer_code;
+        const confirm_password = req.body.confirm_password;
+        const referral_code = req.body.referral_code;
 
-        if (!phone || !otp || !name || !email || !password) {
-            return errorResponse(res, 'All fields required', null, 400);
+        if (!phone || !otp || !name || !password || !confirm_password) {
+            return errorResponse(res, 'Required fields missing: phone, otp, name, password, confirm_password', null, 400);
+        }
+
+        if (password !== confirm_password) {
+            return errorResponse(res, 'Passwords do not match', null, 400);
         }
 
         const affiliate = await AffiliateModel.verifyRegistrationOTP(phone, otp);
@@ -56,8 +61,8 @@ export const completeRegistration = async (req, res) => {
         }
 
         let referredBy = null;
-        if (referrerCode) {
-            const referrer = await AffiliateModel.findByReferralCode(referrerCode);
+        if (referral_code) {
+            const referrer = await AffiliateModel.findByReferralCode(referral_code);
             if (referrer) {
                 referredBy = referrer.id;
             }
@@ -67,7 +72,7 @@ export const completeRegistration = async (req, res) => {
 
         const data = {
             name: name,
-            email: email,
+            email: email || null,
             password: hashedPassword,
             status: 'active',
             referred_by: referredBy,
@@ -82,10 +87,11 @@ export const completeRegistration = async (req, res) => {
         const responseData = {
             affiliate: {
                 id: affiliate.id,
-                name,
-                email,
-                phone,
-                referral_code: affiliate.referral_code
+                name: name,
+                email: email,
+                phone: phone,
+                referral_code: affiliate.referral_code,
+                referred_by: referredBy
             },
             token: token
         };
@@ -127,7 +133,8 @@ export const login = async (req, res) => {
                 name: affiliate.name,
                 email: affiliate.email,
                 phone: affiliate.phone,
-                referral_code: affiliate.referral_code
+                referral_code: affiliate.referral_code,
+                referred_by: affiliate.referred_by
             },
             token: token
         };

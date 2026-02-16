@@ -1,12 +1,31 @@
 import pool from '../config/db.js';
 
 /**
+ * Find all affiliates
+ */
+export const findAll = async () => {
+    const [rows] = await pool.query('SELECT * FROM affiliate ORDER BY id DESC');
+    return rows;
+};
+
+/**
  * Find affiliate by email or phone
  */
 export const findByEmailOrPhone = async (identifier) => {
     const [rows] = await pool.query(
         'SELECT * FROM affiliate WHERE email = ? OR phone = ? LIMIT 1',
         [identifier, identifier]
+    );
+    return rows.length > 0 ? rows[0] : null;
+};
+
+/**
+ * Find affiliate by referral code
+ */
+export const findByReferralCode = async (code) => {
+    const [rows] = await pool.query(
+        'SELECT * FROM affiliate WHERE referral_code = ? LIMIT 1',
+        [code]
     );
     return rows.length > 0 ? rows[0] : null;
 };

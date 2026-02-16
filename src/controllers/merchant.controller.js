@@ -18,7 +18,8 @@ export const index = async (req, res) => {
                 name: m.name,
                 email: m.email,
                 phone: m.phone,
-                business_name: m.business_name,
+                company_name: m.company_name,
+                affiliate_id: m.affiliate_id,
                 status: m.status,
                 created_at: m.created_at
             };
@@ -43,7 +44,8 @@ export const store = async (req, res) => {
             name: req.body.name,
             email: req.body.email,
             phone: req.body.phone,
-            business_name: req.body.business_name,
+            company_name: req.body.company_name,
+            affiliate_id: req.body.affiliate_id || null,
             status: 'pending',
             password: hashedPassword
         };
@@ -77,7 +79,8 @@ export const show = async (req, res) => {
             name: merchant.name,
             email: merchant.email,
             phone: merchant.phone,
-            business_name: merchant.business_name,
+            company_name: merchant.company_name,
+            affiliate_id: merchant.affiliate_id,
             status: merchant.status,
             created_at: merchant.created_at
         };
@@ -99,7 +102,8 @@ export const update = async (req, res) => {
         if (req.body.name) data.name = req.body.name;
         if (req.body.email) data.email = req.body.email;
         if (req.body.phone) data.phone = req.body.phone;
-        if (req.body.business_name) data.business_name = req.body.business_name;
+        if (req.body.company_name) data.company_name = req.body.company_name;
+        if (req.body.affiliate_id !== undefined) data.affiliate_id = req.body.affiliate_id;
         if (req.body.status) data.status = req.body.status;
 
         if (req.body.password) {

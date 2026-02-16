@@ -17,6 +17,8 @@ export const index = async (req, res) => {
                 name: a.name,
                 email: a.email,
                 phone: a.phone,
+                referral_code: a.referral_code,
+                referred_by: a.referred_by,
                 status: a.status,
                 created_at: a.created_at
             };
@@ -41,6 +43,7 @@ export const store = async (req, res) => {
             name: req.body.name,
             email: req.body.email,
             phone: req.body.phone,
+            referred_by: req.body.referred_by || null,
             status: 'pending',
             password: hashedPassword
         };
@@ -69,6 +72,8 @@ export const show = async (req, res) => {
             name: affiliate.name,
             email: affiliate.email,
             phone: affiliate.phone,
+            referral_code: affiliate.referral_code,
+            referred_by: affiliate.referred_by,
             status: affiliate.status,
             created_at: affiliate.created_at
         };
@@ -90,6 +95,7 @@ export const update = async (req, res) => {
         if (req.body.name) data.name = req.body.name;
         if (req.body.email) data.email = req.body.email;
         if (req.body.phone) data.phone = req.body.phone;
+        if (req.body.referred_by !== undefined) data.referred_by = req.body.referred_by;
         if (req.body.status) data.status = req.body.status;
 
         if (req.body.password) {

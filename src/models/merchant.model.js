@@ -1,6 +1,14 @@
 import pool from '../config/db.js';
 
 /**
+ * Find all merchants
+ */
+export const findAll = async () => {
+    const [rows] = await pool.query('SELECT * FROM merchant ORDER BY id DESC');
+    return rows;
+};
+
+/**
  * Find merchant by email or phone
  */
 export const findByEmailOrPhone = async (identifier) => {
