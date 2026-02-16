@@ -3,13 +3,28 @@ import pool from '../config/db.js';
 /**
  * Find all affiliates
  */
-export const findAll = async () => {
-    const [rows] = await pool.query(`
+export const findAll = async (params = {}) => {
+    let query = `
         SELECT a1.*, a2.referral_code as referrer_code 
         FROM affiliate a1 
         LEFT JOIN affiliate a2 ON a1.referred_by = a2.id 
-        ORDER BY a1.id DESC
-    `);
+        WHERE 1=1
+    `;
+    const queryParams = [];
+
+    if (params.search) {
+        const search = `%${params.search}%`;
+        query += ` AND (a1.name LIKE ? OR a1.email LIKE ? OR a1.phone LIKE ? OR a1.referral_code LIKE ?)`;
+        queryParams.push(search, search, search, search);
+    }
+
+    if (params.status) {
+        query += ` AND a1.status = ?`;
+        queryParams.push(params.status);
+    }
+
+    query += ' ORDER BY a1.id DESC';
+    const [rows] = await pool.query(query, queryParams);
     return rows;
 };
 

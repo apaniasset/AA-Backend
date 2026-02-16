@@ -12,6 +12,12 @@ export const findAll = async (filters = {}) => {
     `;
     const params = [];
 
+    if (filters.search) {
+        const search = `%${filters.search}%`;
+        query += ` AND (p.title LIKE ? OR p.description LIKE ? OR p.property_id LIKE ? OR p.city LIKE ? OR p.location LIKE ?)`;
+        params.push(search, search, search, search, search);
+    }
+
     if (filters.type) {
         if (filters.type === 'buy') {
             query += ' AND p.listing_type = "Sale"';
@@ -20,20 +26,19 @@ export const findAll = async (filters = {}) => {
         }
     }
 
-    if (filters.location) {
-        query += ' AND (p.city LIKE ? OR p.area LIKE ?)';
-        params.push(`%${filters.location}%`, `%${filters.location}%`);
-    }
-
-    if (filters.property_type) {
-        const types = Array.isArray(filters.property_type) ? filters.property_type : [filters.property_type];
-        query += ` AND p.property_main_type IN (${types.map(() => '?').join(',')})`;
-        params.push(...types);
+    if (filters.property_main_type) {
+        query += ' AND p.property_main_type = ?';
+        params.push(filters.property_main_type);
     }
 
     if (filters.merchant_id) {
         query += ' AND p.merchant_id = ?';
         params.push(filters.merchant_id);
+    }
+
+    if (filters.status) {
+        query += ' AND p.status = ?';
+        params.push(filters.status);
     }
 
     query += ' ORDER BY p.created_at DESC';

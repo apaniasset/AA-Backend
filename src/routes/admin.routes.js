@@ -32,4 +32,22 @@ router.group('/users', (group) => {
     group.post('/change-password', Admin.changePassword);
 });
 
+// Merchant Management
+router.group('/merchants', (group) => {
+    group.post('/list', Admin.merchantIndex);
+    group.post('/create', Admin.merchantStore);
+    group.post('/show', Admin.merchantShow);
+    group.post('/update', Admin.merchantUpdate);
+    group.post('/delete', Admin.merchantDestroy);
+});
+
+// Affiliate Management
+router.group('/affiliates', (group) => {
+    group.post('/list', Admin.affiliateIndex);
+    group.post('/create', Admin.affiliateStore);
+    group.post('/show', Admin.affiliateShow);
+    group.post('/update', Admin.affiliateUpdate);
+    group.post('/delete', Admin.affiliateDestroy);
+});
+
 export default router;

@@ -1,7 +1,7 @@
 {
     "info": {
         "_postman_id": "d9909d94-dd30-49c9-aba6-d5117d9ee9e6",
-        "name": "ApniAsset API (Final with Properties)",
+        "name": "ApniAsset API (Full Admin & Mega Property)",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
     "item": [
@@ -28,6 +28,64 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "Merchants",
+                    "item": [
+                        {
+                            "name": "List",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"search\": \"\",\n    \"status\": \"active\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/admin/merchants/list"
+                            }
+                        },
+                        {
+                            "name": "Create",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"name\": \"Admin Created Merchant\",\n    \"phone\": \"9111122222\",\n    \"email\": \"admin_merch@example.com\",\n    \"password\": \"password123\",\n    \"status\": \"active\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/admin/merchants/create"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Affiliates",
+                    "item": [
+                        {
+                            "name": "List",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"search\": \"\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": "{{base_url}}/admin/affiliates/list"
+                            }
+                        }
+                    ]
                 }
             ]
         },
@@ -43,7 +101,7 @@
                                 "method": "POST",
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n    \"name\": \"Final Merchant\",\n    \"phone\": \"9000011111\",\n    \"email\": \"final@example.com\",\n    \"company_name\": \"Final Biz\",\n    \"password\": \"password123\",\n    \"confirm_password\": \"password123\",\n    \"referral_code\": \"OPTIONAL\"\n}",
+                                    "raw": "{\n    \"name\": \"Testing Merchant\",\n    \"phone\": \"9000022222\",\n    \"email\": \"test_merch@example.com\",\n    \"password\": \"password123\",\n    \"confirm_password\": \"password123\"\n}",
                                     "options": {
                                         "raw": {
                                             "language": "json"
@@ -51,48 +109,6 @@
                                     }
                                 },
                                 "url": "{{base_url}}/merchant/register"
-                            }
-                        },
-                        {
-                            "name": "Login",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"identifier\": \"9000011111\",\n    \"password\": \"password123\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/merchant/login"
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Affiliate",
-            "item": [
-                {
-                    "name": "Auth",
-                    "item": [
-                        {
-                            "name": "Register",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"name\": \"Final Affiliate\",\n    \"phone\": \"8000011111\",\n    \"email\": \"aff@example.com\",\n    \"password\": \"password123\",\n    \"confirm_password\": \"password123\",\n    \"referral_code\": \"OPTIONAL\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/affiliate/register"
                             }
                         }
                     ]
@@ -103,21 +119,32 @@
             "name": "Properties",
             "item": [
                 {
-                    "name": "List",
+                    "name": "List (with Search)",
                     "request": {
                         "method": "GET",
-                        "url": "{{base_url}}/properties"
+                        "url": {
+                            "raw": "{{base_url}}/properties?search=Luxury&listing_type=Sale",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "properties"
+                            ],
+                            "query": [
+                                {
+                                    "key": "search",
+                                    "value": "Luxury"
+                                },
+                                {
+                                    "key": "listing_type",
+                                    "value": "Sale"
+                                }
+                            ]
+                        }
                     }
                 },
                 {
-                    "name": "Show",
-                    "request": {
-                        "method": "GET",
-                        "url": "{{base_url}}/properties/1"
-                    }
-                },
-                {
-                    "name": "Create",
+                    "name": "Create (Mega Form)",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -128,7 +155,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"title\": \"Luxury Apartment\",\n    \"description\": \"Beautiful 3BHK in City Center\",\n    \"price\": 7500000,\n    \"address\": \"Main St, 123\",\n    \"city_id\": 1\n}",
+                            "raw": "{\n    \"title\": \"Mega Property Test\",\n    \"address\": \"High Street 456\",\n    \"listing_type\": \"Sale\",\n    \"property_type\": \"Flat\",\n    \"construction_status\": \"Ready to Move\",\n    \"sale_price\": 5000000,\n    \"bedrooms\": 3,\n    \"bathrooms\": 2,\n    \"amenity\": [\"Gym\", \"Pool\", \"Security\"]\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -136,66 +163,6 @@
                             }
                         },
                         "url": "{{base_url}}/properties"
-                    }
-                },
-                {
-                    "name": "Update",
-                    "request": {
-                        "method": "PUT",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{token}}"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"price\": 8000000\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": "{{base_url}}/properties/1"
-                    }
-                },
-                {
-                    "name": "Delete",
-                    "request": {
-                        "method": "DELETE",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{token}}"
-                            }
-                        ],
-                        "url": "{{base_url}}/properties/1"
-                    }
-                },
-                {
-                    "name": "My Properties (Merchant)",
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{token}}"
-                            }
-                        ],
-                        "url": "{{base_url}}/merchant/properties"
-                    }
-                }
-            ]
-        },
-        {
-            "name": "Inquiries",
-            "item": [
-                {
-                    "name": "List",
-                    "request": {
-                        "method": "GET",
-                        "url": "{{base_url}}/inquiries"
                     }
                 }
             ]
