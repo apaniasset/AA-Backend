@@ -1,7 +1,7 @@
 {
     "info": {
         "_postman_id": "d9909d94-dd30-49c9-aba6-d5117d9ee9e6",
-        "name": "ApniAsset API (Referral Refined)",
+        "name": "ApniAsset API (Final with Properties)",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
     "item": [
@@ -70,18 +70,6 @@
                             }
                         }
                     ]
-                },
-                {
-                    "name": "Management",
-                    "item": [
-                        {
-                            "name": "List",
-                            "request": {
-                                "method": "POST",
-                                "url": "{{base_url}}/merchant/list"
-                            }
-                        }
-                    ]
                 }
             ]
         },
@@ -106,36 +94,109 @@
                                 },
                                 "url": "{{base_url}}/affiliate/register"
                             }
-                        },
-                        {
-                            "name": "Login",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"identifier\": \"8000011111\",\n    \"password\": \"password123\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/affiliate/login"
-                            }
                         }
                     ]
+                }
+            ]
+        },
+        {
+            "name": "Properties",
+            "item": [
+                {
+                    "name": "List",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{base_url}}/properties"
+                    }
                 },
                 {
-                    "name": "Management",
-                    "item": [
-                        {
-                            "name": "List",
-                            "request": {
-                                "method": "POST",
-                                "url": "{{base_url}}/affiliate/list"
+                    "name": "Show",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{base_url}}/properties/1"
+                    }
+                },
+                {
+                    "name": "Create",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
                             }
-                        }
-                    ]
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"title\": \"Luxury Apartment\",\n    \"description\": \"Beautiful 3BHK in City Center\",\n    \"price\": 7500000,\n    \"address\": \"Main St, 123\",\n    \"city_id\": 1\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": "{{base_url}}/properties"
+                    }
+                },
+                {
+                    "name": "Update",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"price\": 8000000\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": "{{base_url}}/properties/1"
+                    }
+                },
+                {
+                    "name": "Delete",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/properties/1"
+                    }
+                },
+                {
+                    "name": "My Properties (Merchant)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/merchant/properties"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Inquiries",
+            "item": [
+                {
+                    "name": "List",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{base_url}}/inquiries"
+                    }
                 }
             ]
         }
@@ -144,6 +205,10 @@
         {
             "key": "base_url",
             "value": "https://nodeapi.apaniasset.in/api"
+        },
+        {
+            "key": "token",
+            "value": "YOUR_JWT_HERE"
         }
     ]
 }
