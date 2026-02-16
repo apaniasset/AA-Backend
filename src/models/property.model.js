@@ -5,7 +5,7 @@ import pool from '../config/db.js';
  */
 export const findAll = async (filters = {}) => {
     let query = `
-        SELECT p.*, m.name as merchant_name, m.business_name
+        SELECT p.*, m.name as merchant_name, m.company_name
         FROM merchant_properties p
         LEFT JOIN merchant m ON p.merchant_id = m.id
         WHERE 1=1
@@ -14,8 +14,8 @@ export const findAll = async (filters = {}) => {
 
     if (filters.search) {
         const search = `%${filters.search}%`;
-        query += ` AND (p.title LIKE ? OR p.description LIKE ? OR p.property_id LIKE ? OR p.city LIKE ? OR p.location LIKE ?)`;
-        params.push(search, search, search, search, search);
+        query += ` AND (p.title LIKE ? OR p.description LIKE ? OR p.property_id LIKE ? OR p.city LIKE ? OR p.location LIKE ? OR p.address_line1 LIKE ? OR p.address_line2 LIKE ?)`;
+        params.push(search, search, search, search, search, search, search);
     }
 
     if (filters.type) {
@@ -59,7 +59,7 @@ export const findAll = async (filters = {}) => {
  */
 export const findById = async (id) => {
     const [rows] = await pool.query(
-        'SELECT p.*, m.name as merchant_name, m.business_name FROM merchant_properties p LEFT JOIN merchant m ON p.merchant_id = m.id WHERE p.id = ? LIMIT 1',
+        'SELECT p.*, m.name as merchant_name, m.company_name FROM merchant_properties p LEFT JOIN merchant m ON p.merchant_id = m.id WHERE p.id = ? LIMIT 1',
         [id]
     );
     if (rows.length === 0) return null;
