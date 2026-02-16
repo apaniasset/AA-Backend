@@ -1,7 +1,7 @@
 {
     "info": {
         "_postman_id": "d9909d94-dd30-49c9-aba6-d5117d9ee9e6",
-        "name": "ApniAsset API (Complete)",
+        "name": "ApniAsset API (Single Step Register)",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
     "item": [
@@ -77,38 +77,6 @@
                                 },
                                 "url": "{{base_url}}/admin/users/show"
                             }
-                        },
-                        {
-                            "name": "Update",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"id\": 1,\n    \"name\": \"Updated Name\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/admin/users/update"
-                            }
-                        },
-                        {
-                            "name": "Delete",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"id\": 1\n}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/admin/users/delete"
-                            }
                         }
                     ]
                 }
@@ -121,12 +89,12 @@
                     "name": "Auth",
                     "item": [
                         {
-                            "name": "1. Send Registration OTP",
+                            "name": "Register",
                             "request": {
                                 "method": "POST",
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n    \"phone\": \"9999900000\"\n}",
+                                    "raw": "{\n    \"name\": \"Success Merchant\",\n    \"phone\": \"9988001122\",\n    \"email\": \"success@example.com\",\n    \"company_name\": \"Success Biz\",\n    \"password\": \"password123\",\n    \"confirm_password\": \"password123\",\n    \"referral_code\": \"OPTIONAL\"\n}",
                                     "options": {
                                         "raw": {
                                             "language": "json"
@@ -137,28 +105,12 @@
                             }
                         },
                         {
-                            "name": "2. Complete Profile",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"phone\": \"9999900000\",\n    \"otp\": \"123456\",\n    \"name\": \"New Merchant\",\n    \"email\": \"merchant@example.com\",\n    \"company_name\": \"My Business\",\n    \"password\": \"password123\",\n    \"confirm_password\": \"password123\",\n    \"referral_code\": \"OPTIONAL\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/merchant/register-complete"
-                            }
-                        },
-                        {
                             "name": "Login",
                             "request": {
                                 "method": "POST",
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n    \"identifier\": \"merchant@example.com\",\n    \"password\": \"password123\"\n}",
+                                    "raw": "{\n    \"identifier\": \"9988001122\",\n    \"password\": \"password123\"\n}",
                                     "options": {
                                         "raw": {
                                             "language": "json"
@@ -174,7 +126,7 @@
                                 "method": "POST",
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n    \"identifier\": \"9999900000\"\n}",
+                                    "raw": "{\n    \"identifier\": \"9988001122\"\n}",
                                     "options": {
                                         "raw": {
                                             "language": "json"
@@ -182,22 +134,6 @@
                                     }
                                 },
                                 "url": "{{base_url}}/merchant/forgot-password"
-                            }
-                        },
-                        {
-                            "name": "Reset Password",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"identifier\": \"9999900000\",\n    \"otp\": \"123456\",\n    \"newPassword\": \"newpass123\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/merchant/reset-password"
                             }
                         }
                     ]
@@ -211,50 +147,6 @@
                                 "method": "POST",
                                 "url": "{{base_url}}/merchant/list"
                             }
-                        },
-                        {
-                            "name": "Show",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"id\": 1\n}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/merchant/show"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "Properties",
-                    "item": [
-                        {
-                            "name": "My Properties",
-                            "request": {
-                                "method": "GET",
-                                "url": "{{base_url}}/merchant/my-properties"
-                            }
-                        },
-                        {
-                            "name": "Add Property",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"title\": \"Beautiful Flat\",\n    \"price\": 5000000\n}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/merchant/add-property"
-                            }
                         }
                     ]
                 }
@@ -267,12 +159,12 @@
                     "name": "Auth",
                     "item": [
                         {
-                            "name": "1. Send Registration OTP",
+                            "name": "Register",
                             "request": {
                                 "method": "POST",
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n    \"phone\": \"7777700000\"\n}",
+                                    "raw": "{\n    \"name\": \"Top Affiliate\",\n    \"phone\": \"7766554433\",\n    \"email\": \"top@example.com\",\n    \"password\": \"password123\",\n    \"confirm_password\": \"password123\",\n    \"referral_code\": \"OPTIONAL\"\n}",
                                     "options": {
                                         "raw": {
                                             "language": "json"
@@ -283,28 +175,12 @@
                             }
                         },
                         {
-                            "name": "2. Complete Profile",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"phone\": \"7777700000\",\n    \"otp\": \"123456\",\n    \"name\": \"New Affiliate\",\n    \"email\": \"affiliate@example.com\",\n    \"password\": \"password123\",\n    \"confirm_password\": \"password123\",\n    \"referral_code\": \"OPTIONAL\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/affiliate/register-complete"
-                            }
-                        },
-                        {
                             "name": "Login",
                             "request": {
                                 "method": "POST",
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n    \"identifier\": \"affiliate@example.com\",\n    \"password\": \"password123\"\n}",
+                                    "raw": "{\n    \"identifier\": \"7766554433\",\n    \"password\": \"password123\"\n}",
                                     "options": {
                                         "raw": {
                                             "language": "json"
@@ -325,22 +201,6 @@
                                 "method": "POST",
                                 "url": "{{base_url}}/affiliate/list"
                             }
-                        },
-                        {
-                            "name": "Show",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"id\": 1\n}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/affiliate/show"
-                            }
                         }
                     ]
                 }
@@ -353,12 +213,12 @@
                     "name": "Auth",
                     "item": [
                         {
-                            "name": "1. Send Registration OTP",
+                            "name": "Register",
                             "request": {
                                 "method": "POST",
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n    \"phone\": \"9876543210\"\n}",
+                                    "raw": "{\n    \"name\": \"Normal User\",\n    \"phone\": \"9876543200\",\n    \"email\": \"user@example.com\",\n    \"password\": \"password123\"\n}",
                                     "options": {
                                         "raw": {
                                             "language": "json"
@@ -369,41 +229,22 @@
                             }
                         },
                         {
-                            "name": "2. Complete Profile",
+                            "name": "Login",
                             "request": {
                                 "method": "POST",
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n    \"phone\": \"9876543210\",\n    \"otp\": \"123456\",\n    \"name\": \"User Name\",\n    \"email\": \"user@example.com\",\n    \"password\": \"password123\"\n}",
+                                    "raw": "{\n    \"identifier\": \"9876543200\",\n    \"password\": \"password123\"\n}",
                                     "options": {
                                         "raw": {
                                             "language": "json"
                                         }
                                     }
                                 },
-                                "url": "{{base_url}}/user/register-complete"
+                                "url": "{{base_url}}/user/login"
                             }
                         }
                     ]
-                }
-            ]
-        },
-        {
-            "name": "Properties",
-            "item": [
-                {
-                    "name": "List All",
-                    "request": {
-                        "method": "GET",
-                        "url": "{{base_url}}/properties"
-                    }
-                },
-                {
-                    "name": "Show One",
-                    "request": {
-                        "method": "GET",
-                        "url": "{{base_url}}/properties/1"
-                    }
                 }
             ]
         }

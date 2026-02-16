@@ -7,59 +7,29 @@ import Mail from '../utils/Mail.js';
 import { successResponse, errorResponse } from '../utils/response.js';
 
 /**
- * Step 1: Send Registration OTP (Mobile Only)
+ * Register Merchant (Single Step)
  */
-export const sendRegistrationOTP = async (req, res) => {
+export const register = async (req, res) => {
     try {
-        const phone = req.body.phone;
-        if (!phone) {
-            return errorResponse(res, 'Mobile number required', null, 400);
-        }
-
-        const existing = await MerchantModel.findByPhone(phone);
-        if (existing && existing.status === 'active') {
-            return errorResponse(res, 'Mobile already registered', null, 400);
-        }
-
-        const otp = '123456'; // demo
-        await MerchantModel.storeRegistrationOTP(phone, otp);
-        await Sms.sendOTP(phone, otp);
-
-        const responseData = {
-            otp: otp
-        };
-
-        return successResponse(res, 'Registration OTP sent', responseData);
-    } catch (e) {
-        return errorResponse(res, e.message, null, 500);
-    }
-};
-
-/**
- * Step 2: Complete Profile
- */
-export const completeRegistration = async (req, res) => {
-    try {
-        const phone = req.body.phone;
-        const otp = req.body.otp;
         const name = req.body.name;
+        const phone = req.body.phone;
         const email = req.body.email; // Optional
         const company_name = req.body.company_name; // Optional
         const password = req.body.password;
         const confirm_password = req.body.confirm_password;
         const referral_code = req.body.referral_code;
 
-        if (!phone || !otp || !name || !password || !confirm_password) {
-            return errorResponse(res, 'Required fields missing: phone, otp, name, password, confirm_password', null, 400);
+        if (!phone || !name || !password || !confirm_password) {
+            return errorResponse(res, 'Required fields missing: phone, name, password, confirm_password', null, 400);
         }
 
         if (password !== confirm_password) {
             return errorResponse(res, 'Passwords do not match', null, 400);
         }
 
-        const merchant = await MerchantModel.verifyRegistrationOTP(phone, otp);
-        if (!merchant) {
-            return errorResponse(res, 'Invalid or expired OTP', null, 401);
+        const existing = await MerchantModel.findByPhone(phone);
+        if (existing && existing.status === 'active') {
+            return errorResponse(res, 'Mobile already registered', null, 400);
         }
 
         let affiliateId = null;
@@ -72,25 +42,45 @@ export const completeRegistration = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const data = {
-            name: name,
-            email: email || null,
-            company_name: company_name || null,
-            password: hashedPassword,
-            affiliate_id: affiliateId,
-            status: 'active',
-            merchant_type: 'owner', // Defaulting to owner
-            registration_otp: null,
-            registration_otp_expires: null
-        };
+        // Merchant record creation
+        // Note: findByPhone might have returned a pending_registration record if using previous logic, 
+        // but since we are removing OTP, we just create or update.
+        // For simplicity, we check if it exists (even if pending) and update, or create new.
 
-        await MerchantModel.update(merchant.id, data);
+        let merchantId;
+        if (existing) {
+            merchantId = existing.id;
+            const updateData = {
+                name: name,
+                email: email || null,
+                company_name: company_name || null,
+                password: hashedPassword,
+                affiliate_id: affiliateId,
+                status: 'active',
+                merchant_type: 'owner',
+                registration_otp: null,
+                registration_otp_expires: null
+            };
+            await MerchantModel.update(merchantId, updateData);
+        } else {
+            const createData = {
+                name: name,
+                phone: phone,
+                email: email || null,
+                company_name: company_name || null,
+                password: hashedPassword,
+                affiliate_id: affiliateId,
+                status: 'active',
+                merchant_type: 'owner'
+            };
+            merchantId = await MerchantModel.create(createData);
+        }
 
-        const token = jwt.sign({ id: merchant.id, role: 'merchant' }, process.env.JWT_SECRET, { expiresIn: '7d' });
+        const token = jwt.sign({ id: merchantId, role: 'merchant' }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
         const responseData = {
             merchant: {
-                id: merchant.id,
+                id: merchantId,
                 name: name,
                 email: email,
                 phone: phone,
@@ -100,7 +90,7 @@ export const completeRegistration = async (req, res) => {
             token: token
         };
 
-        return successResponse(res, 'Registration complete. 1 free credit added.', responseData);
+        return successResponse(res, 'Registration successful. 1 free credit added.', responseData);
     } catch (e) {
         return errorResponse(res, e.message, null, 500);
     }

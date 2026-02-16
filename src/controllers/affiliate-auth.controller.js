@@ -6,58 +6,28 @@ import Mail from '../utils/Mail.js';
 import { successResponse, errorResponse } from '../utils/response.js';
 
 /**
- * Step 1: Send Registration OTP (Mobile Only)
+ * Register Affiliate (Single Step)
  */
-export const sendRegistrationOTP = async (req, res) => {
+export const register = async (req, res) => {
     try {
-        const phone = req.body.phone;
-        if (!phone) {
-            return errorResponse(res, 'Mobile number required', null, 400);
-        }
-
-        const existing = await AffiliateModel.findByPhone(phone);
-        if (existing && existing.status === 'active') {
-            return errorResponse(res, 'Mobile already registered', null, 400);
-        }
-
-        const otp = '123456'; // demo
-        await AffiliateModel.storeRegistrationOTP(phone, otp);
-        await Sms.sendOTP(phone, otp);
-
-        const responseData = {
-            otp: otp
-        };
-
-        return successResponse(res, 'Registration OTP sent', responseData);
-    } catch (e) {
-        return errorResponse(res, e.message, null, 500);
-    }
-};
-
-/**
- * Step 2: Complete Profile
- */
-export const completeRegistration = async (req, res) => {
-    try {
-        const phone = req.body.phone;
-        const otp = req.body.otp;
         const name = req.body.name;
+        const phone = req.body.phone;
         const email = req.body.email; // Optional
         const password = req.body.password;
         const confirm_password = req.body.confirm_password;
         const referral_code = req.body.referral_code;
 
-        if (!phone || !otp || !name || !password || !confirm_password) {
-            return errorResponse(res, 'Required fields missing: phone, otp, name, password, confirm_password', null, 400);
+        if (!phone || !name || !password || !confirm_password) {
+            return errorResponse(res, 'Required fields missing: phone, name, password, confirm_password', null, 400);
         }
 
         if (password !== confirm_password) {
             return errorResponse(res, 'Passwords do not match', null, 400);
         }
 
-        const affiliate = await AffiliateModel.verifyRegistrationOTP(phone, otp);
-        if (!affiliate) {
-            return errorResponse(res, 'Invalid or expired OTP', null, 401);
+        const existing = await AffiliateModel.findByPhone(phone);
+        if (existing && existing.status === 'active') {
+            return errorResponse(res, 'Mobile already registered', null, 400);
         }
 
         let referredBy = null;
@@ -70,18 +40,32 @@ export const completeRegistration = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const data = {
-            name: name,
-            email: email || null,
-            password: hashedPassword,
-            status: 'active',
-            referred_by: referredBy,
-            registration_otp: null,
-            registration_otp_expires: null
-        };
+        let affiliateId;
+        if (existing) {
+            affiliateId = existing.id;
+            const updateData = {
+                name: name,
+                email: email || null,
+                password: hashedPassword,
+                status: 'active',
+                referred_by: referredBy,
+                registration_otp: null,
+                registration_otp_expires: null
+            };
+            await AffiliateModel.update(affiliateId, updateData);
+        } else {
+            const createData = {
+                name: name,
+                phone: phone,
+                email: email || null,
+                password: hashedPassword,
+                status: 'active',
+                referred_by: referredBy
+            };
+            affiliateId = await AffiliateModel.create(createData);
+        }
 
-        await AffiliateModel.update(affiliate.id, data);
-
+        const affiliate = await AffiliateModel.findById(affiliateId);
         const token = jwt.sign({ id: affiliate.id, role: 'affiliate' }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
         const responseData = {

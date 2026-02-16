@@ -6,13 +6,17 @@ import Mail from '../utils/Mail.js';
 import { successResponse, errorResponse } from '../utils/response.js';
 
 /**
- * Step 1: Send Registration OTP (Mobile Only)
+ * Register User (Single Step)
  */
-export const sendRegistrationOTP = async (req, res) => {
+export const register = async (req, res) => {
     try {
+        const name = req.body.name;
         const phone = req.body.phone;
-        if (!phone) {
-            return errorResponse(res, 'Mobile number required', null, 400);
+        const email = req.body.email;
+        const password = req.body.password;
+
+        if (!phone || !name || !email || !password) {
+            return errorResponse(res, 'All fields are required: name, phone, email, password', null, 400);
         }
 
         const existingUser = await UserModel.findByPhone(phone);
@@ -20,57 +24,35 @@ export const sendRegistrationOTP = async (req, res) => {
             return errorResponse(res, 'Mobile number already registered', null, 400);
         }
 
-        const otp = '123456'; // demo
-        await UserModel.storeRegistrationOTP(phone, otp);
-        await Sms.sendOTP(phone, otp);
-
-        const responseData = {
-            otp: otp
-        };
-
-        return successResponse(res, 'Registration OTP sent', responseData);
-    } catch (e) {
-        return errorResponse(res, e.message, null, 500);
-    }
-};
-
-/**
- * Step 2: Complete Profile
- */
-export const completeRegistration = async (req, res) => {
-    try {
-        const phone = req.body.phone;
-        const otp = req.body.otp;
-        const name = req.body.name;
-        const email = req.body.email;
-        const password = req.body.password;
-
-        if (!phone || !otp || !name || !email || !password) {
-            return errorResponse(res, 'All fields are required', null, 400);
-        }
-
-        const user = await UserModel.verifyRegistrationOTP(phone, otp);
-        if (!user) {
-            return errorResponse(res, 'Invalid or expired OTP', null, 401);
-        }
-
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const data = {
-            name: name,
-            email: email,
-            password: hashedPassword,
-            status: 'active',
-            registration_otp: null,
-            registration_otp_expires: null
-        };
+        let userId;
+        if (existingUser) {
+            userId = existingUser.id;
+            const data = {
+                name: name,
+                email: email,
+                password: hashedPassword,
+                status: 'active',
+                registration_otp: null,
+                registration_otp_expires: null
+            };
+            await UserModel.update(userId, data);
+        } else {
+            const data = {
+                name: name,
+                phone: phone,
+                email: email,
+                password: hashedPassword,
+                status: 'active'
+            };
+            userId = await UserModel.create(data);
+        }
 
-        await UserModel.update(user.id, data);
-
-        const token = jwt.sign({ id: user.id, role: 'user' }, process.env.JWT_SECRET, { expiresIn: '7d' });
+        const token = jwt.sign({ id: userId, role: 'user' }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
         const userData = {
-            id: user.id,
+            id: userId,
             name: name,
             email: email,
             phone: phone,
@@ -82,7 +64,7 @@ export const completeRegistration = async (req, res) => {
             token: token
         };
 
-        return successResponse(res, 'Registration complete', responseData);
+        return successResponse(res, 'Registration successful', responseData);
     } catch (e) {
         return errorResponse(res, e.message, null, 500);
     }
@@ -131,7 +113,7 @@ export const login = async (req, res) => {
 };
 
 /**
- * Forgot Password (Dual Channel)
+ * Forgot Password
  */
 export const forgotPassword = async (req, res) => {
     try {
