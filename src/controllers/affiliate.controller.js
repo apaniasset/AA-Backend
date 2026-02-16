@@ -19,6 +19,7 @@ export const index = async (req, res) => {
                 phone: a.phone,
                 referral_code: a.referral_code,
                 referred_by: a.referred_by,
+                referrer_code: a.referrer_code || null,
                 status: a.status,
                 created_at: a.created_at
             };
@@ -74,6 +75,7 @@ export const show = async (req, res) => {
             phone: affiliate.phone,
             referral_code: affiliate.referral_code,
             referred_by: affiliate.referred_by,
+            referrer_code: affiliate.referrer_code || null,
             status: affiliate.status,
             created_at: affiliate.created_at
         };

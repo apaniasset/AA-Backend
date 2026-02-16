@@ -4,7 +4,12 @@ import pool from '../config/db.js';
  * Find all merchants
  */
 export const findAll = async () => {
-    const [rows] = await pool.query('SELECT * FROM merchant ORDER BY id DESC');
+    const [rows] = await pool.query(`
+        SELECT m.*, a.referral_code as referrer_code 
+        FROM merchant m 
+        LEFT JOIN affiliate a ON m.affiliate_id = a.id 
+        ORDER BY m.id DESC
+    `);
     return rows;
 };
 
@@ -12,10 +17,13 @@ export const findAll = async () => {
  * Find merchant by email or phone
  */
 export const findByEmailOrPhone = async (identifier) => {
-    const [rows] = await pool.query(
-        'SELECT * FROM merchant WHERE email = ? OR phone = ? LIMIT 1',
-        [identifier, identifier]
-    );
+    const [rows] = await pool.query(`
+        SELECT m.*, a.referral_code as referrer_code 
+        FROM merchant m 
+        LEFT JOIN affiliate a ON m.affiliate_id = a.id 
+        WHERE m.email = ? OR m.phone = ? 
+        LIMIT 1
+    `, [identifier, identifier]);
     return rows.length > 0 ? rows[0] : null;
 };
 
@@ -23,10 +31,13 @@ export const findByEmailOrPhone = async (identifier) => {
  * Find merchant by phone
  */
 export const findByPhone = async (phone) => {
-    const [rows] = await pool.query(
-        'SELECT * FROM merchant WHERE phone = ? LIMIT 1',
-        [phone]
-    );
+    const [rows] = await pool.query(`
+        SELECT m.*, a.referral_code as referrer_code 
+        FROM merchant m 
+        LEFT JOIN affiliate a ON m.affiliate_id = a.id 
+        WHERE m.phone = ? 
+        LIMIT 1
+    `, [phone]);
     return rows.length > 0 ? rows[0] : null;
 };
 
@@ -34,10 +45,13 @@ export const findByPhone = async (phone) => {
  * Find merchant by ID
  */
 export const findById = async (id) => {
-    const [rows] = await pool.query(
-        'SELECT * FROM merchant WHERE id = ? LIMIT 1',
-        [id]
-    );
+    const [rows] = await pool.query(`
+        SELECT m.*, a.referral_code as referrer_code 
+        FROM merchant m 
+        LEFT JOIN affiliate a ON m.affiliate_id = a.id 
+        WHERE m.id = ? 
+        LIMIT 1
+    `, [id]);
     return rows.length > 0 ? rows[0] : null;
 };
 

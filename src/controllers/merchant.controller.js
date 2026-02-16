@@ -19,7 +19,8 @@ export const index = async (req, res) => {
                 email: m.email,
                 phone: m.phone,
                 company_name: m.company_name,
-                affiliate_id: m.affiliate_id,
+                referred_by: m.affiliate_id,
+                referrer_code: m.referrer_code || null,
                 status: m.status,
                 created_at: m.created_at
             };
@@ -80,7 +81,8 @@ export const show = async (req, res) => {
             email: merchant.email,
             phone: merchant.phone,
             company_name: merchant.company_name,
-            affiliate_id: merchant.affiliate_id,
+            referred_by: merchant.affiliate_id,
+            referrer_code: merchant.referrer_code || null,
             status: merchant.status,
             created_at: merchant.created_at
         };

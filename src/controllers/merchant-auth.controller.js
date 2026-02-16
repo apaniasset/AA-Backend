@@ -85,7 +85,8 @@ export const register = async (req, res) => {
                 email: email,
                 phone: phone,
                 company_name: company_name,
-                affiliate_id: affiliateId
+                referred_by: affiliateId,
+                referrer_code: referral_code || null
             },
             token: token
         };
@@ -128,7 +129,8 @@ export const login = async (req, res) => {
                 email: merchant.email,
                 phone: merchant.phone,
                 company_name: merchant.company_name,
-                affiliate_id: merchant.affiliate_id
+                referred_by: merchant.affiliate_id,
+                referrer_code: merchant.referrer_code || null
             },
             token: token
         };

@@ -4,7 +4,12 @@ import pool from '../config/db.js';
  * Find all affiliates
  */
 export const findAll = async () => {
-    const [rows] = await pool.query('SELECT * FROM affiliate ORDER BY id DESC');
+    const [rows] = await pool.query(`
+        SELECT a1.*, a2.referral_code as referrer_code 
+        FROM affiliate a1 
+        LEFT JOIN affiliate a2 ON a1.referred_by = a2.id 
+        ORDER BY a1.id DESC
+    `);
     return rows;
 };
 
@@ -12,10 +17,13 @@ export const findAll = async () => {
  * Find affiliate by email or phone
  */
 export const findByEmailOrPhone = async (identifier) => {
-    const [rows] = await pool.query(
-        'SELECT * FROM affiliate WHERE email = ? OR phone = ? LIMIT 1',
-        [identifier, identifier]
-    );
+    const [rows] = await pool.query(`
+        SELECT a1.*, a2.referral_code as referrer_code 
+        FROM affiliate a1 
+        LEFT JOIN affiliate a2 ON a1.referred_by = a2.id 
+        WHERE a1.email = ? OR a1.phone = ? 
+        LIMIT 1
+    `, [identifier, identifier]);
     return rows.length > 0 ? rows[0] : null;
 };
 
@@ -23,10 +31,13 @@ export const findByEmailOrPhone = async (identifier) => {
  * Find affiliate by referral code
  */
 export const findByReferralCode = async (code) => {
-    const [rows] = await pool.query(
-        'SELECT * FROM affiliate WHERE referral_code = ? LIMIT 1',
-        [code]
-    );
+    const [rows] = await pool.query(`
+        SELECT a1.*, a2.referral_code as referrer_code 
+        FROM affiliate a1 
+        LEFT JOIN affiliate a2 ON a1.referred_by = a2.id 
+        WHERE a1.referral_code = ? 
+        LIMIT 1
+    `, [code]);
     return rows.length > 0 ? rows[0] : null;
 };
 
@@ -34,10 +45,13 @@ export const findByReferralCode = async (code) => {
  * Find affiliate by phone
  */
 export const findByPhone = async (phone) => {
-    const [rows] = await pool.query(
-        'SELECT * FROM affiliate WHERE phone = ? LIMIT 1',
-        [phone]
-    );
+    const [rows] = await pool.query(`
+        SELECT a1.*, a2.referral_code as referrer_code 
+        FROM affiliate a1 
+        LEFT JOIN affiliate a2 ON a1.referred_by = a2.id 
+        WHERE a1.phone = ? 
+        LIMIT 1
+    `, [phone]);
     return rows.length > 0 ? rows[0] : null;
 };
 
@@ -59,7 +73,13 @@ export const create = async (data) => {
  * Find affiliate by ID
  */
 export const findById = async (id) => {
-    const [rows] = await pool.query('SELECT * FROM affiliate WHERE id = ? LIMIT 1', [id]);
+    const [rows] = await pool.query(`
+        SELECT a1.*, a2.referral_code as referrer_code 
+        FROM affiliate a1 
+        LEFT JOIN affiliate a2 ON a1.referred_by = a2.id 
+        WHERE a1.id = ? 
+        LIMIT 1
+    `, [id]);
     return rows.length > 0 ? rows[0] : null;
 };
 

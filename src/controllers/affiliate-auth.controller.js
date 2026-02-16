@@ -75,7 +75,8 @@ export const register = async (req, res) => {
                 email: email,
                 phone: phone,
                 referral_code: affiliate.referral_code,
-                referred_by: referredBy
+                referred_by: referredBy,
+                referrer_code: referral_code || null
             },
             token: token
         };
@@ -118,7 +119,8 @@ export const login = async (req, res) => {
                 email: affiliate.email,
                 phone: affiliate.phone,
                 referral_code: affiliate.referral_code,
-                referred_by: affiliate.referred_by
+                referred_by: affiliate.referred_by,
+                referrer_code: affiliate.referrer_code || null
             },
             token: token
         };
