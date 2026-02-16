@@ -1,10 +1,14 @@
 import mysql from 'mysql2/promise';
-import dotenv from 'dotenv';
+import './env.js'; // Ensure env is loaded
 
-import path from 'path';
-
-// Load .env variables from project root
-dotenv.config({ path: path.resolve(process.cwd(), '.env') });
+// Critical Validation: Check if .env variables are actually present
+if (!process.env.DB_HOST || !process.env.DB_USER || !process.env.DB_NAME) {
+    console.error('--- DATABASE CONFIG ERROR ---');
+    console.error('Required environment variables (DB_HOST, DB_USER, DB_NAME) are missing!');
+    console.error('This usually means your .env file is missing or not being read correctly.');
+    console.error('-----------------------------');
+    process.exit(1);
+}
 
 /**
  * Database Connection Pool
