@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { errorMiddleware } from './middleware/errorMiddleware.js';
-import routes from './routes/api.js';
+import routes from './routes/index.routes.js';
 import Logger from './utils/Logger.js';
 import Mail from './utils/Mail.js';
 
