@@ -5,11 +5,15 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const LOG_DIR = path.join(__dirname, '../../logs');
+const LOG_DIR = path.resolve(process.cwd(), 'logs');
 
-// Ensure logs directory exists
-if (!fs.existsSync(LOG_DIR)) {
-    fs.mkdirSync(LOG_DIR, { recursive: true });
+// Ensure logs directory exists (don't crash if it fails)
+try {
+    if (!fs.existsSync(LOG_DIR)) {
+        fs.mkdirSync(LOG_DIR, { recursive: true });
+    }
+} catch (e) {
+    console.error('CRITICAL: Failed to create logs directory:', e.message);
 }
 
 class Logger {

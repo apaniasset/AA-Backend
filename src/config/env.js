@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import Logger from '../utils/Logger.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -9,18 +10,17 @@ const __dirname = path.dirname(__filename);
 const rootPath = path.resolve(__dirname, '../../');
 const envPath = path.join(rootPath, '.env');
 
-console.log(`[ENV] Loading variables from: ${envPath}`);
+Logger.info(`[ENV] Loading variables from: ${envPath}`);
 
 const result = dotenv.config({ path: envPath });
 
 if (result.error) {
-    console.error('--- ENV LOAD ERROR ---');
-    console.error(`Could not find or read .env file at: ${envPath}`);
-    console.error('Make sure the file exists and has correct permissions.');
-    console.error('-----------------------');
-    // We don't exit here to allow fallbacks, but DB will fail later with clear error
+    Logger.error('--- ENV LOAD ERROR ---');
+    Logger.error(`Could not find or read .env file at: ${envPath}`);
+    Logger.error('Make sure the file exists and has correct permissions.');
+    Logger.error('-----------------------');
 } else {
-    console.log('[ENV] Variables loaded successfully.');
+    Logger.info('[ENV] Variables loaded successfully.');
 }
 
 export default process.env;
