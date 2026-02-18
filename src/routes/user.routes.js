@@ -3,7 +3,7 @@ import * as User from '../controllers/user.controller.js';
 import * as Auth from '../controllers/user-auth.controller.js';
 import { validate, userSchema } from '../validators/userValidator.js';
 import { loginSchema } from '../validators/authValidator.js';
-
+import { authMiddleware } from '../middleware/authMiddleware.js';
 const router = Router();
 
 // Laravel-style Group Helper

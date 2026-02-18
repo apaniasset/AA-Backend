@@ -5,6 +5,7 @@ import affiliateRoutes from './affiliate.routes.js';
 import userRoutes from './user.routes.js';
 import propertyRoutes from './property.routes.js';
 import inquiryRoutes from './inquiry.routes.js';
+import masterRoutes from './master.routes.js';
 
 const api = Router();
 
@@ -14,5 +15,6 @@ api.use('/affiliate', affiliateRoutes);
 api.use('/user', userRoutes);
 api.use('/properties', propertyRoutes);
 api.use('/inquiries', inquiryRoutes);
+api.use('/master', masterRoutes);
 
 export default api;
