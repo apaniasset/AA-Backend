@@ -6,7 +6,49 @@ import Mail from '../utils/Mail.js';
 import { successResponse, errorResponse } from '../utils/response.js';
 
 /**
- * Register User (Single Step)
+ * Send OTP for Registration
+ */
+export const sendRegistrationOTP = async (req, res) => {
+    try {
+        const phone = req.body.phone;
+        if (!phone) return errorResponse(res, 'Phone number is required', null, 400);
+
+        const existingUser = await UserModel.findByPhone(phone);
+        if (existingUser && existingUser.status === 'active') {
+            return errorResponse(res, 'Mobile number already registered', null, 400);
+        }
+
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        await UserModel.storeRegistrationOTP(phone, otp);
+        await Sms.sendOTP(phone, otp);
+
+        return successResponse(res, 'OTP sent successfully', { otp });
+    } catch (e) {
+        return errorResponse(res, e.message, null, 500);
+    }
+};
+
+/**
+ * Verify OTP for Registration
+ */
+export const verifyRegistrationOTP = async (req, res) => {
+    try {
+        const phone = req.body.phone;
+        const otp = req.body.otp;
+
+        if (!phone || !otp) return errorResponse(res, 'Phone and OTP are required', null, 400);
+
+        const user = await UserModel.verifyRegistrationOTP(phone, otp);
+        if (!user) return errorResponse(res, 'Invalid or expired OTP', null, 401);
+
+        return successResponse(res, 'OTP verified successfully. You can now complete registration.');
+    } catch (e) {
+        return errorResponse(res, e.message, null, 500);
+    }
+};
+
+/**
+ * Register User (Step 2 - Details after OTP)
  */
 export const register = async (req, res) => {
     try {
@@ -20,34 +62,22 @@ export const register = async (req, res) => {
         }
 
         const existingUser = await UserModel.findByPhone(phone);
-        if (existingUser && existingUser.status === 'active') {
-            return errorResponse(res, 'Mobile number already registered', null, 400);
+        if (!existingUser || existingUser.status !== 'pending_registration') {
+            return errorResponse(res, 'Phone number not verified or already registered', null, 403);
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        let userId;
-        if (existingUser) {
-            userId = existingUser.id;
-            const data = {
-                name: name,
-                email: email,
-                password: hashedPassword,
-                status: 'active',
-                registration_otp: null,
-                registration_otp_expires: null
-            };
-            await UserModel.update(userId, data);
-        } else {
-            const data = {
-                name: name,
-                phone: phone,
-                email: email,
-                password: hashedPassword,
-                status: 'active'
-            };
-            userId = await UserModel.create(data);
-        }
+        const userId = existingUser.id;
+        const data = {
+            name: name,
+            email: email,
+            password: hashedPassword,
+            status: 'active',
+            registration_otp: null,
+            registration_otp_expires: null
+        };
+        await UserModel.update(userId, data);
 
         const token = jwt.sign({ id: userId, role: 'user' }, process.env.JWT_SECRET, { expiresIn: '7d' });
 

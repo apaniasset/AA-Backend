@@ -1,139 +1,32 @@
 {
     "info": {
         "_postman_id": "d9909d94-dd30-49c9-aba6-d5117d9ee9e6",
-        "name": "ApniAsset API (Full Admin & Mega Property)",
+        "name": "ApniAsset API (Full System)",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
     "item": [
         {
-            "name": "Admin",
+            "name": "1. Properties",
             "item": [
                 {
-                    "name": "Auth",
-                    "item": [
-                        {
-                            "name": "Login",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"identifier\": \"admin@example.com\",\n    \"password\": \"password123\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/admin/login"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "Merchants",
-                    "item": [
-                        {
-                            "name": "List",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"search\": \"\",\n    \"status\": \"active\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/admin/merchants/list"
-                            }
-                        },
-                        {
-                            "name": "Create",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"name\": \"Admin Created Merchant\",\n    \"phone\": \"9111122222\",\n    \"email\": \"admin_merch@example.com\",\n    \"password\": \"password123\",\n    \"status\": \"active\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/admin/merchants/create"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "Affiliates",
-                    "item": [
-                        {
-                            "name": "List",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"search\": \"\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/admin/affiliates/list"
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Merchant",
-            "item": [
-                {
-                    "name": "Auth",
-                    "item": [
-                        {
-                            "name": "Register",
-                            "request": {
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"name\": \"Testing Merchant\",\n    \"phone\": \"9000022222\",\n    \"email\": \"test_merch@example.com\",\n    \"password\": \"password123\",\n    \"confirm_password\": \"password123\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "url": "{{base_url}}/merchant/register"
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Properties",
-            "item": [
-                {
-                    "name": "List (with Search)",
+                    "name": "Public List (Approved Only)",
                     "request": {
                         "method": "GET",
+                        "header": [],
+                        "url": "{{base_url}}/properties"
+                    }
+                },
+                {
+                    "name": "Search Properties (Dynamic)",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
                         "url": {
-                            "raw": "{{base_url}}/properties?search=Luxury&listing_type=Sale",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "properties"
-                            ],
+                            "raw": "{{base_url}}/properties?search=Mumbai&listing_type=Sale",
                             "query": [
                                 {
                                     "key": "search",
-                                    "value": "Luxury"
+                                    "value": "Mumbai"
                                 },
                                 {
                                     "key": "listing_type",
@@ -144,7 +37,20 @@
                     }
                 },
                 {
-                    "name": "Create (Mega Form)",
+                    "name": "My Properties (Owner View)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/properties?my_deals=1"
+                    }
+                },
+                {
+                    "name": "Add Property",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -155,14 +61,199 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"title\": \"Mega Property Test\",\n    \"address\": \"High Street 456\",\n    \"listing_type\": \"Sale\",\n    \"property_type\": \"Flat\",\n    \"construction_status\": \"Ready to Move\",\n    \"sale_price\": 5000000,\n    \"bedrooms\": 3,\n    \"bathrooms\": 2,\n    \"amenity\": [\"Gym\", \"Pool\", \"Security\"]\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
+                            "raw": "{\n    \"title\": \"Luxury Villa\",\n    \"address\": \"High Street\",\n    \"listing_type\": \"Sale\",\n    \"property_type\": \"Villa\",\n    \"sale_price\": 10000000,\n    \"city_id\": 1,\n    \"state_id\": 1,\n    \"country_id\": 1\n}"
+                        },
+                        "url": "{{base_url}}/properties"
+                    }
+                },
+                {
+                    "name": "Edit Property",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"title\": \"Updated Villa Name\"\n}"
+                        },
+                        "url": "{{base_url}}/properties/1"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "2. Authentication (OTP Flow)",
+            "item": [
+                {
+                    "name": "User Registration",
+                    "item": [
+                        {
+                            "name": "Send OTP",
+                            "request": {
+                                "method": "POST",
+                                "url": "{{base_url}}/user/send-otp-registration",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"phone\":\"9000011111\"}"
                                 }
                             }
                         },
-                        "url": "{{base_url}}/properties"
+                        {
+                            "name": "Verify OTP",
+                            "request": {
+                                "method": "POST",
+                                "url": "{{base_url}}/user/verify-otp-registration",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"phone\":\"9000011111\", \"otp\":\"123456\"}"
+                                }
+                            }
+                        },
+                        {
+                            "name": "Complete Register",
+                            "request": {
+                                "method": "POST",
+                                "url": "{{base_url}}/user/register",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"name\":\"Test User\", \"phone\":\"9000011111\", \"email\":\"user@test.com\", \"password\":\"password\"}"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Merchant Registration",
+                    "item": [
+                        {
+                            "name": "Send OTP",
+                            "request": {
+                                "method": "POST",
+                                "url": "{{base_url}}/merchant/send-otp-registration",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"phone\":\"9000022222\"}"
+                                }
+                            }
+                        },
+                        {
+                            "name": "Verify OTP",
+                            "request": {
+                                "method": "POST",
+                                "url": "{{base_url}}/merchant/verify-otp-registration",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"phone\":\"9000022222\", \"otp\":\"123456\"}"
+                                }
+                            }
+                        },
+                        {
+                            "name": "Complete Register",
+                            "request": {
+                                "method": "POST",
+                                "url": "{{base_url}}/merchant/register",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"name\":\"Test Merchant\", \"phone\":\"9000022222\", \"company_name\":\"Test Co\", \"password\":\"password\"}"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Login (All Roles)",
+                    "request": {
+                        "method": "POST",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"identifier\": \"9000011111\",\n    \"password\": \"password\"\n}"
+                        },
+                        "url": "{{base_url}}/user/login"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "3. Merchant Locations",
+            "item": [
+                {
+                    "name": "My Locations",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/merchant/my-locations"
+                    }
+                },
+                {
+                    "name": "Add Location",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"city_id\":1, \"city_name\":\"Mumbai\", \"area_name\":\"Andheri\"}"
+                        },
+                        "url": "{{base_url}}/merchant/add-working-location"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "4. Admin Portal",
+            "item": [
+                {
+                    "name": "Admin Login",
+                    "request": {
+                        "method": "POST",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"identifier\":\"admin@test.com\", \"password\":\"password\"}"
+                        },
+                        "url": "{{base_url}}/admin/login"
+                    }
+                },
+                {
+                    "name": "List Merchants",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/admin/merchants/list"
+                    }
+                },
+                {
+                    "name": "Approve Property",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"status\":\"active\"}"
+                        },
+                        "url": "{{base_url}}/properties/1"
                     }
                 }
             ]
@@ -175,7 +266,11 @@
         },
         {
             "key": "token",
-            "value": "YOUR_JWT_HERE"
+            "value": "JWT_TOKEN_HERE"
+        },
+        {
+            "key": "admin_token",
+            "value": "ADMIN_TOKEN_HERE"
         }
     ]
 }

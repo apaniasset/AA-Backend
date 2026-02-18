@@ -22,7 +22,9 @@ addGroupHelper(router);
 
 // --- Authentication ---
 
-// Signup (Single Step - No OTP)
+// Signup (Two Steps: OTP + Details)
+router.post('/send-otp-registration', Auth.sendRegistrationOTP);
+router.post('/verify-otp-registration', Auth.verifyRegistrationOTP);
 router.post('/register', Auth.register);
 
 // Login (Email/Phone + Password)
@@ -42,6 +44,12 @@ router.post('/delete', Merchant.destroy);
 
 // Apply auth to all merchant routes
 const auth = authMiddleware(['merchant']);
+
+// Working Location Management
+router.get('/my-locations', auth, Merchant.getMyWorkingLocations);
+router.post('/add-working-location', auth, Merchant.addWorkingLocation);
+router.post('/edit-working-location/:id', auth, Merchant.updateWorkingLocation);
+router.post('/delete-working-location/:id', auth, Merchant.deleteWorkingLocation);
 
 // Property Management (Merchant Specific)
 router.get('/my-properties', auth, Prop.myProperties);

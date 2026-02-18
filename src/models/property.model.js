@@ -1,21 +1,71 @@
 import pool from '../config/db.js';
 
 /**
- * Get all properties with images and merchant info
+ * Get all properties with images and owner info
  */
 export const findAll = async (filters = {}) => {
     let query = `
-        SELECT p.*, m.name as merchant_name, m.company_name
+        SELECT p.*, 
+        CASE 
+            WHEN p.merchant_id IS NOT NULL THEN m.name 
+            WHEN p.user_id IS NOT NULL THEN u.name 
+            ELSE 'Admin'
+        END as owner_name,
+        CASE 
+            WHEN p.merchant_id IS NOT NULL THEN m.company_name 
+            ELSE NULL 
+        END as company_name,
+        c.city_name,
+        s.state_name,
+        co.name as country_name,
+        a.area_name as locality_name
         FROM merchant_properties p
         LEFT JOIN merchant m ON p.merchant_id = m.id
+        LEFT JOIN users u ON p.user_id = u.id
+        LEFT JOIN master_cities c ON p.city_id = c.id
+        LEFT JOIN master_states s ON p.state_id = s.id
+        LEFT JOIN master_countries co ON p.country_id = co.id
+        LEFT JOIN master_areas a ON p.locality_id = a.id
         WHERE 1=1
     `;
     const params = [];
 
+    // Filter by ownership (My Deals)
+    if (filters.my_deals) {
+        if (filters.user_id) {
+            query += ' AND p.user_id = ?';
+            params.push(filters.user_id);
+        } else if (filters.merchant_id) {
+            query += ' AND p.merchant_id = ?';
+            params.push(filters.merchant_id);
+        } else if (filters.admin_id) {
+            query += ' AND p.admin_id = ?';
+            params.push(filters.admin_id);
+        }
+    } else {
+        // Public view: only active unless status is explicitly requested (e.g. by Admin)
+        if (filters.status) {
+            query += ' AND p.status = ?';
+            params.push(filters.status);
+        } else {
+            query += ' AND p.status = "active"';
+        }
+
+        // Search by specific owner if requested
+        if (filters.merchant_id && !filters.my_deals) {
+            query += ' AND p.merchant_id = ?';
+            params.push(filters.merchant_id);
+        }
+        if (filters.user_id && !filters.my_deals) {
+            query += ' AND p.user_id = ?';
+            params.push(filters.user_id);
+        }
+    }
+
     if (filters.search) {
         const search = `%${filters.search}%`;
-        query += ` AND (p.title LIKE ? OR p.description LIKE ? OR p.property_id LIKE ? OR p.city LIKE ? OR p.location LIKE ? OR p.address_line1 LIKE ? OR p.address_line2 LIKE ?)`;
-        params.push(search, search, search, search, search, search, search);
+        query += ` AND (p.title LIKE ? OR p.description LIKE ? OR p.property_id LIKE ? OR c.city_name LIKE ? OR s.state_name LIKE ? OR co.name LIKE ? OR a.area_name LIKE ? OR p.location LIKE ? OR p.address_line1 LIKE ?)`;
+        params.push(search, search, search, search, search, search, search, search, search);
     }
 
     if (filters.type) {
@@ -29,16 +79,6 @@ export const findAll = async (filters = {}) => {
     if (filters.property_main_type) {
         query += ' AND p.property_main_type = ?';
         params.push(filters.property_main_type);
-    }
-
-    if (filters.merchant_id) {
-        query += ' AND p.merchant_id = ?';
-        params.push(filters.merchant_id);
-    }
-
-    if (filters.status) {
-        query += ' AND p.status = ?';
-        params.push(filters.status);
     }
 
     query += ' ORDER BY p.created_at DESC';
@@ -58,10 +98,31 @@ export const findAll = async (filters = {}) => {
  * Find property by ID
  */
 export const findById = async (id) => {
-    const [rows] = await pool.query(
-        'SELECT p.*, m.name as merchant_name, m.company_name FROM merchant_properties p LEFT JOIN merchant m ON p.merchant_id = m.id WHERE p.id = ? LIMIT 1',
-        [id]
-    );
+    const [rows] = await pool.query(`
+        SELECT p.*, 
+        CASE 
+            WHEN p.merchant_id IS NOT NULL THEN m.name 
+            WHEN p.user_id IS NOT NULL THEN u.name 
+            ELSE 'Admin'
+        END as owner_name,
+        CASE 
+            WHEN p.merchant_id IS NOT NULL THEN m.company_name 
+            ELSE NULL 
+        END as company_name,
+        c.city_name,
+        s.state_name,
+        co.name as country_name,
+        a.area_name as locality_name
+        FROM merchant_properties p 
+        LEFT JOIN merchant m ON p.merchant_id = m.id
+        LEFT JOIN users u ON p.user_id = u.id
+        LEFT JOIN master_cities c ON p.city_id = c.id
+        LEFT JOIN master_states s ON p.state_id = s.id
+        LEFT JOIN master_countries co ON p.country_id = co.id
+        LEFT JOIN master_areas a ON p.locality_id = a.id
+        WHERE p.id = ? 
+        LIMIT 1
+    `, [id]);
     if (rows.length === 0) return null;
 
     const property = rows[0];

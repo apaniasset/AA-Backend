@@ -19,7 +19,9 @@ addGroupHelper(router);
 
 // --- Authentication ---
 
-// Signup (Single Step - No OTP)
+// Signup (Two Steps: OTP + Details)
+router.post('/send-otp-registration', Auth.sendRegistrationOTP);
+router.post('/verify-otp-registration', Auth.verifyRegistrationOTP);
 router.post('/register', Auth.register);
 
 // Login (Email/Phone + Password)
@@ -38,5 +40,14 @@ router.post('/update', validate(userSchema), User.update);
 router.post('/delete', User.destroy);
 router.post('/update-status', User.updateStatus);
 router.post('/change-password', User.changePassword);
+
+// --- Property Management ---
+import * as MainProp from '../controllers/property.controller.js';
+const propertyAuth = authMiddleware(['user']);
+
+router.get('/my-deals', propertyAuth, (req, res, next) => { req.query.my_deals = 1; next(); }, MainProp.index);
+router.post('/add-property', propertyAuth, MainProp.store);
+router.post('/edit-property/:id', propertyAuth, MainProp.update);
+router.post('/delete-property/:id', propertyAuth, MainProp.destroy);
 
 export default router;

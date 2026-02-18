@@ -5,7 +5,8 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const LOG_DIR = path.resolve(process.cwd(), 'logs');
+// Reliable project root resolution for logs
+const LOG_DIR = path.resolve(__dirname, '../../logs');
 
 // Ensure logs directory exists (don't crash if it fails)
 try {
@@ -13,7 +14,7 @@ try {
         fs.mkdirSync(LOG_DIR, { recursive: true });
     }
 } catch (e) {
-    console.error('CRITICAL: Failed to create logs directory:', e.message);
+    console.error(`CRITICAL: Failed to create logs directory at ${LOG_DIR}:`, e.message);
 }
 
 class Logger {

@@ -6,11 +6,12 @@ import { successResponse, errorResponse } from '../utils/response.js';
  */
 export const myProperties = async (req, res) => {
     try {
-        const data = {
-            merchant_id: req.user.id
+        const filters = {
+            merchant_id: req.user.id,
+            my_deals: 1
         };
 
-        const results = await PropertyModel.findAll(data);
+        const results = await PropertyModel.findAll(filters);
         return successResponse(res, 'My properties retrieved', results);
     } catch (e) {
         return errorResponse(res, e.message, null, 500);

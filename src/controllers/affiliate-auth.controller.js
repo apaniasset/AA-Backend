@@ -6,7 +6,49 @@ import Mail from '../utils/Mail.js';
 import { successResponse, errorResponse } from '../utils/response.js';
 
 /**
- * Register Affiliate (Single Step)
+ * Send OTP for Registration
+ */
+export const sendRegistrationOTP = async (req, res) => {
+    try {
+        const phone = req.body.phone;
+        if (!phone) return errorResponse(res, 'Phone is required', null, 400);
+
+        const existing = await AffiliateModel.findByPhone(phone);
+        if (existing && existing.status === 'active') {
+            return errorResponse(res, 'Mobile already registered', null, 400);
+        }
+
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        await AffiliateModel.storeRegistrationOTP(phone, otp);
+        await Sms.sendOTP(phone, otp);
+
+        return successResponse(res, 'OTP sent', { otp });
+    } catch (e) {
+        return errorResponse(res, e.message, null, 500);
+    }
+};
+
+/**
+ * Verify OTP for Registration
+ */
+export const verifyRegistrationOTP = async (req, res) => {
+    try {
+        const phone = req.body.phone;
+        const otp = req.body.otp;
+
+        if (!phone || !otp) return errorResponse(res, 'Phone and OTP required', null, 400);
+
+        const affiliate = await AffiliateModel.verifyRegistrationOTP(phone, otp);
+        if (!affiliate) return errorResponse(res, 'Invalid or expired OTP', null, 401);
+
+        return successResponse(res, 'OTP verified. Proceed to register.');
+    } catch (e) {
+        return errorResponse(res, e.message, null, 500);
+    }
+};
+
+/**
+ * Register Affiliate (Step 2 - Details after OTP)
  */
 export const register = async (req, res) => {
     try {
@@ -26,8 +68,8 @@ export const register = async (req, res) => {
         }
 
         const existing = await AffiliateModel.findByPhone(phone);
-        if (existing && existing.status === 'active') {
-            return errorResponse(res, 'Mobile already registered', null, 400);
+        if (!existing || existing.status !== 'pending_registration') {
+            return errorResponse(res, 'Phone not verified or already registered', null, 403);
         }
 
         let referredBy = req.body.referred_by || null;
@@ -40,30 +82,17 @@ export const register = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        let affiliateId;
-        if (existing) {
-            affiliateId = existing.id;
-            const updateData = {
-                name: name,
-                email: email || null,
-                password: hashedPassword,
-                status: 'active',
-                referred_by: referredBy,
-                registration_otp: null,
-                registration_otp_expires: null
-            };
-            await AffiliateModel.update(affiliateId, updateData);
-        } else {
-            const createData = {
-                name: name,
-                phone: phone,
-                email: email || null,
-                password: hashedPassword,
-                status: 'active',
-                referred_by: referredBy
-            };
-            affiliateId = await AffiliateModel.create(createData);
-        }
+        const affiliateId = existing.id;
+        const updateData = {
+            name: name,
+            email: email || null,
+            password: hashedPassword,
+            status: 'active',
+            referred_by: referredBy,
+            registration_otp: null,
+            registration_otp_expires: null
+        };
+        await AffiliateModel.update(affiliateId, updateData);
 
         const affiliate = await AffiliateModel.findById(affiliateId);
         const token = jwt.sign({ id: affiliate.id, role: 'affiliate' }, process.env.JWT_SECRET, { expiresIn: '7d' });

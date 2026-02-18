@@ -1,6 +1,92 @@
 import bcrypt from 'bcryptjs';
 import * as MerchantModel from '../models/merchant.model.js';
+import * as MerchantLocationModel from '../models/merchant-location.model.js';
 import { successResponse, errorResponse } from '../utils/response.js';
+
+/**
+ * Get multiple working locations for the logged-in merchant
+ */
+export const getMyWorkingLocations = async (req, res) => {
+    try {
+        const merchantId = req.user.id;
+        const data = await MerchantLocationModel.findByMerchantId(merchantId);
+        return successResponse(res, 'Working locations retrieved', data);
+    } catch (e) {
+        return errorResponse(res, e.message, null, 500);
+    }
+};
+
+/**
+ * Add a new working location
+ */
+export const addWorkingLocation = async (req, res) => {
+    try {
+        const merchantId = req.user.id;
+        const data = {
+            merchant_id: merchantId,
+            state_id: req.body.state_id || null,
+            city_id: req.body.city_id || null,
+            city_name: req.body.city_name || null,
+            area_id: req.body.area_id || null,
+            area_name: req.body.area_name || null,
+            pincode: req.body.pincode || null,
+            country_id: req.body.country_id || null
+        };
+
+        if (!data.city_id && !data.city_name) {
+            return errorResponse(res, 'City (ID or Name) is required', null, 400);
+        }
+
+        const id = await MerchantLocationModel.create(data);
+        return successResponse(res, 'Working location added', { id }, 201);
+    } catch (e) {
+        return errorResponse(res, e.message, null, 500);
+    }
+};
+
+/**
+ * Update a working location
+ */
+export const updateWorkingLocation = async (req, res) => {
+    try {
+        const id = req.body.id || req.params.id;
+        const merchantId = req.user.id;
+
+        const existing = await MerchantLocationModel.findById(id, merchantId);
+        if (!existing) return errorResponse(res, 'Location not found', null, 404);
+
+        const data = {};
+        if (req.body.state_id) data.state_id = req.body.state_id;
+        if (req.body.city_id) data.city_id = req.body.city_id;
+        if (req.body.city_name) data.city_name = req.body.city_name;
+        if (req.body.area_id) data.area_id = req.body.area_id;
+        if (req.body.area_name) data.area_name = req.body.area_name;
+        if (req.body.pincode) data.pincode = req.body.pincode;
+        if (req.body.country_id) data.country_id = req.body.country_id;
+
+        await MerchantLocationModel.update(id, merchantId, data);
+        return successResponse(res, 'Working location updated');
+    } catch (e) {
+        return errorResponse(res, e.message, null, 500);
+    }
+};
+
+/**
+ * Delete a working location
+ */
+export const deleteWorkingLocation = async (req, res) => {
+    try {
+        const id = req.body.id || req.params.id;
+        const merchantId = req.user.id;
+
+        const deleted = await MerchantLocationModel.remove(id, merchantId);
+        if (!deleted) return errorResponse(res, 'Location not found or unauthorized', null, 404);
+
+        return successResponse(res, 'Working location deleted');
+    } catch (e) {
+        return errorResponse(res, e.message, null, 500);
+    }
+};
 
 /**
  * List Merchants

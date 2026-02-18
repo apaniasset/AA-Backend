@@ -19,7 +19,9 @@ addGroupHelper(router);
 
 // --- Authentication ---
 
-// Signup (Single Step - No OTP)
+// Signup (Two Steps: OTP + Details)
+router.post('/send-otp-registration', Auth.sendRegistrationOTP);
+router.post('/verify-otp-registration', Auth.verifyRegistrationOTP);
 router.post('/register', Auth.register);
 
 // Login (Email/Phone + Password)

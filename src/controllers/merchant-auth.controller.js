@@ -7,7 +7,49 @@ import Mail from '../utils/Mail.js';
 import { successResponse, errorResponse } from '../utils/response.js';
 
 /**
- * Register Merchant (Single Step)
+ * Send OTP for Registration
+ */
+export const sendRegistrationOTP = async (req, res) => {
+    try {
+        const phone = req.body.phone;
+        if (!phone) return errorResponse(res, 'Phone is required', null, 400);
+
+        const existing = await MerchantModel.findByPhone(phone);
+        if (existing && existing.status === 'active') {
+            return errorResponse(res, 'Mobile already registered', null, 400);
+        }
+
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        await MerchantModel.storeRegistrationOTP(phone, otp);
+        await Sms.sendOTP(phone, otp);
+
+        return successResponse(res, 'OTP sent', { otp });
+    } catch (e) {
+        return errorResponse(res, e.message, null, 500);
+    }
+};
+
+/**
+ * Verify OTP for Registration
+ */
+export const verifyRegistrationOTP = async (req, res) => {
+    try {
+        const phone = req.body.phone;
+        const otp = req.body.otp;
+
+        if (!phone || !otp) return errorResponse(res, 'Phone and OTP required', null, 400);
+
+        const merchant = await MerchantModel.verifyRegistrationOTP(phone, otp);
+        if (!merchant) return errorResponse(res, 'Invalid or expired OTP', null, 401);
+
+        return successResponse(res, 'OTP verified. Proceed to register.');
+    } catch (e) {
+        return errorResponse(res, e.message, null, 500);
+    }
+};
+
+/**
+ * Register Merchant (Step 2 - Details after OTP)
  */
 export const register = async (req, res) => {
     try {
@@ -28,8 +70,8 @@ export const register = async (req, res) => {
         }
 
         const existing = await MerchantModel.findByPhone(phone);
-        if (existing && existing.status === 'active') {
-            return errorResponse(res, 'Mobile already registered', null, 400);
+        if (!existing || existing.status !== 'pending_registration') {
+            return errorResponse(res, 'Phone not verified or already registered', null, 403);
         }
 
         let affiliateId = req.body.referred_by || null;
@@ -42,39 +84,19 @@ export const register = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Merchant record creation
-        // Note: findByPhone might have returned a pending_registration record if using previous logic, 
-        // but since we are removing OTP, we just create or update.
-        // For simplicity, we check if it exists (even if pending) and update, or create new.
-
-        let merchantId;
-        if (existing) {
-            merchantId = existing.id;
-            const updateData = {
-                name: name,
-                email: email || null,
-                company_name: company_name || null,
-                password: hashedPassword,
-                affiliate_id: affiliateId,
-                status: 'active',
-                merchant_type: 'owner',
-                registration_otp: null,
-                registration_otp_expires: null
-            };
-            await MerchantModel.update(merchantId, updateData);
-        } else {
-            const createData = {
-                name: name,
-                phone: phone,
-                email: email || null,
-                company_name: company_name || null,
-                password: hashedPassword,
-                affiliate_id: affiliateId,
-                status: 'active',
-                merchant_type: 'owner'
-            };
-            merchantId = await MerchantModel.create(createData);
-        }
+        const merchantId = existing.id;
+        const updateData = {
+            name: name,
+            email: email || null,
+            company_name: company_name || null,
+            password: hashedPassword,
+            affiliate_id: affiliateId,
+            status: 'active',
+            merchant_type: 'owner',
+            registration_otp: null,
+            registration_otp_expires: null
+        };
+        await MerchantModel.update(merchantId, updateData);
 
         const token = jwt.sign({ id: merchantId, role: 'merchant' }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
