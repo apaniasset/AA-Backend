@@ -322,6 +322,148 @@
                     }
                 }
             ]
+        },
+        {
+            "name": "5. Master Data",
+            "item": [
+                {
+                    "name": "Countries",
+                    "item": [
+                        {
+                            "name": "List",
+                            "request": {
+                                "method": "GET",
+                                "url": "{{base_url}}/master/countries"
+                            }
+                        },
+                        {
+                            "name": "Create",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"name\":\"India\", \"code\":\"IN\", \"phonecode\":\"91\"}"
+                                },
+                                "url": "{{base_url}}/master/countries"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "States",
+                    "item": [
+                        {
+                            "name": "List",
+                            "request": {
+                                "method": "GET",
+                                "url": "{{base_url}}/master/states"
+                            }
+                        },
+                        {
+                            "name": "By Country",
+                            "request": {
+                                "method": "GET",
+                                "url": "{{base_url}}/master/states/country/1"
+                            }
+                        },
+                        {
+                            "name": "Create",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"name\":\"Maharashtra\", \"country_id\":1}"
+                                },
+                                "url": "{{base_url}}/master/states"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Cities",
+                    "item": [
+                        {
+                            "name": "List",
+                            "request": {
+                                "method": "GET",
+                                "url": "{{base_url}}/master/cities"
+                            }
+                        },
+                        {
+                            "name": "By State",
+                            "request": {
+                                "method": "GET",
+                                "url": "{{base_url}}/master/cities/state/1"
+                            }
+                        },
+                        {
+                            "name": "Create",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"name\":\"Mumbai\", \"state_id\":1}"
+                                },
+                                "url": "{{base_url}}/master/cities"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Locations (Areas)",
+                    "item": [
+                        {
+                            "name": "List",
+                            "request": {
+                                "method": "GET",
+                                "url": "{{base_url}}/master/locations"
+                            }
+                        },
+                        {
+                            "name": "By City",
+                            "request": {
+                                "method": "GET",
+                                "url": "{{base_url}}/master/locations/city/1"
+                            }
+                        },
+                        {
+                            "name": "Create",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"name\":\"Andheri\", \"city_id\":1}"
+                                },
+                                "url": "{{base_url}}/master/locations"
+                            }
+                        }
+                    ]
+                }
+            ]
         }
     ],
     "variable": [
