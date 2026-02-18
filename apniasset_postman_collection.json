@@ -165,15 +165,80 @@
                     ]
                 },
                 {
-                    "name": "Login (All Roles)",
-                    "request": {
-                        "method": "POST",
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"identifier\": \"9000011111\",\n    \"password\": \"password\"\n}"
+                    "name": "Affiliate Registration",
+                    "item": [
+                        {
+                            "name": "Send OTP",
+                            "request": {
+                                "method": "POST",
+                                "url": "{{base_url}}/affiliate/send-otp-registration",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"phone\":\"9000033333\"}"
+                                }
+                            }
                         },
-                        "url": "{{base_url}}/user/login"
-                    }
+                        {
+                            "name": "Verify OTP",
+                            "request": {
+                                "method": "POST",
+                                "url": "{{base_url}}/affiliate/verify-otp-registration",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"phone\":\"9000033333\", \"otp\":\"123456\"}"
+                                }
+                            }
+                        },
+                        {
+                            "name": "Complete Register",
+                            "request": {
+                                "method": "POST",
+                                "url": "{{base_url}}/affiliate/register",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"name\":\"Test Affiliate\", \"phone\":\"9000033333\", \"email\":\"affiliate@test.com\", \"password\":\"password\", \"confirm_password\":\"password\"}"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Login (All Roles)",
+                    "item": [
+                        {
+                            "name": "User Login",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"identifier\": \"9000011111\", \"password\": \"password\"}"
+                                },
+                                "url": "{{base_url}}/user/login"
+                            }
+                        },
+                        {
+                            "name": "Merchant Login",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"identifier\": \"9000022222\", \"password\": \"password\"}"
+                                },
+                                "url": "{{base_url}}/merchant/login"
+                            }
+                        },
+                        {
+                            "name": "Affiliate Login",
+                            "request": {
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"identifier\": \"9000033333\", \"password\": \"password\"}"
+                                },
+                                "url": "{{base_url}}/affiliate/login"
+                            }
+                        }
+                    ]
                 }
             ]
         },
