@@ -7,6 +7,11 @@
   "scripts": {
     "dev": "node --watch src/index.js",
     "start": "node src/index.js",
+    "migrate": "npx knex migrate:latest",
+    "migrate:rollback": "npx knex migrate:rollback",
+    "migrate:make": "npx knex migrate:make",
+    "seed": "npx knex seed:run",
+    "seed:make": "npx knex seed:make",
     "build": "echo 'No build step required for this project'"
   },
   "keywords": [],
