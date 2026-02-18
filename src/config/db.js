@@ -4,11 +4,11 @@ import Logger from '../utils/Logger.js';
 
 // Critical Validation: Check if .env variables are actually present
 if (!process.env.DB_HOST || !process.env.DB_USER || !process.env.DB_NAME) {
-    Logger.error('--- DATABASE CONFIG ERROR ---');
-    Logger.error('Required environment variables (DB_HOST, DB_USER, DB_NAME) are missing!');
-    Logger.error('This usually means your .env file is missing or not being read correctly.');
+    const errorMsg = `DATABASE CONFIG ERROR: Required environment variables (DB_HOST, DB_USER, DB_NAME) are missing. Check your .env file. Currently DB_USER is "${process.env.DB_USER || 'EMPTY'}"`;
     Logger.error('-----------------------------');
-    // We do NOT exit(1) anymore, so the server can start and we can see these logs in the file!
+    Logger.error(errorMsg);
+    Logger.error('-----------------------------');
+    throw new Error(errorMsg);
 }
 
 /**
