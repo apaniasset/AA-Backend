@@ -33,24 +33,36 @@ const getPool = () => {
 };
 
 /**
- * Robust Lazy-load Proxy for the database pool.
- * This mimics the mysql2 pool object perfectly but only creates it 
- * when the first property (like .query or .getConnection) is accessed.
+ * Explicit Lazy-load wrapper for the database pool.
+ * This is safer than a Proxy for older Node versions or quirky environments.
  */
-const lazyPool = new Proxy({}, {
-    get: (target, prop) => {
-        const pool = getPool();
-        if (!pool) {
-            // If someone tries to use the pool before .env is set, we throw a clear error 
-            // but ONLY when they try to use it, not when the app starts.
-            return (...args) => {
-                throw new Error('Database connection failed: Environment variables not set. Please check your .env file.');
-            };
+const db = {
+    query: async (...args) => {
+        const p = getPool();
+        if (!p) throw new Error('Database connection failed: Environment variables not set. Check .env file.');
+        return p.query(...args);
+    },
+    execute: async (...args) => {
+        const p = getPool();
+        if (!p) throw new Error('Database connection failed: Environment variables not set. Check .env file.');
+        return p.execute(...args);
+    },
+    getConnection: async () => {
+        const p = getPool();
+        if (!p) throw new Error('Database connection failed: Environment variables not set. Check .env file.');
+        return p.getConnection();
+    },
+    // Diagnostic helper
+    checkConnection: async () => {
+        const p = getPool();
+        if (!p) return { success: false, error: 'Database variables missing' };
+        try {
+            const [rows] = await p.query('SELECT 1 as connected');
+            return { success: true, data: rows[0] };
+        } catch (err) {
+            return { success: false, error: err.message };
         }
-
-        const value = pool[prop];
-        return typeof value === 'function' ? value.bind(pool) : value;
     }
-});
+};
 
-export default lazyPool;
+export default db;
