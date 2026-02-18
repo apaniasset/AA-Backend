@@ -9,6 +9,20 @@ import masterRoutes from './master.routes.js';
 
 const api = Router();
 
+api.get('/status', (req, res) => {
+    res.json({
+        success: true,
+        message: 'API is running',
+        env: {
+            DB_HOST: process.env.DB_HOST ? 'SET' : 'MISSING',
+            DB_USER: process.env.DB_USER || 'MISSING',
+            DB_NAME: process.env.DB_NAME ? 'SET' : 'MISSING',
+            NODE_ENV: process.env.NODE_ENV,
+        },
+        timestamp: new Date().toISOString()
+    });
+});
+
 api.use('/admin', adminRoutes);
 api.use('/merchant', merchantRoutes);
 api.use('/affiliate', affiliateRoutes);

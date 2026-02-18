@@ -8,7 +8,8 @@ if (!process.env.DB_HOST || !process.env.DB_USER || !process.env.DB_NAME) {
     Logger.error('-----------------------------');
     Logger.error(errorMsg);
     Logger.error('-----------------------------');
-    throw new Error(errorMsg);
+    // DISABLED THROW: We don't throw anymore so the server can start and we can see diagnostics
+    // throw new Error(errorMsg);
 }
 
 /**
