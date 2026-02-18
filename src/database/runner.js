@@ -31,31 +31,43 @@ async function migrate() {
         const [executed] = await pool.query('SELECT name FROM _migrations');
         const executedNames = executed.map(r => r.name);
 
-        for (const file of files) {
-            if (!executedNames.includes(file)) {
-                Logger.info(`Running migration: ${file}`);
-                const modulePath = path.join(MIGRATIONS_DIR, file);
+        const toRun = files.filter(f => !executedNames.includes(f));
 
-                // Convert Windows path to file:// URL for dynamic import on Windows
+        if (toRun.length === 0) {
+            Logger.info('Everything is up to date. No new migrations found.');
+            process.exit(0);
+        }
+
+        Logger.info(`Found ${toRun.length} new migration(s) to run.`);
+
+        for (const file of toRun) {
+            Logger.info(`>> Executing: ${file}`);
+            const modulePath = path.join(MIGRATIONS_DIR, file);
+
+            try {
+                // Convert Windows path to file:// URL for dynamic import
                 const fileUrl = `file://${modulePath.replace(/\\/g, '/')}`;
                 const migration = await import(fileUrl);
 
                 if (migration.up) {
                     await migration.up(pool);
                     await pool.query('INSERT INTO _migrations (name) VALUES (?)', [file]);
-                    Logger.info(`SUCCESS: ${file}`);
+                    Logger.info(`   SUCCESS: ${file}`);
                 } else {
-                    Logger.error(`SKIPPING: ${file} (No up function found)`);
+                    Logger.info(`   SKIPPING: ${file} (No up function found)`);
                 }
+            } catch (err) {
+                Logger.error(`   FAILED: ${file}`);
+                Logger.error(`   Error details: ${err.message}`);
+                throw err; // Stop on first failure
             }
         }
 
-        Logger.info('--- Migrations Complete ---');
+        Logger.info('--- All Migrations Applied Successfully ---');
         process.exit(0);
     } catch (error) {
-        Logger.error('--- MIGRATION FAILED ---');
-        Logger.error(error.message);
-        Logger.error(error.stack);
+        Logger.error('--- MIGRATION HALTED ---');
+        Logger.error(`Reason: ${error.message}`);
         process.exit(1);
     }
 }
