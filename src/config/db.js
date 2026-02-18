@@ -32,17 +32,25 @@ const getPool = () => {
     return pool;
 };
 
-// Export a proxy or the pool itself if needed immediately
-// For safety, we'll export the getter-based proxy
-export default {
-    query: (...args) => {
-        const p = getPool();
-        if (!p) throw new Error('Database connection failed: Environment variables not set.');
-        return p.query(...args);
-    },
-    getConnection: async () => {
-        const p = getPool();
-        if (!p) throw new Error('Database connection failed: Environment variables not set.');
-        return p.getConnection();
+/**
+ * Robust Lazy-load Proxy for the database pool.
+ * This mimics the mysql2 pool object perfectly but only creates it 
+ * when the first property (like .query or .getConnection) is accessed.
+ */
+const lazyPool = new Proxy({}, {
+    get: (target, prop) => {
+        const pool = getPool();
+        if (!pool) {
+            // If someone tries to use the pool before .env is set, we throw a clear error 
+            // but ONLY when they try to use it, not when the app starts.
+            return (...args) => {
+                throw new Error('Database connection failed: Environment variables not set. Please check your .env file.');
+            };
+        }
+
+        const value = pool[prop];
+        return typeof value === 'function' ? value.bind(pool) : value;
     }
-};
+});
+
+export default lazyPool;

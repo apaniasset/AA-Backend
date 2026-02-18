@@ -20,12 +20,8 @@ if (result.error) {
 }
 
 if (result.error) {
-    Logger.error('--- ENV LOAD ERROR ---');
-    Logger.error(`Could not find or read .env file. Tried: ${envPath} AND ${cwdEnvPath}`);
-    Logger.error('This will cause database connection failures if variables are not set in the environment.');
-    Logger.error('-----------------------');
-} else {
-    Logger.info(`[ENV] Variables loaded successfully from: ${result.parsed ? (envPath === result.path ? envPath : cwdEnvPath) : 'Environment'}`);
+    // Silence at startup, only log if explicitly requested or on failure during usage
+    // Logger.error('--- ENV LOAD ERROR ---');
 }
 
 export default process.env;
