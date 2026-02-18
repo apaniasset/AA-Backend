@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "node --watch src/index.js",
     "start": "node src/index.js",
-    "migrate": "npx knex migrate:latest",
+    "migrate": "node src/database/runner.js",
     "migrate:rollback": "npx knex migrate:rollback",
     "migrate:make": "npx knex migrate:make",
     "seed": "npx knex seed:run",
