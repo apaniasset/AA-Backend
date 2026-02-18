@@ -8,6 +8,16 @@ import Logger from './utils/Logger.js';
 import Mail from './utils/Mail.js';
 
 
+// Global error handlers to prevent 503 on Hostinger
+process.on('uncaughtException', (err) => {
+    console.error('UNCAUGHT EXCEPTION:', err.message);
+    console.error(err.stack);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('UNHANDLED REJECTION at:', promise, 'reason:', reason);
+});
+
 const app = express();
 const port = process.env.PORT || 1700;
 
