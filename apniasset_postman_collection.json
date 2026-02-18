@@ -22,10 +22,10 @@
                         "method": "GET",
                         "header": [],
                         "url": {
-                            "raw": "{{base_url}}/properties?search=Mumbai&listing_type=Sale",
+                            "raw": "{{base_url}}/properties?search_name=Mumbai&listing_type=Sale",
                             "query": [
                                 {
-                                    "key": "search",
+                                    "key": "search_name",
                                     "value": "Mumbai"
                                 },
                                 {
@@ -333,7 +333,15 @@
                             "name": "List",
                             "request": {
                                 "method": "GET",
-                                "url": "{{base_url}}/master/countries"
+                                "url": {
+                                    "raw": "{{base_url}}/master/countries?search_name=India",
+                                    "query": [
+                                        {
+                                            "key": "search_name",
+                                            "value": "India"
+                                        }
+                                    ]
+                                }
                             }
                         },
                         {
@@ -362,7 +370,15 @@
                             "name": "List",
                             "request": {
                                 "method": "GET",
-                                "url": "{{base_url}}/master/states"
+                                "url": {
+                                    "raw": "{{base_url}}/master/states?search_name=Mah",
+                                    "query": [
+                                        {
+                                            "key": "search_name",
+                                            "value": "Mah"
+                                        }
+                                    ]
+                                }
                             }
                         },
                         {
@@ -398,7 +414,15 @@
                             "name": "List",
                             "request": {
                                 "method": "GET",
-                                "url": "{{base_url}}/master/cities"
+                                "url": {
+                                    "raw": "{{base_url}}/master/cities?search_name=Mum",
+                                    "query": [
+                                        {
+                                            "key": "search_name",
+                                            "value": "Mum"
+                                        }
+                                    ]
+                                }
                             }
                         },
                         {
@@ -434,7 +458,15 @@
                             "name": "List",
                             "request": {
                                 "method": "GET",
-                                "url": "{{base_url}}/master/locations"
+                                "url": {
+                                    "raw": "{{base_url}}/master/locations?search_name=Andh",
+                                    "query": [
+                                        {
+                                            "key": "search_name",
+                                            "value": "Andh"
+                                        }
+                                    ]
+                                }
                             }
                         },
                         {
