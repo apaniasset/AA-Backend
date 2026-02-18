@@ -356,9 +356,39 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"name\":\"India\", \"code\":\"IN\", \"phonecode\":\"91\"}"
+                                    "raw": "{\"name\":\"India\", \"short_name\":\"IN\", \"country_code\":\"91\"}"
                                 },
                                 "url": "{{base_url}}/master/countries"
+                            }
+                        },
+                        {
+                            "name": "Update",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"name\":\"India Updated\", \"short_name\":\"IN\", \"country_code\":\"91\", \"is_active\":1}"
+                                },
+                                "url": "{{base_url}}/master/countries/1"
+                            }
+                        },
+                        {
+                            "name": "Delete",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_token}}"
+                                    }
+                                ],
+                                "url": "{{base_url}}/master/countries/1"
                             }
                         }
                     ]
@@ -400,9 +430,39 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"name\":\"Maharashtra\", \"country_id\":1}"
+                                    "raw": "{\"state_name\":\"Maharashtra\", \"country_id\":1, \"state_type\":\"State\"}"
                                 },
                                 "url": "{{base_url}}/master/states"
+                            }
+                        },
+                        {
+                            "name": "Update",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"state_name\":\"Maharashtra Updated\", \"country_id\":1, \"state_type\":\"State\", \"is_active\":1}"
+                                },
+                                "url": "{{base_url}}/master/states/1"
+                            }
+                        },
+                        {
+                            "name": "Delete",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_token}}"
+                                    }
+                                ],
+                                "url": "{{base_url}}/master/states/1"
                             }
                         }
                     ]
@@ -444,9 +504,39 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"name\":\"Mumbai\", \"state_id\":1}"
+                                    "raw": "{\"city_name\":\"Mumbai\", \"state_id\":1}"
                                 },
                                 "url": "{{base_url}}/master/cities"
+                            }
+                        },
+                        {
+                            "name": "Update",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"city_name\":\"Mumbai Updated\", \"state_id\":1, \"is_active\":1}"
+                                },
+                                "url": "{{base_url}}/master/cities/1"
+                            }
+                        },
+                        {
+                            "name": "Delete",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_token}}"
+                                    }
+                                ],
+                                "url": "{{base_url}}/master/cities/1"
                             }
                         }
                     ]
@@ -488,9 +578,39 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"name\":\"Andheri\", \"city_id\":1}"
+                                    "raw": "{\"area_name\":\"Andheri\", \"city_id\":1, \"pincode\":\"400053\"}"
                                 },
                                 "url": "{{base_url}}/master/locations"
+                            }
+                        },
+                        {
+                            "name": "Update",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"area_name\":\"Andheri Updated\", \"city_id\":1, \"pincode\":\"400053\", \"is_active\":1}"
+                                },
+                                "url": "{{base_url}}/master/locations/1"
+                            }
+                        },
+                        {
+                            "name": "Delete",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_token}}"
+                                    }
+                                ],
+                                "url": "{{base_url}}/master/locations/1"
                             }
                         }
                     ]
