@@ -62,8 +62,8 @@ export const findAll = async (filters = {}) => {
         }
     }
 
-    if (filters.search) {
-        const search = `%${filters.search}%`;
+    if (filters.search || filters.search_name) {
+        const search = `%${filters.search || filters.search_name}%`;
         query += ` AND (p.title LIKE ? OR p.description LIKE ? OR p.property_id LIKE ? OR c.city_name LIKE ? OR s.state_name LIKE ? OR co.name LIKE ? OR a.area_name LIKE ? OR p.location LIKE ? OR p.address_line1 LIKE ?)`;
         params.push(search, search, search, search, search, search, search, search, search);
     }

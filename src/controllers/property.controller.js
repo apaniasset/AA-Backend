@@ -20,6 +20,10 @@ export const index = async (req, res) => {
             filters.status = req.query.status;
         }
 
+        if (req.query.search_name) {
+            filters.search_name = req.query.search_name;
+        }
+
         const data = await PropertyModel.findAll(filters);
         return successResponse(res, 'Properties retrieved', data);
     } catch (e) {

@@ -1,12 +1,40 @@
 import pool from '../config/db.js';
 
-export const getAll = async () => {
-    const [rows] = await pool.query('SELECT id as state_id, id, country_id, state_name, state_type, is_active FROM master_states ORDER BY state_name ASC');
+export const getAll = async (filters = {}) => {
+    let query = 'SELECT id as state_id, id, country_id, state_name, state_type, is_active FROM master_states WHERE 1=1';
+    const params = [];
+
+    if (filters.search_name) {
+        query += ' AND state_name LIKE ?';
+        params.push(`%${filters.search_name}%`);
+    }
+
+    if (filters.is_active !== undefined) {
+        query += ' AND is_active = ?';
+        params.push(filters.is_active);
+    }
+
+    query += ' ORDER BY state_name ASC';
+    const [rows] = await pool.query(query, params);
     return rows;
 };
 
-export const getByCountryId = async (countryId) => {
-    const [rows] = await pool.query('SELECT id as state_id, id, country_id, state_name, state_type, is_active FROM master_states WHERE country_id = ? ORDER BY state_name ASC', [countryId]);
+export const getByCountryId = async (countryId, filters = {}) => {
+    let query = 'SELECT id as state_id, id, country_id, state_name, state_type, is_active FROM master_states WHERE country_id = ?';
+    const params = [countryId];
+
+    if (filters.search_name) {
+        query += ' AND state_name LIKE ?';
+        params.push(`%${filters.search_name}%`);
+    }
+
+    if (filters.is_active !== undefined) {
+        query += ' AND is_active = ?';
+        params.push(filters.is_active);
+    }
+
+    query += ' ORDER BY state_name ASC';
+    const [rows] = await pool.query(query, params);
     return rows;
 };
 

@@ -1,12 +1,40 @@
 import pool from '../config/db.js';
 
-export const getAll = async () => {
-    const [rows] = await pool.query('SELECT id as city_id, id, state_id, city_name, is_active FROM master_cities ORDER BY city_name ASC');
+export const getAll = async (filters = {}) => {
+    let query = 'SELECT id as city_id, id, state_id, city_name, is_active FROM master_cities WHERE 1=1';
+    const params = [];
+
+    if (filters.search_name) {
+        query += ' AND city_name LIKE ?';
+        params.push(`%${filters.search_name}%`);
+    }
+
+    if (filters.is_active !== undefined) {
+        query += ' AND is_active = ?';
+        params.push(filters.is_active);
+    }
+
+    query += ' ORDER BY city_name ASC';
+    const [rows] = await pool.query(query, params);
     return rows;
 };
 
-export const getByStateId = async (stateId) => {
-    const [rows] = await pool.query('SELECT id as city_id, id, state_id, city_name, is_active FROM master_cities WHERE state_id = ? ORDER BY city_name ASC', [stateId]);
+export const getByStateId = async (stateId, filters = {}) => {
+    let query = 'SELECT id as city_id, id, state_id, city_name, is_active FROM master_cities WHERE state_id = ?';
+    const params = [stateId];
+
+    if (filters.search_name) {
+        query += ' AND city_name LIKE ?';
+        params.push(`%${filters.search_name}%`);
+    }
+
+    if (filters.is_active !== undefined) {
+        query += ' AND is_active = ?';
+        params.push(filters.is_active);
+    }
+
+    query += ' ORDER BY city_name ASC';
+    const [rows] = await pool.query(query, params);
     return rows;
 };
 
