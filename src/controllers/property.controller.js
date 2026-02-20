@@ -6,22 +6,19 @@ import { successResponse, errorResponse } from '../utils/response.js';
  */
 export const index = async (req, res) => {
     try {
-        const filters = { ...req.query };
+        // ✅ merge query params + JSON body so both work
+        const filters = { ...req.query, ...req.body };
 
-        // Integrated "My Deals" logic
+        // My Deals logic
         if (req.query.my_deals && req.user) {
             if (req.user.role === 'user') filters.user_id = req.user.id;
             else if (req.user.role === 'merchant') filters.merchant_id = req.user.id;
             else if (req.user.role === 'admin') filters.admin_id = req.user.id;
         }
 
-        // Allow Admin to see everything if they ask for it
-        if (req.user && req.user.role === 'admin' && req.query.status) {
-            filters.status = req.query.status;
-        }
-
-        if (req.query.search_name) {
-            filters.search_name = req.query.search_name;
+        // Admin can filter by any status
+        if (req.user && req.user.role === 'admin' && req.body.status) {
+            filters.status = req.body.status;
         }
 
         const data = await PropertyModel.findAll(filters);
