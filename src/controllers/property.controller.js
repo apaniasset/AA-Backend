@@ -7,7 +7,7 @@ import { successResponse, errorResponse } from '../utils/response.js';
 export const index = async (req, res) => {
     try {
         // ✅ merge query params + JSON body so both work
-        const filters = { ...req.query, ...req.body };
+        const filters = { ...req.query};
 
         // My Deals logic
         if (req.query.my_deals && req.user) {
