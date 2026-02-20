@@ -71,13 +71,12 @@ export const findById = async (id) => {
 };
 
 /**
- * Create new merchant (Laravel Parity)
+ * Create new merchant
  */
 export const create = async (data) => {
     const connection = await pool.getConnection();
     await connection.beginTransaction();
     try {
-        // Default merchant type to 'owner' if not provided (matching Laravel)
         const merchantData = {
             ...data,
             merchant_type: data.merchant_type || 'owner'
@@ -86,7 +85,6 @@ export const create = async (data) => {
         const [result] = await connection.query('INSERT INTO merchant SET ?', [merchantData]);
         const merchantId = result.insertId;
 
-        // Award 1 free credit (matching Laravel)
         const creditData = {
             merchant_id: merchantId,
             credits: 1,
@@ -114,9 +112,11 @@ export const update = async (id, data) => {
     try {
         const [result] = await connection.query('UPDATE merchant SET ? WHERE id = ?', [data, id]);
 
-        // If this is a registration completion, award credits if not already awarded
         if (data.status === 'active') {
-            const [credits] = await connection.query('SELECT * FROM merchant_credits WHERE merchant_id = ? AND source = "free_signup"', [id]);
+            const [credits] = await connection.query(
+                'SELECT * FROM merchant_credits WHERE merchant_id = ? AND source = "free_signup"',
+                [id]
+            );
             if (credits.length === 0) {
                 await connection.query('INSERT INTO merchant_credits SET ?', [{
                     merchant_id: id,
@@ -159,7 +159,7 @@ export const updateLastLogin = async (id) => {
  * Store Reset OTP
  */
 export const storeResetOTP = async (id, otp) => {
-    const expires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes from now
+    const expires = new Date(Date.now() + 10 * 60 * 1000);
     await pool.query(
         'UPDATE merchant SET reset_password_otp = ?, reset_password_expires = ? WHERE id = ?',
         [otp, expires, id]
@@ -167,7 +167,7 @@ export const storeResetOTP = async (id, otp) => {
 };
 
 /**
- * Verify OTP
+ * Verify Reset OTP
  */
 export const verifyOTP = async (identifier, otp) => {
     const [rows] = await pool.query(
@@ -181,7 +181,7 @@ export const verifyOTP = async (identifier, otp) => {
  * Store login OTP
  */
 export const storeLoginOTP = async (id, otp) => {
-    const expires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes from now
+    const expires = new Date(Date.now() + 10 * 60 * 1000);
     await pool.query(
         'UPDATE merchant SET login_otp = ?, login_otp_expires = ? WHERE id = ?',
         [otp, expires, id]
@@ -211,15 +211,18 @@ export const updatePassword = async (id, hashedPassword) => {
 
 /**
  * Store Registration OTP
+ * 🔧 FIX: Always reset status to 'pending_registration' so register() check passes
  */
 export const storeRegistrationOTP = async (phone, otp) => {
     const expires = new Date(Date.now() + 10 * 60 * 1000);
 
     const merchant = await findByPhone(phone);
     if (merchant) {
+        // 🔧 FIX: Added status = 'pending_registration' here — this was the bug!
+        // Without this, existing merchants kept their old status and failed the register() check
         await pool.query(
-            'UPDATE merchant SET registration_otp = ?, registration_otp_expires = ? WHERE id = ?',
-            [otp, expires, merchant.id]
+            'UPDATE merchant SET registration_otp = ?, registration_otp_expires = ?, status = ? WHERE id = ?',
+            [otp, expires, 'pending_registration', merchant.id]
         );
         return merchant.id;
     } else {
@@ -233,11 +236,24 @@ export const storeRegistrationOTP = async (phone, otp) => {
 
 /**
  * Verify Registration OTP
+ * 🔧 FIX: After verifying, update status to 'pending_registration' to ensure
+ * it's always set correctly before the register() step
  */
 export const verifyRegistrationOTP = async (phone, otp) => {
     const [rows] = await pool.query(
         'SELECT * FROM merchant WHERE phone = ? AND registration_otp = ? AND registration_otp_expires > NOW() LIMIT 1',
         [phone, otp]
     );
-    return rows.length > 0 ? rows[0] : null;
+
+    if (rows.length === 0) return null;
+
+    const merchant = rows[0];
+
+    // 🔧 FIX: Explicitly set status to 'pending_registration' on successful OTP verify
+    await pool.query(
+        'UPDATE merchant SET status = ? WHERE id = ?',
+        ['pending_registration', merchant.id]
+    );
+
+    return merchant;
 };
