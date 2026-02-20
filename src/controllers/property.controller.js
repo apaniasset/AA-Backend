@@ -58,26 +58,23 @@ export const store = async (req, res) => {
         const loggedId = req.user.id;
         const role = req.user.role;
 
-        // Validation
-        if (!req.body.title || !req.body.address || !req.body.listing_type) {
-            return errorResponse(res, 'Required fields missing: title, address, listing_type', null, 400);
-        }
+        // No strict validation for user - just allow posting
 
         const data = {
             property_id: property_id,
             property_id_custom: req.body.property_id_custom || null,
-            title: req.body.title,
+            title: req.body.title || 'Untitled Property',
             description: req.body.description || null,
-            listing_type: req.body.listing_type,
+            listing_type: req.body.listing_type || 'Sale',
             property_main_type: req.body.property_type || null,
             property_segment: req.body.property_segment || null,
 
             // Address
-            address_line1: req.body.address,
+            address_line1: req.body.address || '',
             pincode: req.body.zip_code || null,
             location: req.body.location || null,
             area: req.body.area_name || null,
-            nearby_area: Array.isArray(req.body.nearby_areas) ? req.body.nearby_areas.join(',') : '',
+            nearby_area: Array.isArray(req.body.nearby_areas) ? req.body.nearby_areas.join(',') : (req.body.nearby_area || ''),
 
             // Location IDs (Master Tables)
             city_id: req.body.city_id || null,
@@ -105,6 +102,7 @@ export const store = async (req, res) => {
             property_age: req.body.property_age || null,
             possession_status: req.body.construction_status || null,
             status: (role === 'admin') ? 'active' : 'pending', // Admins can auto-approve
+            merchant_id: 0, // Default to 0 if not a merchant to satisfy DB NOT NULL
 
             // Under Construction
             rera_number: req.body.rera_number || null,

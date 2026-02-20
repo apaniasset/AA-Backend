@@ -41,7 +41,8 @@ export const verifyRegistrationOTP = async (req, res) => {
         const user = await UserModel.verifyRegistrationOTP(phone, otp);
         if (!user) return errorResponse(res, 'Invalid or expired OTP', null, 401);
 
-        return successResponse(res, 'OTP verified successfully. You can now complete registration.');
+        const token = jwt.sign({ id: user.id, phone: phone, role: 'user_pending' }, process.env.JWT_SECRET, { expiresIn: '15m' });
+        return successResponse(res, 'OTP verified successfully. You can now complete registration.', { token });
     } catch (e) {
         return errorResponse(res, e.message, null, 500);
     }
@@ -52,26 +53,30 @@ export const verifyRegistrationOTP = async (req, res) => {
  */
 export const register = async (req, res) => {
     try {
+        const phone = req.body.phone || (req.user ? req.user.phone : null);
         const name = req.body.name;
-        const phone = req.body.phone;
         const email = req.body.email;
         const password = req.body.password;
 
-        if (!phone || !name || !email || !password) {
-            return errorResponse(res, 'All fields are required: name, phone, email, password', null, 400);
+        if (!name) {
+            return errorResponse(res, 'Name field is required', null, 400);
         }
 
-        const existingUser = await UserModel.findByPhone(phone);
+        if (!phone && !req.user) {
+            return errorResponse(res, 'Phone number is required', null, 400);
+        }
+
+        const existingUser = (req.user && req.user.id) ? await UserModel.findById(req.user.id) : await UserModel.findByPhone(phone);
         if (!existingUser || existingUser.status !== 'pending_registration') {
             return errorResponse(res, 'Phone number not verified or already registered', null, 403);
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = password ? await bcrypt.hash(password, 10) : null;
 
         const userId = existingUser.id;
         const data = {
             name: name,
-            email: email,
+            email: email || null,
             password: hashedPassword,
             status: 'active',
             registration_otp: null,

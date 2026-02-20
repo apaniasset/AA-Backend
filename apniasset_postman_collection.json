@@ -57,11 +57,20 @@
                             {
                                 "key": "Authorization",
                                 "value": "Bearer {{token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
                             }
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"title\": \"Luxury Villa\",\n    \"address\": \"High Street\",\n    \"listing_type\": \"Sale\",\n    \"property_type\": \"Villa\",\n    \"sale_price\": 10000000,\n    \"city_id\": 1,\n    \"state_id\": 1,\n    \"country_id\": 1\n}"
+                            "raw": "{\n    \"title\": \"Luxury Villa\",\n    \"property_id_custom\": \"PROP-001\",\n    \"description\": \"A beautiful luxury villa with sea view\",\n    \"listing_type\": \"Sale\",\n    \"property_type\": \"Residential\",\n    \"property_segment\": \"Apartment\",\n\n    \"address\": \"123 Main Street\",\n    \"zip_code\": \"400001\",\n    \"location\": \"Bandra West\",\n    \"area_name\": \"Bandra\",\n    \"nearby_areas\": [\"Khar\", \"Santacruz\"],\n\n    \"city_id\": 1,\n    \"state_id\": 1,\n    \"country_id\": 1,\n    \"neighborhood\": 1,\n\n    \"sale_price\": 5000000,\n    \"rent_price\": null,\n    \"security_deposit\": null,\n    \"maintenance\": 2000,\n    \"price_negotiable\": true,\n    \"maintenance_included\": false,\n\n    \"bedrooms\": 3,\n    \"bathrooms\": 2,\n    \"balconies\": 1,\n    \"floor_number\": 5,\n    \"total_floors\": 12,\n    \"furnishing_status\": \"Semi-Furnished\",\n    \"facing\": \"East\",\n    \"property_age\": \"0-1 Year\",\n    \"construction_status\": \"Ready to Move\",\n\n    \"rera_number\": \"MH12345\",\n    \"construction_start_date\": \"2023-01-01\",\n    \"possession_date\": \"2024-06-01\",\n    \"no_brokerage\": false,\n\n    \"carpet_area\": 1200,\n    \"area\": 1400,\n    \"land_area\": null,\n    \"plot_length\": null,\n    \"plot_breadth\": null,\n    \"corner_plot\": 0,\n    \"fencing_done\": 0,\n\n    \"pg_type\": null,\n    \"total_beds\": null,\n    \"available_beds\": null,\n    \"room_type\": null,\n    \"preferred_tenants\": null,\n    \"food_facility\": false,\n\n    \"cabins\": null,\n    \"workstations\": null,\n    \"washrooms_private\": null,\n    \"washrooms_shared\": null,\n    \"loading_dock\": false,\n\n    \"video_url\": \"https://youtube.com/example\",\n    \"amenity\": [\"Gym\", \"Swimming Pool\", \"Parking\"]\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         },
                         "url": "{{base_url}}/properties"
                     }
@@ -74,11 +83,20 @@
                             {
                                 "key": "Authorization",
                                 "value": "Bearer {{token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
                             }
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"title\": \"Updated Villa Name\"\n}"
+                            "raw": "{\n    \"title\": \"Updated Luxury Villa\",\n    \"description\": \"Updated description for the property\",\n    \"sale_price\": 5500000,\n    \"rent_price\": null,\n    \"address\": \"456 New Street, Bandra West\",\n    \"city_id\": 1,\n    \"state_id\": 1,\n    \"country_id\": 1,\n    \"neighborhood\": 1,\n    \"locality_id\": 1,\n    \"status\": \"active\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         },
                         "url": "{{base_url}}/properties/1"
                     }
@@ -103,25 +121,34 @@
                             }
                         },
                         {
-                            "name": "Verify OTP",
+                            "name": "Verify OTP (Returns Registration Token)",
                             "request": {
                                 "method": "POST",
                                 "url": "{{base_url}}/user/verify-otp-registration",
                                 "body": {
                                     "mode": "raw",
                                     "raw": "{\"phone\":\"9000011111\", \"otp\":\"123456\"}"
-                                }
+                                },
+                                "description": "This now returns a `token` in the response data which should be used for the next step."
                             }
                         },
                         {
-                            "name": "Complete Register",
+                            "name": "Complete Register (Only Name Required if Token provided)",
                             "request": {
                                 "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{registration_token}}",
+                                        "description": "Token received from Verify OTP step"
+                                    }
+                                ],
                                 "url": "{{base_url}}/user/register",
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\"name\":\"Test User\", \"phone\":\"9000011111\", \"email\":\"user@test.com\", \"password\":\"password\"}"
-                                }
+                                    "raw": "{\"name\":\"Test User\"}"
+                                },
+                                "description": "Send only name if registration_token is provided. Phone, Email and Password are now optional."
                             }
                         }
                     ]

@@ -22,7 +22,12 @@ addGroupHelper(router);
 // Signup (Two Steps: OTP + Details)
 router.post('/send-otp-registration', Auth.sendRegistrationOTP);
 router.post('/verify-otp-registration', Auth.verifyRegistrationOTP);
-router.post('/register', Auth.register);
+router.post('/register', (req, res, next) => {
+    // Make auth optional for backward compatibility
+    const authHeader = req.headers.authorization;
+    if (authHeader) return authMiddleware()(req, res, next);
+    next();
+}, Auth.register);
 
 // Login (Email/Phone + Password)
 router.post('/login', validate(loginSchema), Auth.login);
