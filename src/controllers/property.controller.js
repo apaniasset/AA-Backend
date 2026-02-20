@@ -6,19 +6,12 @@ import { successResponse, errorResponse } from '../utils/response.js';
  */
 export const index = async (req, res) => {
     try {
-        // ✅ merge query params + JSON body so both work
-        const filters = { ...req.query};
+        const filters = { ...req.query };
 
-        // My Deals logic
-        if (req.query.my_deals && req.user) {
+        if (filters.my_deals && req.user) {
             if (req.user.role === 'user') filters.user_id = req.user.id;
             else if (req.user.role === 'merchant') filters.merchant_id = req.user.id;
             else if (req.user.role === 'admin') filters.admin_id = req.user.id;
-        }
-
-        // Admin can filter by any status
-        if (req.user && req.user.role === 'admin' && req.body.status) {
-            filters.status = req.body.status;
         }
 
         const data = await PropertyModel.findAll(filters);

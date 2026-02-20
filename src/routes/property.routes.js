@@ -6,14 +6,7 @@ const router = Router();
 
 const auth = authMiddleware(['user', 'merchant', 'admin']);
 
-router.get('/', (req, res, next) => {
-    // If my_deals is present, require auth
-    if (req.query.my_deals) {
-        return auth(req, res, next);
-    }
-    next();
-}, PropertyController.index);
-
+router.get('/properties', index);
 router.get('/:id', PropertyController.show);
 router.post('/', auth, PropertyController.store);
 router.put('/:id', auth, PropertyController.update);
